@@ -33,7 +33,22 @@ export PROJECT_ROOT_HDD=/var/0chain/blobber/hdd
 
 #TODO: Fix docker installation
 sudo apt update -qq
-sudo apt install -qqy unzip curl containerd docker.io ansible
+sudo apt install -qqy unzip curl containerd docker.io 
+
+# install ansible
+cat <<EOF >${PROJECT_ROOT}/requirements.txt
+ansible==3.4.0
+ansible-base==2.10.11
+cryptography==2.8
+jinja2==2.11.3
+netaddr==0.7.19
+pbr==5.4.4
+jmespath==0.9.5
+ruamel.yaml==0.16.10
+ruamel.yaml.clib==0.2.4
+MarkupSafe==1.1.1
+EOF
+sudo pip3 install -r requirements.txt
 
 # download docker-compose
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
