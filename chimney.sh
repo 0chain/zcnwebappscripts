@@ -37,7 +37,7 @@ sudo apt install -qqy unzip curl containerd docker.io
 
 # install ansible
 sudo add-apt-repository ppa:ansible/ansible-2.10
-sudo apt install ansible
+sudo apt install ansible -y
 
 # download docker-compose
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
