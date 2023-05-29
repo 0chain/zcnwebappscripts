@@ -33,7 +33,7 @@ export PROJECT_ROOT_HDD=/var/0chain/blobber/hdd
 
 #TODO: Fix docker installation
 sudo apt update -qq
-sudo apt install -qqy unzip curl containerd docker.io 
+sudo apt install -qqy unzip curl containerd docker.io python3-pip
 
 # install ansible
 cat <<EOF >${PROJECT_ROOT}/requirements.txt
