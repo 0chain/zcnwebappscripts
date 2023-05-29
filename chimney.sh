@@ -36,7 +36,7 @@ sudo apt update -qq
 sudo apt install -qqy unzip curl containerd docker.io python3-pip
 
 # install ansible
-cat <<EOF >${PROJECT_ROOT}/requirements.txt
+cat <<EOF >requirements.txt
 ansible==3.4.0
 ansible-base==2.10.11
 cryptography==2.8
@@ -48,7 +48,7 @@ ruamel.yaml==0.16.10
 ruamel.yaml.clib==0.2.4
 MarkupSafe==1.1.1
 EOF
-sudo pip3 install -r ${PROJECT_ROOT}/requirements.txt
+sudo pip3 install -r requirements.txt
 
 # download docker-compose
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
