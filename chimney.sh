@@ -36,7 +36,7 @@ sudo apt update -qq
 sudo apt install -qqy unzip curl containerd docker.io
 
 # install ansible
-sudo add-apt-repository ppa:ansible/ansible-2.9
+sudo add-apt-repository ppa:ansible/ansible-2.10
 sudo apt install ansible
 
 # download docker-compose
