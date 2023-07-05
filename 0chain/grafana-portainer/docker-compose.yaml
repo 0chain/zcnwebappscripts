@@ -1,0 +1,115 @@
+version: '3'
+services:
+  caddy:
+    container_name: caddy
+    image: caddy:2.6.4
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./site:/srv
+      - ./caddy_data:/data
+      - ./caddy_config:/config
+    restart: "always"
+
+  promtail:
+    container_name: promtail
+    image: grafana/promtail:2.8.2
+    volumes:
+      - ./promtail/log/:/logs
+      - ./promtail/promtail-config.yaml:/mnt/config/promtail-config.yaml
+    command: -config.file=/mnt/config/promtail-config.yaml
+    ports:
+      - "9090:9080"
+    restart: "always"
+
+  loki:
+    container_name: loki
+    image: grafana/loki:2.8.2
+    user: "1001"
+    volumes:
+      - ./loki/loki-config.yaml:/mnt/config/loki-config.yaml
+    command: -config.file=/mnt/config/loki-config.yaml
+    ports:
+      - "3100:3100"
+    restart: "always"
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.44.0
+    user: root
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    restart: "always"
+    depends_on:
+    - cadvisor
+
+  cadvisor:
+    container_name: cadvisor
+    image: wywywywy/docker_stats_exporter:20220516
+    ports:
+    - 9487:9487
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    restart: "always"
+
+  node-exporter:
+    container_name: node-exporter
+    image: prom/node-exporter:v1.5.0
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - 9100:9100
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:9.5.2
+    environment:
+      GF_SERVER_ROOT_URL: "https://${BLOBBER_HOST}/grafana"
+      GF_SECURITY_ADMIN_USER: ${GF_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GF_ADMIN_PASSWORD}
+    volumes:
+      - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3040:3000"
+    restart: "always"
+
+  agent:
+    container_name: portainer-agent
+    image: portainer/agent:2.18.2-alpine
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:2.18.2-alpine
+    command: '-H tcp://agent:9001 --tlsskipverify --admin-password-file /tmp/portainer_password'
+    ports:
+      - "9000:9000"
+    links:
+      - agent:agent
+    volumes:
+      - portainer_data:/data
+      - ./portainer/portainer_password:/tmp/portainer_password
+
+volumes:
+  grafana_data:
+  prometheus_data:
+  portainer_data:
