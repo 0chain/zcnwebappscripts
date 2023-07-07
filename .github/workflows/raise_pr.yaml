@@ -7,7 +7,7 @@ jobs:
   PR:
     runs-on: 'arc-runner'
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
 
       - name: Raise PR
         uses: devops-infra/action-pull-request@v0.5.5
