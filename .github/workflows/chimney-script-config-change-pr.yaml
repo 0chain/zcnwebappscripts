@@ -464,7 +464,7 @@ jobs:
           source_file: 'zcnwebappscripts/chimney.sh'
           destination_repo: '0chain/zcnwebappscripts'
           destination_folder: 'script'
-          destination_branch: 'update-chimney-script'
+          destination_branch_create: 'update-chimney-script'
           user_email: 'zus@test.com'
           user_name: 'zus'
           commit_message: 'Update Chimney script b/v Configs'
