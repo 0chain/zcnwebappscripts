@@ -19,7 +19,7 @@ jobs:
 
       - name: "Install yq"
         run: |
-          sudp apt install wget -y
+          sudo apt install wget -y
           sudo wget https://github.com/mikefarah/yq/releases/download/v4.31.1/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
           yq --version
 
