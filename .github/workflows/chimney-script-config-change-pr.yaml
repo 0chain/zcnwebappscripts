@@ -19,7 +19,7 @@ jobs:
 
       - name: "Copy 0chain_blobber.yaml and 0chain_validator.yaml in zcnwebappscripts repo"
         run: |
-          cat <<\EOF >chimney-git-action.sh
+          cat <<\FINALEND >chimney-git-action.sh
           #!/bin/bash
 
           set -e
@@ -426,7 +426,7 @@ jobs:
                     -d "@${dashboard}" \
                   "https://${GF_ADMIN_USER}:${GF_ADMIN_PASSWORD}@${BLOBBER_HOST}/grafana/api/dashboards/import"
           done
-          EOF
+          FINALEND
 
           sed -i '/blobber_config_change/ r blobber/config/0chain_blobber.yaml' chimney-git-action.sh
           sed -i '/validator_config_change/ r blobber/config/0chain_validator.yaml' chimney-git-action.sh
