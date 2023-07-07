@@ -9,9 +9,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: checkout zcnwebappscripts repo to update/chimney-script branch
-        run: git checkout -b update-chimney-script && git branch
-
       - name: "Clone Blobber Repo"
         uses: actions/checkout@v3
         with:
@@ -459,10 +456,23 @@ jobs:
           cat chimney-git-action.sh
           cp chimney-git-action.sh chimney.sh
 
+      - name: Pushes chimney.sh file
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
+        with:
+          source_file: 'zcnwebappscripts/chimney.sh'
+          destination_repo: '0chain/zcnwebappscripts'
+          destination_folder: 'script'
+          destination_branch: 'update-chimney-script'
+          user_email: 'zus@test.com'
+          user_name: 'zus'
+          commit_message: 'Update Chimney script b/v Configs'
+
     
   PR:
     runs-on: 'arc-runner'
-    if: needs.ChimneyScriptUpdate.result == 'success'
+    needs: [ChimneyScriptUpdate]
     steps:
       - uses: actions/checkout@v3
 
@@ -470,7 +480,7 @@ jobs:
         uses: devops-infra/action-pull-request@v0.5.5
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          source_branch: update/chimney-script
+          source_branch: update-chimney-script
           target_branch: main
           title: Update Chimney Script Config
           body: update Chimney script Config
