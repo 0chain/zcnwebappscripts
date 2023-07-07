@@ -429,7 +429,7 @@ jobs:
           EOF
 
           sed -i '/blobber_config_change/ r blobber/config/0chain_blobber.yaml' chimney-git-action.sh
-          sed -i '/validatpr_config_change/ r blobber/config/0chain_validator.yaml' chimney-git-action.sh
+          sed -i '/validator_config_change/ r blobber/config/0chain_validator.yaml' chimney-git-action.sh
           cat chimney-git-action.sh
 
     
