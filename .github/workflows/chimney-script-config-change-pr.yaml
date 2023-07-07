@@ -17,6 +17,11 @@ jobs:
           fetch-depth: 1
           path: ./blobber
 
+      - name: "Install yq"
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/download/v4.31.1/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
+          yq --version
+
       - name: "Update 0chain_blobber.yaml"
         run: |
           yq -i '.read_price = "${READ_PRICE}"' blobber/config/0chain_blobber.yaml
