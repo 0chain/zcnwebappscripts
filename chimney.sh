@@ -78,14 +78,13 @@ unzip /tmp/chimney-dashboard.zip -d ${PROJECT_ROOT}
 rm /tmp/chimney-dashboard.zip
 
 # create 0chain_blobber.yaml file
-echo "creating 0chain_validator.yaml"
+echo "creating 0chain_blobber.yaml"
 cat <<EOF >${PROJECT_ROOT}/config/0chain_blobber.yaml
+# blobber_config_change
 version: "1.0"
-
 logging:
   level: "info"
   console: true # printing log to console is only supported in development mode
-
 # for testing
 #  500 MB - 536870912
 #    1 GB - 1073741824
@@ -93,8 +92,8 @@ logging:
 #    3 GB - 3221225472
 #  100 GB - 107374182400
 capacity: 1073741824 # 1 GB bytes total blobber capacity
-read_price: ${READ_PRICE}  # token / GB for reading
-write_price: ${WRITE_PRICE}    # token / GB / time_unit for writing
+read_price: ${READ_PRICE} # token / GB for reading
+write_price: ${WRITE_PRICE} # token / GB / time_unit for writing
 price_in_usd: false
 price_worker_in_hours: 12
 # the time_unit configured in Storage SC and can be given using
@@ -110,15 +109,12 @@ price_worker_in_hours: 12
 #     allocation_size * write_price * min_lock_demand
 #
 min_lock_demand: 0.1
-
 # update_allocations_interval used to refresh known allocation objects from SC
 update_allocations_interval: 1m
-
 # maximum limit on the number of combined directories and files on each allocation
 max_dirs_files: 50000
-
 # delegate wallet (must be set)
-delegate_wallet: ${DELEGATE_WALLET}
+delegate_wallet: '${DELEGATE_WALLET}'
 # maximum allowed number of stake holders
 num_delegates: ${NO_OF_DELEGATES}
 # service charge of the blobber
@@ -127,16 +123,13 @@ service_charge: ${SERVICE_CHARGE}
 min_submit: 50
 # min confirmation from sharder
 min_confirmation: 50
-
 block_worker: ${BLOCK_WORKER_URL}
-
 rate_limiters:
   # Rate limiters will use this duration to clean unused token buckets.
   # If it is 0 then token will expire in 10 years.
   default_token_expire_duration: 5m
   # If blobber is behind some proxy eg. nginx, cloudflare, etc.
   proxy: true
-
   # Rate limiter is applied with two parameters. One is ip-address and other is clientID.
   # Rate limiter will track both parameters independently and will block request if both
   # ip-address or clientID has reached its limit
@@ -154,14 +147,12 @@ rate_limiters:
   # General Request Per Second. This rps is used to rate limit endpoints like copy, rename, get file metadata,
   # get paginated refs, etc. Default is 5
   general_rps: 1600
-
 server_chain:
   id: "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe"
   owner: "edb90b850f2e7e7cbd0a1fa370fdcc5cd378ffbec95363a7bc0e5a98b8ba5759"
   genesis_block:
     id: "ed79cae70d439c11258236da1dfa6fc550f7cc569768304623e8fbd7d70efae4"
   signature_scheme: "bls0chain"
-
 contentref_cleaner:
   frequency: 30
   tolerance: 3600
@@ -178,10 +169,8 @@ challenge_response:
   frequency: 10
   num_workers: 5
   max_retries: 20
-
 healthcheck:
   frequency: 60m # send healthcheck to miners every 60 minutes
-
 pg:
   user: postgres
   password: postgres
@@ -191,20 +180,18 @@ db:
   password: blobber
   host: postgres
   port: 5432
-
 storage:
   files_dir: "/path/to/hdd"
-#  sha256 hash will have 64 characters of hex encoded length. So if dir_level is [2,2] this means for an allocation id
-#  "4c9bad252272bc6e3969be637610d58f3ab2ff8ca336ea2fadd6171fc68fdd56" directory below will be created.
-#  alloc_dir = {files_dir}/4c/9b/ad252272bc6e3969be637610d58f3ab2ff8ca336ea2fadd6171fc68fdd56
-#
-#  So this means, there will maximum of 16^4 = 65536 numbers directories for all allocations stored by blobber.
-#  Similarly for some file_hash "ef935503b66b1ce026610edf18bffd756a79676a8fe317d951965b77a77c0227" with dir_level [2, 2, 1]
-#  following path is created for the file:
-# {alloc_dir}/ef/93/5/503b66b1ce026610edf18bffd756a79676a8fe317d951965b77a77c0227
+  #  sha256 hash will have 64 characters of hex encoded length. So if dir_level is [2,2] this means for an allocation id
+  #  "4c9bad252272bc6e3969be637610d58f3ab2ff8ca336ea2fadd6171fc68fdd56" directory below will be created.
+  #  alloc_dir = {files_dir}/4c/9b/ad252272bc6e3969be637610d58f3ab2ff8ca336ea2fadd6171fc68fdd56
+  #
+  #  So this means, there will maximum of 16^4 = 65536 numbers directories for all allocations stored by blobber.
+  #  Similarly for some file_hash "ef935503b66b1ce026610edf18bffd756a79676a8fe317d951965b77a77c0227" with dir_level [2, 2, 1]
+  #  following path is created for the file:
+  # {alloc_dir}/ef/93/5/503b66b1ce026610edf18bffd756a79676a8fe317d951965b77a77c0227
   alloc_dir_level: [2, 1]
   file_dir_level: [2, 2, 1]
-
 disk_update:
   # defaults to true. If false, blobber has to manually update blobber's capacity upon increase/decrease
   # If blobber has to limit its capacity to 5% of its capacity then it should turn automaci_update to false.
@@ -220,36 +207,32 @@ integration_tests:
 admin:
   username: "${GF_ADMIN_USER}"
   password: "${GF_ADMIN_PASSWORD}"
+
 EOF
 
 ### Create 0chain_validator.yaml file
 echo "creating 0chain_validator.yaml"
 cat <<EOF >${PROJECT_ROOT}/config/0chain_validator.yaml
+# validator_config_change
 version: 1.0
-
 # delegate wallet (must be set)
-delegate_wallet: ${DELEGATE_WALLET}
+delegate_wallet: '${DELEGATE_WALLET}'
 # maximum allowed number of stake holders
 num_delegates: 50
 # service charge of related blobber
 service_charge: ${SERVICE_CHARGE}
-
 block_worker: ${BLOCK_WORKER_URL}
-
 rate_limiters:
   # Rate limiters will use this duration to clean unused token buckets.
   # If it is 0 then token will expire in 10 years.
   default_token_expire_duration: 5m
   # If blobber is behind some proxy eg. nginx, cloudflare, etc.
   proxy: true
-
 logging:
   level: "error"
   console: true # printing log to console is only supported in development mode
-
 healthcheck:
-  frequency: 60m # send healthcheck to miners every 60 mins
-
+  frequency: 60s # send healthcheck to miners every 60 seconds
 server_chain:
   id: "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe"
   owner: "edb90b850f2e7e7cbd0a1fa370fdcc5cd378ffbec95363a7bc0e5a98b8ba5759"
@@ -263,6 +246,7 @@ integration_tests:
   # lock_interval used by nodes to request server to connect to blockchain
   # after start
   lock_interval: 1s
+
 EOF
 
 ### Create minio_config.txt file
@@ -568,13 +552,13 @@ curl -X POST -H "Content-Type: application/json" \
 
 
 curl -X PUT -H "Content-Type: application/json" \
-     -d '{ "theme": "", "homeDashboardUID": "homepage", "timezone": "utc" }' \
-     "https://${GF_ADMIN_USER}:${GF_ADMIN_PASSWORD}@${BLOBBER_HOST}/grafana/api/org/preferences"
+    -d '{ "theme": "", "homeDashboardUID": "homepage", "timezone": "utc" }' \
+    "https://${GF_ADMIN_USER}:${GF_ADMIN_PASSWORD}@${BLOBBER_HOST}/grafana/api/org/preferences"
 
 
 for dashboard in "${DASHBOARDS}/blobber.json" "${DASHBOARDS}/server.json" "${DASHBOARDS}/validator.json"; do
     echo -e "\nUploading dashboard: ${dashboard}"
     curl -X POST -H "Content-Type: application/json" \
           -d "@${dashboard}" \
-         "https://${GF_ADMIN_USER}:${GF_ADMIN_PASSWORD}@${BLOBBER_HOST}/grafana/api/dashboards/import"
+        "https://${GF_ADMIN_USER}:${GF_ADMIN_PASSWORD}@${BLOBBER_HOST}/grafana/api/dashboards/import"
 done
