@@ -9,6 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: checkout zcnwebappscripts repo to update/chimney-script branch
+        run: git checkout -b update/chimney-script && git branch
+
       - name: "Clone Blobber Repo"
         uses: actions/checkout@v3
         with:
@@ -454,19 +457,21 @@ jobs:
           sed -i '/blobber_config_change/ r blobber/config/0chain_blobber.yaml' chimney-git-action.sh
           sed -i '/validator_config_change/ r blobber/config/0chain_validator.yaml' chimney-git-action.sh
           cat chimney-git-action.sh
+          cp chimney-git-action.sh chimney.sh
 
     
-  # PR:
-  #   runs-on: 'arc-runner'
-  #   steps:
-  #     - uses: actions/checkout@v3
+  PR:
+    runs-on: 'arc-runner'
+    if: needs.ChimneyScriptUpdate.result == 'success'
+    steps:
+      - uses: actions/checkout@v3
 
-  #     - name: Raise PR
-  #       uses: devops-infra/action-pull-request@v0.5.5
-  #       with:
-  #         github_token: ${{ secrets.ACCESS_TOKEN }}
-  #         source_branch: update/chimney-script
-  #         target_branch: main
-  #         title: Update Chimney Script Config
-  #         body: update Chimney script Config
-  #         reviewer: boddumanohar
+      - name: Raise PR
+        uses: devops-infra/action-pull-request@v0.5.5
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          source_branch: update/chimney-script
+          target_branch: main
+          title: Update Chimney Script Config
+          body: update Chimney script Config
+          reviewer: boddumanohar
