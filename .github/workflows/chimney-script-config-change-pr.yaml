@@ -461,9 +461,8 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
         with:
-          source_file: 'zcnwebappscripts/chimney.sh'
+          source_file: 'chimney.sh'
           destination_repo: '0chain/zcnwebappscripts'
-          destination_folder: 'script'
           destination_branch_create: 'update-chimney-script'
           user_email: 'zus@test.com'
           user_name: 'zus'
