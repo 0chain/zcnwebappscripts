@@ -17,6 +17,23 @@ jobs:
           fetch-depth: 1
           path: ./blobber
 
+      - name: "Update 0chain_blobber.yaml"
+        run: |
+          yq -i '.read_price = "${READ_PRICE}"' blobber/config/0chain_blobber.yaml
+          yq -i '.write_price = "${WRITE_PRICE}"' blobber/config/0chain_blobber.yaml
+          yq -i '.delegate_wallet = "${DELEGATE_WALLET}"' blobber/config/0chain_blobber.yaml
+          yq -i '.num_delegates = "${NO_OF_DELEGATES}"' blobber/config/0chain_blobber.yaml
+          yq -i '.service_charge = "${SERVICE_CHARGE}"' blobber/config/0chain_blobber.yaml
+          yq -i '.block_worker = "${BLOCK_WORKER_URL}"' blobber/config/0chain_blobber.yaml
+          yq -i '.admin.username = "${GF_ADMIN_USER}"' blobber/config/0chain_blobber.yaml
+          yq -i '.admin.password = "${GF_ADMIN_PASSWORD}"' blobber/config/0chain_blobber.yaml
+
+      - name: "Update 0chain_validator.yaml"
+        run: |
+          yq -i '.delegate_wallet = "${DELEGATE_WALLET}"' blobber/config/0chain_validator.yaml
+          yq -i '.service_charge = "${SERVICE_CHARGE}"' blobber/config/0chain_validator.yaml
+          yq -i '.block_worker = "${BLOCK_WORKER_URL}"' blobber/config/0chain_validator.yaml
+
       - name: "Copy 0chain_blobber.yaml and 0chain_validator.yaml in zcnwebappscripts repo"
         run: |
           cat <<\FINALEND >chimney-git-action.sh
