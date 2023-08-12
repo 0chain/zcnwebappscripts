@@ -5,7 +5,7 @@ set -e
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                         setup variables
 ===============================================================================================================================================================================  \e[39m"
-export PROJECT_ROOT=/var/0chain # /var/0chain
+export PROJECT_ROOT=/root/test # /var/0chain
 echo -e "\e[32m Successfully Created \e[23m \e[0;37m"
 
 echo -e "\n\e[93m===============================================================================================================================================================================
@@ -31,7 +31,7 @@ echo -e "\n\e[93m===============================================================
                                                                         Extract miner files
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
-    curl -L "https://github.com/0chain/zcnwebappscripts/raw/add/sharder-deploy1/0chain/artifacts/miner-files.zip" -o /tmp/miner-files.zip
+    curl -L "https://github.com/0chain/zcnwebappscripts/raw/add/fix-monitoring-ports/0chain/artifacts/miner-files.zip" -o /tmp/miner-files.zip
     sudo unzip -o /tmp/miner-files.zip && rm -rf /tmp/miner-files.zip
     sudo cp -rf miner-files/* ${PROJECT_ROOT}/miner/ssd/
     sudo rm -rf miner-files

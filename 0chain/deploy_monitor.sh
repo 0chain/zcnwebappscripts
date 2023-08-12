@@ -5,7 +5,7 @@ set -e
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                                 setup variables 
 ===============================================================================================================================================================================  \e[39m"
-export PROJECT_ROOT=/var/0chain # /var/0chain
+export PROJECT_ROOT=/root/test # /var/0chain
 export BLOCK_WORKER_URL=beta.zus.network
 echo -e "\e[32m Successfully Created \e[23m \e[0;37m"
 
@@ -53,7 +53,7 @@ echo -e "\n\e[93m===============================================================
                                                                                 Extract monitoring files
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
-    curl -L "https://github.com/0chain/zcnwebappscripts/raw/add/sharder-deploy1/0chain/artifacts/grafana-portainer.zip" -o /tmp/grafana-portainer.zip
+    curl -L "https://github.com/0chain/zcnwebappscripts/raw/add/fix-monitoring-ports/0chain/artifacts/grafana-portainer.zip" -o /tmp/grafana-portainer.zip
     sudo unzip -o /tmp/grafana-portainer.zip -d ${PROJECT_ROOT}
     sudo rm /tmp/grafana-portainer.zip
 popd > /dev/null;

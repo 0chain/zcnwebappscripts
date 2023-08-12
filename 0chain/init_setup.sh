@@ -7,9 +7,9 @@ set -e
 ############################################################
 export MINER=3
 export SHARDER=2
-export PROJECT_ROOT="/var/0chain" # /var/0chain
-export PROJECT_ROOT_SSD=/var/0chain/sharder/ssd # /var/0chain/sharder/ssd
-export PROJECT_ROOT_HDD=/var/0chain/sharder/hdd # /var/0chain/sharder/ssd
+export PROJECT_ROOT="/root/test" # /var/0chain
+export PROJECT_ROOT_SSD=/root/test/sharder/ssd # /var/0chain/sharder/ssd
+export PROJECT_ROOT_HDD=/root/test/sharder/hdd # /var/0chain/sharder/ssd
 
 mkdir -p ${PROJECT_ROOT}
 
