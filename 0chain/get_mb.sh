@@ -42,7 +42,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
             wget https://github.com/0chain/onboarding-cli/releases/download/binary%2Fubuntu-18/keygen-linux.tar.gz
             tar -xvf keygen-linux.tar.gz
             rm keygen-linux.tar.gz*
-            echo "server_url : http://65.108.96.106:3000/" > server-config.yaml
+            echo "server_url : https://mb-gen.0chain.net/" > server-config.yaml
         fi
     else
         echo "No miner/sharder present."
