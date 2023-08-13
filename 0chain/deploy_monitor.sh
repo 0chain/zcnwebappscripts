@@ -76,7 +76,7 @@ cat <<EOF >>${PROJECT_ROOT}/grafana-portainer/promtail/promtail-config.yaml
         - localhost
       labels:
         app: n2n-sharder-${i}
-        __path__: /var/log/sharder-${i}/log/n2n.log
+        __path__: /var/log/sharder${i}/log/n2n.log
 EOF
     done
 # Promtail config for miner
@@ -92,7 +92,7 @@ cat <<EOF >>${PROJECT_ROOT}/grafana-portainer/promtail/promtail-config.yaml
     - targets:
         - localhost
       labels:
-        job: n2n-miner-${j}
+        app: n2n-miner-${j}
         __path__: /var/log/miner${j}/log/n2n.log
 EOF
     done
