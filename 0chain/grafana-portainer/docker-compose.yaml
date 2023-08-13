@@ -28,8 +28,8 @@ services:
       - ../miner/ssd/docker.local/miner3:/var/log/miner3
       - ./promtail/promtail-config.yaml:/mnt/config/promtail-config.yaml
     command: -config.file=/mnt/config/promtail-config.yaml
-    ports:
-      - "9080:9080"
+    # ports:
+    #   - "9080:9080"
     restart: "always"
     networks:
       testnet0:
@@ -42,8 +42,8 @@ services:
     volumes:
       - ./loki/loki-config.yaml:/mnt/config/loki-config.yaml
     command: -config.file=/mnt/config/loki-config.yaml
-    ports:
-      - "3100:3100"
+    # ports:
+    #   - "3100:3100"
     restart: "always"
     networks:
       testnet0:
@@ -53,8 +53,8 @@ services:
     container_name: prometheus
     image: prom/prometheus:v2.44.0
     user: root
-    ports:
-      - "9090:9090"
+    # ports:
+    #   - "9090:9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
@@ -71,8 +71,8 @@ services:
   cadvisor:
     container_name: cadvisor
     image: wywywywy/docker_stats_exporter:20220516
-    ports:
-    - 9487:9487
+    # ports:
+    # - 9487:9487
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     restart: "always"
@@ -93,8 +93,8 @@ services:
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    ports:
-      - 9100:9100
+    # ports:
+    #   - 9100:9100
     networks:
       testnet0:
         ipv4_address: 198.18.15.6
@@ -109,8 +109,8 @@ services:
     volumes:
       - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yaml
       - grafana_data:/var/lib/grafana
-    ports:
-      - "3040:3000"
+    # ports:
+    #   - "3040:3000"
     restart: "always"
     networks:
       testnet0:
@@ -130,8 +130,8 @@ services:
     container_name: portainer
     image: portainer/portainer-ce:2.18.2-alpine
     command: '-H tcp://agent:9001 --tlsskipverify --admin-password-file /tmp/portainer_password'
-    ports:
-      - "9000:9000"
+    # ports:
+    #   - "9000:9000"
     links:
       - agent:agent
     volumes:

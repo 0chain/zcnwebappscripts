@@ -29,7 +29,7 @@ echo -e "\n\e[93m===============================================================
                                                                             Extract sharder files
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
-    curl -L "https://github.com/0chain/zcnwebappscripts/raw/add/fix-monitoring-ports/0chain/artifacts/sharder-files.zip" -o /tmp/sharder-files.zip
+    curl -L "https://github.com/0chain/zcnwebappscripts/raw/fix-monitoring-ports/0chain/artifacts/sharder-files.zip" -o /tmp/sharder-files.zip
     sudo unzip -o /tmp/sharder-files.zip && rm -rf /tmp/sharder-files.zip
     sudo cp -rf sharder-files/* ${PROJECT_ROOT}/sharder/ssd/
     sudo rm -rf sharder-files
