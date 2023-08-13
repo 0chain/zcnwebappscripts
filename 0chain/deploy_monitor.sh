@@ -184,6 +184,7 @@ popd > /dev/null;
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                                 Generate random password for grafana and portainer
 ===============================================================================================================================================================================  \e[39m"
+mkdir -p ${PROJECT_ROOT}/grafana-portainer/portainer || true
 pushd ${PROJECT_ROOT}/grafana-portainer/portainer > /dev/null;
     if [[ -f portainer_password ]] ; then
       PASSWORD=$(cat portainer_password)
