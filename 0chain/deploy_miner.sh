@@ -31,7 +31,7 @@ echo -e "\n\e[93m===============================================================
                                                                         Extract miner files
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
-    curl -L "https://github.com/0chain/zcnwebappscripts/raw/fix-monitoring-ports/0chain/artifacts/miner-files.zip" -o /tmp/miner-files.zip
+    curl -L "https://github.com/0chain/zcnwebappscripts/raw/add/sharder-deploy1/0chain/artifacts/miner-files.zip" -o /tmp/miner-files.zip
     sudo unzip -o /tmp/miner-files.zip && rm -rf /tmp/miner-files.zip
     sudo cp -rf miner-files/* ${PROJECT_ROOT}/miner/ssd/
     sudo rm -rf miner-files

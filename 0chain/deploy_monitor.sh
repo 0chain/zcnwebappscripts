@@ -53,7 +53,7 @@ echo -e "\n\e[93m===============================================================
                                                                                 Extract monitoring files
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
-    curl -L "https://github.com/0chain/zcnwebappscripts/raw/fix-monitoring-ports/0chain/artifacts/grafana-portainer.zip" -o /tmp/grafana-portainer.zip
+    curl -L "https://github.com/0chain/zcnwebappscripts/raw/add/sharder-deploy1/0chain/artifacts/grafana-portainer.zip" -o /tmp/grafana-portainer.zip
     sudo unzip -o /tmp/grafana-portainer.zip -d ${PROJECT_ROOT}
     sudo rm /tmp/grafana-portainer.zip
 popd > /dev/null;
