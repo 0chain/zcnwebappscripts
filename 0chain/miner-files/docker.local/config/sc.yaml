@@ -130,7 +130,7 @@ smart_contracts:
       read_price_range:
         max: 0
         min: 0
-      size: 10000000
+      size: 2147483648
       write_price_range:
         max: 0.25
         min: 0
