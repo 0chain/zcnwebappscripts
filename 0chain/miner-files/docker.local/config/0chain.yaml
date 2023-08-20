@@ -149,7 +149,7 @@ network:
 # empty, then node ID used
 delegate_wallet: ""
 # % of fees and rewards for generator
-service_charge: 1 # [0; 1) of all fees
+service_charge: 0 # [0; 1) of all fees
 # max number of delegate pools allowed by a node in miner SC
 number_of_delegates: 1 # max number of delegate pools
 
