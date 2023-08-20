@@ -81,7 +81,7 @@ server_chain:
     setting_update_period: 200 #rounds
     timeout: 8000ms
     storage: true
-    faucet: true
+    faucet: false
     miner: true
     multisig: false
     vesting: false
