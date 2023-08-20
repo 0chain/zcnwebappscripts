@@ -161,7 +161,7 @@ storage:
 #
 # Uncomment the following lines to enable cache.
 #  cache:
-#    path: "/path/to/cache"
+#    path: "/mnt/ssd/sharder1"
 #    total_blocks: 1000 # Total number of blocks this cache will store
 # integration tests related configurations
 integration_tests:
