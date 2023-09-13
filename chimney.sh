@@ -114,26 +114,13 @@ logging:
 #    3 GB - 3221225472
 #  100 GB - 107374182400
 capacity: 1073741824 # 1 GB bytes total blobber capacity
-read_price: ${READ_PRICE}  # token / GB for reading
+read_price: ${READ_PRICE}     # token / GB for reading
 write_price: ${WRITE_PRICE}    # token / GB / time_unit for writing
 price_in_usd: false
 price_worker_in_hours: 12
-# the time_unit configured in Storage SC and can be given using
-#
-#     ./zbox sc-config
-#
-
-# min_lock_demand is value in [0; 1] range; it represents number of tokens the
-# blobber earned even if a user will not read or write something
-# to an allocation; the number of tokens will be calculated by the following
-# formula (regarding the time_unit and allocation duration)
-#
-#     allocation_size * write_price * min_lock_demand
-#
-min_lock_demand: 0.1
 
 # update_allocations_interval used to refresh known allocation objects from SC
-update_allocations_interval: 1m
+update_allocations_interval: 60m
 
 # maximum limit on the number of combined directories and files on each allocation
 max_dirs_files: 50000
@@ -145,9 +132,9 @@ num_delegates: ${NO_OF_DELEGATES}
 # service charge of the blobber
 service_charge: ${SERVICE_CHARGE}
 # min submit from miners
-min_submit: 50
+min_submit: 10
 # min confirmation from sharder
-min_confirmation: 50
+min_confirmation: 10
 
 block_worker: ${BLOCK_WORKER_URL}
 
@@ -223,9 +210,10 @@ storage:
 #  Similarly for some file_hash "ef935503b66b1ce026610edf18bffd756a79676a8fe317d951965b77a77c0227" with dir_level [2, 2, 1]
 #  following path is created for the file:
 # {alloc_dir}/ef/93/5/503b66b1ce026610edf18bffd756a79676a8fe317d951965b77a77c0227
-  alloc_dir_level: [2, 1]
+  alloc_dir_level: [2, 1] #TODO sort it out
   file_dir_level: [2, 2, 1]
 
+#TODO remove
 disk_update:
   # defaults to true. If false, blobber has to manually update blobber's capacity upon increase/decrease
   # If blobber has to limit its capacity to 5% of its capacity then it should turn automaci_update to false.
@@ -251,9 +239,9 @@ version: 1.0
 # delegate wallet (must be set)
 delegate_wallet: ${DELEGATE_WALLET}
 # maximum allowed number of stake holders
-num_delegates: 50
+num_delegates: 1
 # service charge of related blobber
-service_charge: ${SERVICE_CHARGE}
+service_charge: ${SERVICE_CHARGE} #TODO CHECK IF 0 WORKS WELL
 
 block_worker: ${BLOCK_WORKER_URL}
 
@@ -269,7 +257,7 @@ logging:
   console: true # printing log to console is only supported in development mode
 
 healthcheck:
-  frequency: 60m # send healthcheck to miners every 60 mins
+  frequency: 50m # send healthcheck to miners every 60 seconds
 
 server_chain:
   id: "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe"
