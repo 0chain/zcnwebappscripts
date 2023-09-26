@@ -34,6 +34,7 @@ jobs:
           github_token: ${{ secrets.ACCESS_TOKEN }}
           source_branch: feature/config-ci
           target_branch: sprint111
+          allow_no_diff: "true"
           title: Update Chimney Script Config
           body: testing chimney script
           reviewer: boddumanohar    
