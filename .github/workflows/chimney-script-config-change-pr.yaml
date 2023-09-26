@@ -83,8 +83,8 @@ jobs:
          PR_NUMBER: ${{ steps.create-pr.outputs.pull-request-number }}
         run: |
         
-         curl -X POST \
-                    -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
-                    -H "Accept: application/vnd.github.v3+json" \ 
-                     https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/requested_reviewers \
-                     -d '{"reviewers":["boddumanohar"]}'
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/0chain/zcnwebappscripts/pulls/${PR_NUMBER}/requested_reviewers \
+            -d '{"reviewers": "boddumanohar"}'
