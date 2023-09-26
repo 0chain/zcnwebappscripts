@@ -32,7 +32,7 @@ jobs:
         uses: devops-infra/action-pull-request@v0.5.5
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          source_branch: feature-config-ci
+          source_branch: feature/config-ci
           target_branch: main
           title: Update Chimney Script Config
           body: testing chimney script
