@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 1
           path: ./blobber
 
-      - name: "Copy Config files"
+      - name: "Copy Config Files"
         run: |
            cp ./blobber/config/0chain_blobber.yaml  ./zcnwebappscripts/config/0chain_blobber.yaml
            cp ./blobber/config/0chain_validator.yaml  ./zcnwebappscripts/config/0chain_validator.yaml
