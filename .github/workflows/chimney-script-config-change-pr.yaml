@@ -27,6 +27,10 @@ jobs:
           cat  ./config/0chain_blobber.yaml
           echo " -------------###-----------------"
           cat  ./config/0chain_validator.yaml
+
+      - name: " remove blobber repo"
+        run: |
+           rm -rf blobber
       
       - name: Commit & Push changes
         uses: actions-js/push@master
