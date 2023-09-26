@@ -27,6 +27,13 @@ jobs:
           cat  ./config/0chain_blobber.yaml
           echo " -------------###-----------------"
           cat  ./config/0chain_validator.yaml
+      
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+         github_token: ${{ secrets.ACCESS_TOKEN }}
+         branch: feature/config-ci
+         message: "changes in config file"
 
   PR:
     runs-on: 'arc-runner'
