@@ -43,18 +43,18 @@ jobs:
     runs-on: 'arc-runner'
     needs: [ChimneyScriptUpdate]
     steps:
-      - uses: actions/checkout@v3
+      # - uses: actions/checkout@v3
     
 
-      - name: Raise PR
-        uses: devops-infra/action-pull-request@v0.5.5
-        with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          source_branch: feature/config-ci
-          target_branch: sprint111
-          title: Update Chimney Script Config
-          body: testing chimney script
-          reviewer: boddumanohar    
+      # - name: Raise PR
+      #   uses: devops-infra/action-pull-request@v0.5.5
+      #   with:
+      #     github_token: ${{ secrets.ACCESS_TOKEN }}
+      #     source_branch: feature/config-ci
+      #     target_branch: sprint111
+      #     title: Update Chimney Script Config
+      #     body: testing chimney script
+      #     reviewer: boddumanohar    
       # - name: Create Pull Request
       #   uses: peter-evans/create-pull-request@v4
       #   with:
@@ -65,10 +65,16 @@ jobs:
       #    labels: automated-pr
       #    branch: feature/config-ci
       #    reviewers: boddumanohar
-      # - name: Create pull request
-      #   uses: thomaseizinger/create-pull-request@master
-      #   with:
-      #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      #     head: ${{ github.ref }}
-      #     base: sprint111
-      #     title: "An automatically created PR!"
+      - name: Create pull request
+        uses: thomaseizinger/create-pull-request@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          head: ${{ github.ref }}
+          base: sprint111
+          title: "An automatically created PR!"
+          
+      - name: Add Reviewers
+        uses: madrapps/add-reviewers@v1
+        with:
+            token: ${{ secrets.ACCESS_TOKEN }}
+            reviewers: boddumanohar
