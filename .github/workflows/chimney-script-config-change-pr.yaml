@@ -45,12 +45,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Raise PR
-        uses: devops-infra/action-pull-request@v0.5.5
+      # - name: Raise PR
+      #   uses: devops-infra/action-pull-request@v0.5.5
+      #   with:
+      #     github_token: ${{ secrets.ACCESS_TOKEN }}
+      #     source_branch: feature/config-ci
+      #     target_branch: sprint111
+      #     title: Update Chimney Script Config
+      #     body: testing chimney script
+      #     reviewer: boddumanohar    
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
         with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          source_branch: feature/config-ci
-          target_branch: sprint111
-          title: Update Chimney Script Config
-          body: testing chimney script
-          reviewer: boddumanohar    
+         commit-message: config change
+         title: config change
+         body: config change
+         base: sprint111
+         labels: automated-pr
+         branch: feature/config-ci
+         reviewers: boddumanohar
