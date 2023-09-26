@@ -1,4 +1,4 @@
-name: chimney_script_config_change_PR
+name: chimney_script_config_change_PR.
 
 on:
   workflow_dispatch:
