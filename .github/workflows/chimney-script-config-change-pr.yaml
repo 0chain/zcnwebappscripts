@@ -21,6 +21,11 @@ jobs:
         run: |
            cp ./blobber/config/0chain_blobber.yaml  ./config/0chain_blobber.yaml
            cp ./blobber/config/0chain_validator.yaml  ./config/0chain_validator.yaml
+      
+      - name: " Config Files"
+        run: |
+          cat  ./config/0chain_blobber.yaml
+          cat  ./config/0chain_validator.yaml
 
   PR:
     runs-on: 'arc-runner'
