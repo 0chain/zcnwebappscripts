@@ -43,7 +43,13 @@ jobs:
     runs-on: 'arc-runner'
     needs: [ChimneyScriptUpdate]
     steps:
-      - uses: actions/checkout@v3
+      # - uses: actions/checkout@v3
+      - name: " git status"
+        run: |
+           git status
+           echo " ********************************************************** "
+           git branch
+
 
       # - name: Raise PR
       #   uses: devops-infra/action-pull-request@v0.5.5
