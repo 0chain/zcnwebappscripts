@@ -72,9 +72,9 @@ jobs:
           head: ${{ github.ref }}
           base: sprint111
           title: "An automatically created PR!"
-          
-      - name: Add Reviewers
-        uses: madrapps/add-reviewers@v1
-        with:
-            token: ${{ secrets.ACCESS_TOKEN }}
-            reviewers: boddumanohar
+
+      # - name: Add Reviewers
+      #   uses: madrapps/add-reviewers@v1
+      #   with:
+      #       token: ${{ secrets.ACCESS_TOKEN }}
+      #       reviewers: boddumanohar
