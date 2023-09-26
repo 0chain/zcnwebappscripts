@@ -54,13 +54,20 @@ jobs:
       #     title: Update Chimney Script Config
       #     body: testing chimney script
       #     reviewer: boddumanohar    
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
+      # - name: Create Pull Request
+      #   uses: peter-evans/create-pull-request@v4
+      #   with:
+      #    commit-message: config change
+      #    title: config change
+      #    body: config change
+      #    base: sprint111
+      #    labels: automated-pr
+      #    branch: feature/config-ci
+      #    reviewers: boddumanohar
+      - name: Create pull request
+        uses: thomaseizinger/create-pull-request@master
         with:
-         commit-message: config change
-         title: config change
-         body: config change
-         base: sprint111
-         labels: automated-pr
-         branch: feature/config-ci
-         reviewers: boddumanohar
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          head: ${{ github.ref }}
+          base: sprint111
+          title: "An automatically created PR!"
