@@ -22,18 +22,18 @@ jobs:
            cp ./blobber/config/0chain_blobber.yaml  ./zcnwebappscripts/config/0chain_blobber.yaml
            cp ./blobber/config/0chain_validator.yaml  ./zcnwebappscripts/config/0chain_validator.yaml
 
-  # PR:
-  #   runs-on: 'arc-runner'
-  #   needs: [ChimneyScriptUpdate]
-  #   steps:
-  #     - uses: actions/checkout@v3
+  PR:
+    runs-on: 'arc-runner'
+    needs: [ChimneyScriptUpdate]
+    steps:
+      - uses: actions/checkout@v3
 
-  #     - name: Raise PR
-  #       uses: devops-infra/action-pull-request@v0.5.5
-  #       with:
-  #         github_token: ${{ secrets.ACCESS_TOKEN }}
-  #         source_branch: feature/config-ci
-  #         target_branch: main
-  #         title: Update Chimney Script Config
-  #         body: testing chimney script
-  #         reviewer: boddumanohar    
+      - name: Raise PR
+        uses: devops-infra/action-pull-request@v0.5.5
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          source_branch: feature/config-ci
+          target_branch: main
+          title: Update Chimney Script Config
+          body: testing chimney script
+          reviewer: boddumanohar    
