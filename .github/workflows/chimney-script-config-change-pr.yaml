@@ -25,6 +25,7 @@ jobs:
       - name: " Config Files"
         run: |
           cat  ./config/0chain_blobber.yaml
+          echo " -------------###-----------------"
           cat  ./config/0chain_validator.yaml
 
   PR:
