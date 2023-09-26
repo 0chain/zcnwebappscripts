@@ -33,7 +33,7 @@ jobs:
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
           source_branch: feature/config-ci
-          target_branch: main
+          target_branch: sprint111
           title: Update Chimney Script Config
           body: testing chimney script
           reviewer: boddumanohar    
