@@ -12,7 +12,7 @@ jobs:
       - name: "Clone Blobber Repo"
         uses: actions/checkout@v3
         with:
-          ref: update/chimney-script
+          ref: staging
           repository: 0chain/blobber
           fetch-depth: 1
           path: ./blobber
@@ -55,16 +55,7 @@ jobs:
       #     title: Update Chimney Script Config
       #     body: testing chimney script
       #     reviewer: boddumanohar    
-      # - name: Create Pull Request
-      #   uses: peter-evans/create-pull-request@v4
-      #   with:
-      #    commit-message: config change
-      #    title: config change
-      #    body: config change
-      #    base: sprint111
-      #    labels: automated-pr
-      #    branch: feature/config-ci
-      #    reviewers: boddumanohar
+     
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@master
         with:
