@@ -42,20 +42,8 @@ jobs:
   PR:
     runs-on: 'arc-runner'
     needs: [ChimneyScriptUpdate]
-    steps:
-      # - uses: actions/checkout@v3
+    steps:   
     
-
-      # - name: Raise PR
-      #   uses: devops-infra/action-pull-request@v0.5.5
-      #   with:
-      #     github_token: ${{ secrets.ACCESS_TOKEN }}
-      #     source_branch: feature/config-ci
-      #     target_branch: sprint111
-      #     title: Update Chimney Script Config
-      #     body: testing chimney script
-      #     reviewer: boddumanohar    
-     
       - name: Create pull request
         uses: thomaseizinger/create-pull-request@master
         with:
@@ -65,33 +53,4 @@ jobs:
           title: "PR automated!"
           reviewers: "boddumanohar"
 
-      # - name: Add Reviewers
-      #   uses: madrapps/add-reviewers@v1
-      #   with:
-      #       token: ${{ secrets.ACCESS_TOKEN }}
-      #       reviewers: boddumanohar
-
-      # - name: Get Pull Request Number
-      #   id: get-pr-number
-      #   run: |
-      #     PR_URL=$(curl -s -L -X POST \
-      #       -H "Accept: application/vnd.github.v3+json" \
-      #       -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
-      #       -d '{"base":"sprint111","head":"${{ github.ref }}"}' \
-      #       https://api.github.com/repos/0chain/zcnwebappscripts/pulls | jq -r '.html_url')
-      #     PR_NUMBER=$(basename "$PR_URL")
-      #     echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
-      #     echo $PR_NUMBER
-
-      # - name: Add Reviewer
-      #   env:
-      #    PR_NUMBER: ${{ steps.create-pr.outputs.pull-request-number }}
-      #   run: |
-        
-      #    curl -L \
-      #         -X POST \
-      #         -H "Accept: application/vnd.github+json" \
-      #         -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
-      #         -H "X-GitHub-Api-Version: 2022-11-28" \
-      #         https://api.github.com/repos/0chain/zcnwebappscripts/pulls/${{ env.PR_NUMBER }}/requested_reviewers \
-      #         -d '{"reviewers":["boddumanohar"]}'
+    
