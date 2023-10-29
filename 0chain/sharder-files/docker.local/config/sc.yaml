@@ -17,10 +17,10 @@ smart_contracts:
   minersc:
     owner_id: 1746b06bb09f55ee01b33b5e2e055d6cc7a900cb57c0a3a5eaabb8a0e7745802
     # miners
-    max_n: 104 # 100
-    min_n: 104 # 3
+    max_n: 103 # 100
+    min_n: 103 # 3
     # sharders
-    max_s: 28 # 30
+    max_s: 27 # 30
     min_s: 1 # 1
     # max delegates allowed by SC
     max_delegates: 200 #
@@ -31,6 +31,7 @@ smart_contracts:
     # etc
     min_stake: 100.0 # min stake can be set by a node (boundary for all nodes)
     max_stake: 2000000.0 # max stake can be set by a node (boundary for all nodes)
+    min_stake_per_delegate: 1
     start_rounds: 50
     contribute_rounds: 50
     share_rounds: 50
@@ -93,10 +94,11 @@ smart_contracts:
     max_stake: 2000000.0 # max stake can be set by a node (boundary for all nodes)
     # max_mint
     max_mint: 75000000.0 # tokens, max amount of tokens can be minted by SC
+    min_stake_per_delegate: 1
     # min possible allocations size in bytes allowed by the SC
     min_alloc_size: 1073741824
-    # max challenge completion time of a blobber allowed by the SC
-    max_challenge_completion_time: "3m"
+    # max challenge completion round of a blobber allowed by the SC
+    max_challenge_completion_rounds: 720
     # min blobber's offer duration allowed by the SC
     min_offer_duration: "10h" #todo based on timeunit
     # min blobber capacity allowed by the SC
@@ -130,7 +132,7 @@ smart_contracts:
       read_price_range:
         max: 0
         min: 0
-      size: 10000000
+      size: 2147483648
       write_price_range:
         max: 0.25
         min: 0
@@ -144,15 +146,19 @@ smart_contracts:
     max_read_price: 0.05
     max_write_price: 0.25
     min_write_price: 0.001
+    # max file size on blobber
+    max_file_size: 40000000000000 # 5TB
     max_blobbers_per_allocation: 40
     #
     # challenges
     #
     # enable challenges
     challenge_enabled: true
+    challenge_generation_gap : 1
     # number of validators per challenge
     validators_per_challenge: 2
     num_validators_rewarded: 10
+    max_blobber_select_for_challenge: 5
     # max delegates per stake pool allowed by SC
     max_delegates: 200
     # max_charge allowed for blobbers; the charge is part of blobber rewards
@@ -226,6 +232,7 @@ smart_contracts:
     min_mint: 1
     min_burn: 1
     min_stake: 0
+    min_stake_per_delegate: 1
     min_authorizers: 1
     percent_authorizers: 0.7
     max_delegates: 10
