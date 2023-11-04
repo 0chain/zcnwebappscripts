@@ -19,7 +19,7 @@ server_chain:
     max_block_cost: 10000 #equal to 100ms
     max_byte_size: 1638400
     min_generators: 2
-    generators_percent: 0.2
+    generators_percent: 0.1
     replicators: 0
     generation:
       timeout: 15
