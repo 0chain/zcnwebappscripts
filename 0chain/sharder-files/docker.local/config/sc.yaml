@@ -23,15 +23,15 @@ smart_contracts:
     max_s: 27 # 30
     min_s: 1 # 1
     # max delegates allowed by SC
-    max_delegates: 200 #
+    max_delegates: 100 #
     # DKG
     t_percent: .66 # of active
     k_percent: .75 # of registered
     x_percent: 0.70 # percentage of prev mb miners required to be part of next mb
     # etc
-    min_stake: 100.0 # min stake can be set by a node (boundary for all nodes)
+    min_stake: 1000.0 # min stake can be set by a node (boundary for all nodes)
     max_stake: 2000000.0 # max stake can be set by a node (boundary for all nodes)
-    min_stake_per_delegate: 1
+    min_stake_per_delegate: 50000.0
     start_rounds: 50
     contribute_rounds: 50
     share_rounds: 50
@@ -90,11 +90,11 @@ smart_contracts:
     # price measured in tok / GB / time_unit, where the time_unit is this
     # configuration; for example 1h, 24h (a day), 720h (a month -- 30 days);
     time_unit: "8760h"
-    min_stake: 100 # min stake can be set by a node (boundary for all nodes)
+    min_stake: 1000.0 # min stake can be set by a node (boundary for all nodes)
     max_stake: 2000000.0 # max stake can be set by a node (boundary for all nodes)
     # max_mint
     max_mint: 75000000.0 # tokens, max amount of tokens can be minted by SC
-    min_stake_per_delegate: 1
+    min_stake_per_delegate: 50000.0
     # min possible allocations size in bytes allowed by the SC
     min_alloc_size: 1073741824
     # max challenge completion round of a blobber allowed by the SC
@@ -160,7 +160,7 @@ smart_contracts:
     num_validators_rewarded: 10
     max_blobber_select_for_challenge: 5
     # max delegates per stake pool allowed by SC
-    max_delegates: 200
+    max_delegates: 100
     # max_charge allowed for blobbers; the charge is part of blobber rewards
     # goes to blobber's delegate wallets, other part goes to related stake
     # holders
@@ -231,8 +231,8 @@ smart_contracts:
     owner_id: 1746b06bb09f55ee01b33b5e2e055d6cc7a900cb57c0a3a5eaabb8a0e7745802
     min_mint: 1
     min_burn: 1
-    min_stake: 0
-    min_stake_per_delegate: 1
+    min_stake: 1000
+    min_stake_per_delegate: 50000
     min_authorizers: 1
     percent_authorizers: 0.7
     max_delegates: 10
