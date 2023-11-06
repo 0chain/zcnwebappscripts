@@ -152,7 +152,7 @@ delegate_wallet: ""
 # % of fees and rewards for generator
 service_charge: 0 # [0; 1) of all fees
 # max number of delegate pools allowed by a node in miner SC
-number_of_delegates: 1 # max number of delegate pools
+number_of_delegates: 50 # max number of delegate pools
 
 # There's a TODO comment in fs_store.go. Please check this while we go into production.
 storage:
