@@ -147,7 +147,7 @@ smart_contracts:
     max_write_price: 0.25
     min_write_price: 0.001
     # max file size on blobber
-    max_file_size: 40000000000000 # 5TB
+    max_file_size: 549755813888 # 512GB
     max_blobbers_per_allocation: 40
     #
     # challenges
