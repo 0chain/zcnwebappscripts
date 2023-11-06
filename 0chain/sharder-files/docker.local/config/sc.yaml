@@ -91,10 +91,10 @@ smart_contracts:
     # configuration; for example 1h, 24h (a day), 720h (a month -- 30 days);
     time_unit: "8760h"
     min_stake: 1000.0 # min stake can be set by a node (boundary for all nodes)
-    max_stake: 2000000.0 # max stake can be set by a node (boundary for all nodes)
+    max_stake: 10.0 # max stake can be set by a node (boundary for all nodes)
     # max_mint
     max_mint: 75000000.0 # tokens, max amount of tokens can be minted by SC
-    min_stake_per_delegate: 50000.0
+    min_stake_per_delegate: 100.0
     # min possible allocations size in bytes allowed by the SC
     min_alloc_size: 1073741824
     # max challenge completion round of a blobber allowed by the SC
