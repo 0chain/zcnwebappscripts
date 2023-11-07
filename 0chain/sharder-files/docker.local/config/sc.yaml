@@ -43,11 +43,11 @@ smart_contracts:
     # gives 10% for miner and rest for block sharders
     share_ratio: 0.16 # [0; 1)
     # reward for a block
-    block_reward: 0.068 # tokens
+    block_reward: 0.09 # tokens
     # max service charge can be set by a generator
     max_charge: 0.5 # %
     # epoch is number of rounds before rewards and interest are decreased
-    epoch: 125000000 # rounds
+    epoch: 95000000 # rounds
     # decline rewards every new epoch by this value (the block_reward)
     reward_decline_rate: 0.1 # [0; 1), 0.1 = 10%
     # no mints after miner SC total mints reaches this boundary
@@ -168,8 +168,8 @@ smart_contracts:
     # reward paid out every block
     block_reward:
       block_reward: 0.06
-      block_reward_change_period: 125000000
-      block_reward_change_ratio: 0.1
+      block_reward_change_period: 95000000
+      block_reward_change_ratio: 0.078
       qualifying_stake: 1
       trigger_period: 30
       gamma:
