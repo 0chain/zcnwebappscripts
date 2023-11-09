@@ -1,0 +1,6 @@
+0chain-core-sdk [INFO]   2023/11/07 16:05:09.657780 wallet_base.go:327: ******* Wallet SDK Version:v1.10.0-70-g7f7e89b4 ******* (SetLogFile)
+0box-sdk [INFO]   2023/11/07 16:05:09.657856 sdk.go:79: ******* Storage SDK Version: v1.10.0-70-g7f7e89b4 *******
+0chain-core-sdk [INFO]   2023/11/07 16:05:09.797693 transaction_base.go:143: ******* Wallet SDK Version:v1.10.0-70-g7f7e89b4 ******* (InitZCNSDK)
+0chain-core-sdk [INFO]   2023/11/09 13:20:05.185393 wallet_base.go:327: ******* Wallet SDK Version:v1.10.0-70-g7f7e89b4 ******* (SetLogFile)
+0box-sdk [INFO]   2023/11/09 13:20:05.185792 sdk.go:79: ******* Storage SDK Version: v1.10.0-70-g7f7e89b4 *******
+0chain-core-sdk [INFO]   2023/11/09 13:20:05.327053 transaction_base.go:143: ******* Wallet SDK Version:v1.10.0-70-g7f7e89b4 ******* (InitZCNSDK)
