@@ -17,10 +17,10 @@ smart_contracts:
   minersc:
     owner_id: 1746b06bb09f55ee01b33b5e2e055d6cc7a900cb57c0a3a5eaabb8a0e7745802
     # miners
-    max_n: 92 # 100
-    min_n: 92 # 3
+    max_n: 103 # 100
+    min_n: 103 # 3
     # sharders
-    max_s: 27 # 30
+    max_s: 28 # 30
     min_s: 1 # 1
     # max delegates allowed by SC
     max_delegates: 200 #
