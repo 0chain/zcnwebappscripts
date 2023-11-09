@@ -67,7 +67,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
             elif [[ ${ubuntu_version} -eq 20 || ${ubuntu_version} -eq 22 ]]; then
                 curl -L "https://github.com/0chain/zcnwebappscripts/raw/as-deploy/0chain/artifacts/zwallet-binary.zip" -o /tmp/zwallet-binary.zip
                 sudo unzip -o /tmp/zwallet-binary.zip && rm -rf /tmp/zwallet-binary.zip
-                mkdir bin
+                mkdir bin || true
                 sudo cp -rf zwallet-binary/* ${PROJECT_ROOT}/bin/
                 sudo rm -rf zwallet-binary
                 echo "block_worker: https://beta.zus.network/dns" > config.yaml
