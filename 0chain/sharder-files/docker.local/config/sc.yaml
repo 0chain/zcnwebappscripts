@@ -144,7 +144,7 @@ smart_contracts:
     health_check_period: 90m
     # max prices for blobbers (tokens per GB)
     max_read_price: 0.0
-    max_write_price: 0.25
+    max_write_price: 0.025
     min_write_price: 0.001
     # max file size on blobber
     max_file_size: 549755813888 # 512GB
