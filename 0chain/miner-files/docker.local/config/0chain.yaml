@@ -19,7 +19,7 @@ server_chain:
     max_block_cost: 10000 #equal to 100ms
     max_byte_size: 1638400
     min_generators: 2
-    generators_percent: 0.2
+    generators_percent: 0.1
     replicators: 0
     generation:
       timeout: 15
@@ -55,13 +55,12 @@ server_chain:
     min_fee: 0
     max_fee: 1 # max fee per txn would be 1 ZCN, adjust later if needed
     transfer_cost: 10
-    cost_fee_coeff: 1000 # 1000 unit cost per 1 ZCN
+    cost_fee_coeff: 100000 # 100000 unit cost per 1 ZCN
     future_nonce: 100 # allow 100 nonce ahead of current client state
     exempt:
       - contributeMpk
       - shareSignsOrShares
       - wait
-      - mint
       - pour
   client:
     signature_scheme: bls0chain # ed25519 or bls0chain
@@ -142,9 +141,9 @@ network:
     large_message: 3000 # milliseconds
   large_message_th_size: 5120 # anything greater than this size in bytes
   user_handlers:
-    rate_limit: 100000000 # 100000000 per second
+    rate_limit: 1000 # 1000 per second
   n2n_handlers:
-    rate_limit: 10000000000 # 10000000000 per second
+    rate_limit: 1000 # 10000 per second
 
 # delegate wallet is wallet that used to configure node in Miner SC; if its
 # empty, then node ID used
@@ -152,7 +151,7 @@ delegate_wallet: ""
 # % of fees and rewards for generator
 service_charge: 0 # [0; 1) of all fees
 # max number of delegate pools allowed by a node in miner SC
-number_of_delegates: 1 # max number of delegate pools
+number_of_delegates: 100 # max number of delegate pools
 
 # There's a TODO comment in fs_store.go. Please check this while we go into production.
 storage:
