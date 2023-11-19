@@ -51,6 +51,10 @@ storage_config:
 compactor:
   working_directory: /data/compactor # directory where marked chunks and temporary tables will be saved
   shared_store: filesystem
+  retention_enabled: true
+  compaction_interval: 24h
+  retention_delete_delay: 1m
+  retention_delete_worker_count: 150
 
 limits_config:
   reject_old_samples: true

@@ -1,6 +1,8 @@
 #!/bin/bash
 
 set -e
+sed -i "s/1746b06bb09f55ee01b33b5e2e055d6cc7a900cb57c0a3a5eaabb8a0e7745802/20000000000000000/g" /var/0chain/initial_states.yaml
+sed -i "s/65b32a635cffb6b6f3c73f09da617c29569a5f690662b5be57ed0d994f234335/20000000000000000/g" /var/0chain/initial_states.yaml
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                 Installing yq on your server
