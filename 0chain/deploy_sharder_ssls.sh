@@ -5,7 +5,7 @@ set -e
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                                 Setup variables
 ===============================================================================================================================================================================  \e[39m"
-export PROJECT_ROOT=/var/0chain # /var/0chain
+export PROJECT_ROOT="/var/0chain" # /var/0chain
 export BLOCK_WORKER_URL=mainnet.zus.network
 echo -e "\e[32m Successfully Created \e[23m \e[0;37m"
 
@@ -173,6 +173,17 @@ sudo ufw allow out to any port 443
 sudo ufw allow out to any port 7171
 sudo ufw allow out to any port 53
 yes y | sudo ufw enable
+
+echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                                  Stake sharder using delegate wallet
+===============================================================================================================================================================================  \e[39m"
+pushd ${PROJECT_ROOT} > /dev/null;
+  if [[ -n ${S_ID} ]] ; then
+      S_ID=$(jq -r .client_id keys/b0snode1_keys.json )
+  else
+    ./bin/zwallet mn-lock --sharder_id ${S_ID} --tokens 50000 --wallet delegate_wallet.json --configDir . --config config.yaml --silent
+  fi
+popd > /dev/null;
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                                 Adding Grafana Dashboards
