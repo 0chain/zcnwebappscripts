@@ -1,0 +1,602 @@
+[
+    {
+        "client_id": "c5ef5c4fb82f2aba0f74c9b832a2860ad5aa7af90ffa8547c640bd3076322e72",
+        "domain": "sharder.bitjuice.xyz",
+        "provider_id": "5ccda6733db5e582ec67f537288f9be4c28d1518242210ad4322cab1f74670c3"
+    },
+    {
+        "client_id": "568975d6c7d21078c017f5224607e2facb342433eeae21aaebd942087770f21d",
+        "domain": "miner-2.pandora-vault.com",
+        "provider_id": "5b888875a8dc93be1ea20fbe98a3bef04634830b089e9cf8b6bbdc0b633cf943"
+    },
+    {
+        "client_id": "608515dbe81907951bd537ec516b79e23d21eb51a9da5b5faee439609f2071f9",
+        "domain": "shard.zus-network.com",
+        "provider_id": "df2d7ad41bd12b55018c1e139d4aca680a66e4fa2d55d6c6b0156070793780eb"
+    },
+    {
+        "client_id": "4ed96e4c29b165542402b1feb83114b0a97a0f4970ce3e21af67284238edc353",
+        "domain": "mnr.zus-storage.com",
+        "provider_id": "67b1447d5483dcabd86a680400f27a2e99132b879181bdeb3549b768386e258e"
+    },
+    {
+        "client_id": "38f23c8e7459d6df01a1aded8e31b37c7f32c793331c81c9534cb848c692a138",
+        "domain": "mining.zus-network.com",
+        "provider_id": "f90efe8bfe60ff66bf560d3a795d5d8970148b3e939de1bfc1fec35c5b6b88c2"
+    },
+    {
+        "client_id": "e363abbb7281d08d778266d18d3c5e0f8985077a9d3e8101bd6bbd2cc0555a66",
+        "domain": "miner.bitjuice.xyz",
+        "provider_id": "4fd355848e3e3efa9c87f4627db1395262a3900402ef7712a347573ae58b1697"
+    },
+    {
+        "client_id": "8343f1eeac0eab7d378d4a64689e3180622eb7c1659303a5925c9e9585a63150",
+        "domain": "0.fra.zcn.zeroservices.eu",
+        "provider_id": "34b3b8c4d5bf1690f29072123c33195407b130000d1a1f0ec55050ead77ba9da"
+    },
+    {
+        "client_id": "ba79493a70c86c6c252639c7ade3cd2c6abb26fbfe0e98ff387fb60a83c665b6",
+        "domain": "gus.badminers.com",
+        "provider_id": "6cea31163d04c3f77e27f4803201863c468cd9c8697fb0b39fbf6d89e20962d9"
+    },
+    {
+        "client_id": "936575e3a0100551dd52d9085306ce3f5cdbb1b3a60def60a0e105473a01e4f5",
+        "domain": "jesse.badminers.com",
+        "provider_id": "00175a3bcfeff85551e7348346286d9971e7f23678fb681ccba91e836a411ef8"
+    },
+    {
+        "client_id": "25eb7929339b304e3f0c007d7f7331a0939e5957d0d69ba17c59f6ccb4649525",
+        "domain": "walt.badminers.com",
+        "provider_id": "b2fd91df13c013586e911979a401dc624e61735185655b48bf391e9e37472cf6"
+    },
+    {
+        "client_id": "6dfe821e4f32ae2be88c0efebf9a72af052ab3b97efbf30861c112cf0c35fc20",
+        "domain": "viewpoint.ddns.net",
+        "provider_id": "907b45f6c9125f050b5e8029b33f434cecf25270acb67c6695c80ae622dfd119"
+    },
+    {
+        "client_id": "0073afe9bbf59dfa33d044c2b62512c85caf83e6aa6ba4bcb7f7aa6151ed0f31",
+        "domain": "saul.badminers.com",
+        "provider_id": "4d7ae4c40ed17cb49d6e6a5c7b1c3e4a8cca871844f7e4709673ff30ee858ab7"
+    },
+    {
+        "client_id": "8756fe773055753ed01fcb678730149910f1d4a6958e0dbf59d6efbc7c70f792",
+        "domain": "donkeykongs1.arturocapital.com",
+        "provider_id": "0781a11c2733b048130c89884dd283b795ad0beb97502c70bab302a5712d6426"
+    },
+    {
+        "client_id": "334fb997ae693271a5412f10c2c302f1fd95c587a70ef257b3c9f37432c4210b",
+        "domain": "miner.pandora-vault.com",
+        "provider_id": "6b7f2dd806f4edc410fcf2502b790aa0c5e1b3c3bb1979a26b3504f18f62ea2a"
+    },
+    {
+        "client_id": "183a34c1f6fdc4ff49886d145206d8bb9f3152e04ae6dbdaa8429e5825d061d9",
+        "domain": "sharder.pandora-vault.com",
+        "provider_id": "0ef0d1f77ade53681e4a393020094ad4a7e34dd2c7003ef173ef8071d2c5672a"
+    },
+    {
+        "client_id": "68314a298431ca6690e2aa2fa65cb08f4ceb2a39501283ecf55b70b6df08975b",
+        "domain": "mb01.0chainstaking.net",
+        "provider_id": "7b64976ab54e38165ce6049fe6e2f4fe34a6c0929e486cb8e5e535c436ed1853"
+    },
+    {
+        "client_id": "50a07fc73a73148f1de02e90e75bd109239bbad87b07f016a12ee9354911c13c",
+        "domain": "s01.0chainstaking.net",
+        "provider_id": "5e6d077f09291e0a2fcdb21f5415f40d22766b71ca9218ffb51db8100a3e6ce9"
+    },
+    {
+        "client_id": "1e8fe997db90ed6475fad44d0751a697c58315194b57d63a456efeb4c565aa08",
+        "domain": "miner6.nodely.store",
+        "provider_id": "76c296511da5de03cebf5a491834a363c45f331285330a4aaf5cc2df4c87bbe3"
+    },
+    {
+        "client_id": "0d64a96dd4a4112057399f78c26462a251a5d49ca9f0a0674447678403d90db4",
+        "domain": "miner5.nodely.store",
+        "provider_id": "574e3b6e88b57771d2947aee62b170c4f71cca3dc7c6b24a1e4a23fdb27209a4"
+    },
+    {
+        "client_id": "ba6ca0a7b7e2b41b2df2f7bf0e8ad859a8c3ade83f28c0f368a38dc474185c8d",
+        "domain": "nl.zusvault.com",
+        "provider_id": "59e5211ee0f0f2c3ba146d0f4be3bf57dff67b706ee79ec6a62c36d6ae5a2889"
+    },
+    {
+        "client_id": "d7e40f8875d7070e5e8c7a965de201bd74abff33722791bbe7289dd3863dee50",
+        "domain": "miner-nl.zcn-network.eu",
+        "provider_id": "dea18859f12a805ec66a23a0b55dab47cf6f5d34e74833bbe59149558b84a83d"
+    },
+    {
+        "client_id": "fa44cbf5aaf69d181c329683194c83443a61cf798cf6e18eb4be5372b1f89dbb",
+        "domain": "sharder-nl.zcn-network.eu",
+        "provider_id": "f12418ad14ef532978573adfb44c2158aa9ad344684a13de1066ea9bbfe0492b"
+    },
+    {
+        "client_id": "523ad20e24a5daf8336c1067dd32bb8c1b625010b29274cb79778b61067050bb",
+        "domain": "miner3.nodely.store",
+        "provider_id": "90c91fbd753afbe72be83a9da1dc3012606f76b0da172687e237dc46375ff349"
+    },
+    {
+        "client_id": "3139fc81a9a61b40fed72bf5c99e0fe284fa77c2a571aee2463b65f886ccaf03",
+        "domain": "miner4.nodely.store",
+        "provider_id": "6cb765b21a45180ee37250a5f2dbc52980fdc73b1c5383f6e82a90a2b90eab88"
+    },
+    {
+        "client_id": "d401757bc7eead3f9dc593ebdd196c9357c1e2aa00583376b54683d20e142e05",
+        "domain": "miner1.nodely.store",
+        "provider_id": "c8197eb5fac7d565bb54e6c8f952426f472bbe0c045db38ea3f2482171c4d0bc"
+    },
+    {
+        "client_id": "eb0a40cdaca8d310ea3adfc97ed77f4cfec8191a567882ab15f1422a7f9a50b5",
+        "domain": "hel.sdredfox.com",
+        "provider_id": "4840c06f0645beb06700b2f667e7d618645ccab91f28e8441ec96240fb01c8e5"
+    },
+    {
+        "client_id": "b575983ba2305c99a31e83961dfb49e6f4780cfefe8e26f3695665508c8564dc",
+        "domain": "gagr1.cust-zcn.zeroservices.eu",
+        "provider_id": "2e8076fb7791576930b0d66f30d7d7a19fc306f0d125bebe2d07dd0e1bf7a697"
+    },
+    {
+        "client_id": "cc0b8325117f5ea975b711614e2b16ab3787e6f2dd37ca9304354add97b184ff",
+        "domain": "zcn-helsinki.qs.capital",
+        "provider_id": "edc42f9b3eda8ab912d016d677aa667e426d45f9fe487c28037e6c53ff7d7019"
+    },
+    {
+        "client_id": "ad244318fa80c674fe69b02cfdb022084fb70ddd4552a24e806e99b7c5f4fe83",
+        "domain": "sharder.qs.capital",
+        "provider_id": "67c9758fb9f12aa7108dc04f615b61494df99d485b4ac32b25985a506e5c2866"
+    },
+    {
+        "client_id": "db6157231f9a7a080ec43e6054fd3af80269463a654ce60c38048a635c8025e3",
+        "domain": "miner8.nodely.store",
+        "provider_id": "d99db249703d8dac5376dc209394ed27a0d7f417ca962b97545976a879fa82e2"
+    },
+    {
+        "client_id": "d2f0089f99d0bc627b9bbb99d7cb7620a22bd6058260fb51efa3fb569700f98e",
+        "domain": "fi-m.th0r.eu",
+        "provider_id": "632c68e3d0851443f3f2efa35dfd41926027a0ce08860578aea2ec040e39561a"
+    },
+    {
+        "client_id": "4cb0731470c03aa6df302e6b6d21d47b8d43d18b8035174faa237f46bbbef878",
+        "domain": "es-m.th0r.eu",
+        "provider_id": "1a1162071af9e9933061a2c87086b5c0596b23845dd2fe6989423b13b9dcb623"
+    },
+    {
+        "client_id": "aa73d84504182953a8627a4338c3c4e310c9baa559792ed225dd4a3e3302db53",
+        "domain": "es-s.th0r.eu",
+        "provider_id": "15504a30d83e3bf20e47c6c391d557cdff2131aeef4d5253a60026d087e8e2a0"
+    },
+    {
+        "client_id": "dc272d8c6ccf095ae304fab5697578782965a1cf86992a99cd6e6f2ad64e59ea",
+        "domain": "tasmaniandevil1.cust-zcn.zeroservices.eu",
+        "provider_id": "e3f0db128c1fa55ac6f6a2b3f18cd338eda37d16c14135377eb2d10daa8daec8"
+    },
+    {
+        "client_id": "11424c7c32edd2fa013ea4485926ead86e7deb6e43069b91a4678873310e7962",
+        "domain": "msb01.safestor.net",
+        "provider_id": "745bda9ccc5cca6860cb41edb56f0fcd44225097eff87c6cf94eba965e74fe05"
+    },
+    {
+        "client_id": "972991387c27b44d788ae9491ac8f9064270fecfcc05a9c01c7e57cacfae72a6",
+        "domain": "zcn-sharder.safestor.net",
+        "provider_id": "13aa7c01ff3fdb3b91d9186beb85b1e0ecc111fa6d58091646159ac40e344bf9"
+    },
+    {
+        "client_id": "fd0527ba18541dc10f42b05091182068a66c15c9539b25ad8ff656bc76545c08",
+        "domain": "msb02.datauber.net",
+        "provider_id": "97f9ab3dc61851794d384bf2b00acb1152fbdb83da0bdc42cd44ea4a8a16224a"
+    },
+    {
+        "client_id": "67d899e7f45ba9dd2d8c6d6daa9e75894bb5c752416b910c25b72308ee50875d",
+        "domain": "msb01.datauber.net",
+        "provider_id": "51c783094c96720dc36bf83eca8c01797eff92a9212e894ff2afa564e740308f"
+    },
+    {
+        "client_id": "15188171e7c5f7ee7de597da71b2960ee30caa921726c0abe16f5aaca397fc94",
+        "domain": "victor1.cust-zcn.zeroservices.eu",
+        "provider_id": "f188bda64f1dee8e0703af05818c6c64212700125018e38898226756b8f9301a"
+    },
+    {
+        "client_id": "625d6d28aee71d3c470c424dd173c0dcc90735c4ca123edb8a68fc8decdd85c7",
+        "domain": "m1.msb4me.eu",
+        "provider_id": "1f292beb8097e124b277edf03c8e7bbdb8d8c59b8715144a1320677bb438055e"
+    },
+    {
+        "client_id": "490c2c9efb3e67e1baa6b320d1b122c0bfb6625605ed226d58e5509d8b03358e",
+        "domain": "s1.msb4me.eu",
+        "provider_id": "6f6ddc77e2c439a291a41a76c5888337303bc1c2a5c8325806eb8910112c41a9"
+    },
+    {
+        "client_id": "2ef62fce52607017abf3c2493f681fbd6f7147f19f0bde0d593315157a5f387b",
+        "domain": "m2.msb4me.eu",
+        "provider_id": "120f8381d801fa86a39548780474430e5e0ced73c2b0631dfbb33d2d7afd4d33"
+    },
+    {
+        "client_id": "875f3cd17fbdad01a2b7d402734582b9a9f76b7795d74869849d9b753c620043",
+        "domain": "eggplants1.arturocapital.com",
+        "provider_id": "9b680da4232ca479309f6334b7ec190226b37d66c29258bd93563abe9fc14113"
+    },
+    {
+        "client_id": "76a77518aceec768fb5699ec91942633976223cebd696098af9a14718ecd63a8",
+        "domain": "gongshows1.bnocs.com",
+        "provider_id": "d7cce80fc05c09fe5019a39f264c8ddea18139b2de12b31e351b985a961263f2"
+    },
+    {
+        "client_id": "e398e3b2626f13aa782e952cfa1ed93a56143b5c834921abe8bded9cb3dca825",
+        "domain": "ketos1.bnocs.com",
+        "provider_id": "9e498ea78295d03bd7e07d8bea7a28b0e35ebbf2b622e4c058bc349385062372"
+    },
+    {
+        "client_id": "f20d07d8eb65f21215d8de73862fa024e2db73fa03718bcf187879d376cc3dd8",
+        "domain": "legolass1.bnocs.com",
+        "provider_id": "d1548cda259cd3b76621567255b8f4f4681d1613d20294a9e766e0e4fac41c64"
+    },
+    {
+        "client_id": "2c6db250cc6598f3fcb3e195cc258649f3d459612a0027c016e6005bdf17c146",
+        "domain": "ironmans1.fixx.biz",
+        "provider_id": "400313f3b71bac55427e64de9a23f735ddb121d18b41b95a449e1a1e2541f27a"
+    },
+    {
+        "client_id": "511b495000afafda540437b567f893818cd598880aee0c2ed9fe3a04db271d2e",
+        "domain": "donkeykongm1.arturocapital.com",
+        "provider_id": "5fea0897dabc032eef31f9068ce2c0bd6d6d5adcb924b1407aa73c0bf31ddacd"
+    },
+    {
+        "client_id": "451f6dc57117365b86bb6af7c13e485996487d870829657ea162254643795320",
+        "domain": "donkeykongm2.arturocapital.com",
+        "provider_id": "20279b4ce6266324ee0b9449c32ee38af95ede0f6a1caac3e50939957666c02d"
+    },
+    {
+        "client_id": "9a1dad868b0a861042e1e968f407a5b3f6e5598fd90f35cf784b54bb3d899f11",
+        "domain": "eggplantm1.arturocapital.com",
+        "provider_id": "48eb589ce93a40e1734a7dea15e6e28a5a608636bb92268e891f1aa1b5a4e9c1"
+    },
+    {
+        "client_id": "ae563ea7750209c5a04dfca537e357b4757349d7b7edcfc5b147247b4eb9ef0b",
+        "domain": "eggplantm2.arturocapital.com",
+        "provider_id": "742d178c8eb7bea73601c76609bf6a5ec07c8036f434bfe2aa24336bd4fe71b2"
+    },
+    {
+        "client_id": "771dd550688abd2b71b227df96f1ef034db09dbecbc7accd1383dc6871dd5735",
+        "domain": "interstellerm1.arturocapital.com",
+        "provider_id": "8ad5244bcc2676887d7040377c3a3310951199c17c7222d9d1538781221c4174"
+    },
+    {
+        "client_id": "6ed2fe7b2c3ecaf0b9b51d287739017be905baed60302067b7c092de6257061e",
+        "domain": "interstellerm2.arturocapital.com",
+        "provider_id": "0ce1d095a87b0731ed637c824388271115295007d6ac47178b5cd42c535c952b"
+    },
+    {
+        "client_id": "5e474ae6ccf7d3868ad759a9a60177a475a96787f6e543379a524400ee7278ec",
+        "domain": "olympiam1.arturocapital.com",
+        "provider_id": "7d95b9a124035758593b5330143563f7f7d092874d4587701a4f5fa45e04faf0"
+    },
+    {
+        "client_id": "4826d8ac40f256f17937a39d8f8d4c57cea80cc9439d379e066c377c9da8d2a4",
+        "domain": "olympiam2.arturocapital.com",
+        "provider_id": "acebe0dce47ea9924ec3a917a457e5d5fcd55848354c71da7913aad25e7216a3"
+    },
+    {
+        "client_id": "dfdf61a0dd385514591c8f5ea5f05b1d40360b79cb208845dbd2f4ad3e47fbf5",
+        "domain": "mintym2.arturocapital.com",
+        "provider_id": "edf8ca21552efeb8ff9a7235d9c9928206a667d273ea27e0292a587855df821c"
+    },
+    {
+        "client_id": "a0b48430dcd87465d3db6fe5201c92e49862b72ff9eaea162aef83311ee910d7",
+        "domain": "mintym1.arturocapital.com",
+        "provider_id": "81cca31e154e550b2fc7cfd6370f0fabb41e49b1626e62e6eee81844276ac5a0"
+    },
+    {
+        "client_id": "2b2099464f7bf233e9194a8d42bdc923712ae30e0d35f3e03e46885abb33141a",
+        "domain": "niftym1.arturocapital.com",
+        "provider_id": "46c2b0464821a73bb572fe42a5a77b44437ddea7601ba0e0288f1307dc053652"
+    },
+    {
+        "client_id": "b06a2a4f0b41de03c5bb3e5f15845d29f7245335880d24745974c99fe36647a5",
+        "domain": "niftym2.arturocapital.com",
+        "provider_id": "abe89eacd2d9340c00dfceb364122272438d8871c707bcfe4c48b40b76f4ffe8"
+    },
+    {
+        "client_id": "cb6f21160288fa1de4ba44fa427eca014a2f65b086b7f117bc2c99933e5e3fd9",
+        "domain": "gongshowm1.bnocs.com",
+        "provider_id": "96a91b1652706dc5faecee4edbf200e5d8b8e3d51767b770e58e83f221d48dd8"
+    },
+    {
+        "client_id": "2479bff9b1082896228f6dc6264ccd650af98c89ec1b603f116c04b9f076a061",
+        "domain": "gongshowm2.bnocs.com",
+        "provider_id": "dc30af2941530930afb04bc7a61734395cf2906b9f6a8bb9bc77367d95848df9"
+    },
+    {
+        "client_id": "4009ac2a04bf01fac07b586fa6cc95a5219f99183b3747cdea98ba4e3468aebf",
+        "domain": "ketom1.bnocs.com",
+        "provider_id": "18663cad133baac6e11cea6f9d5e0cb45e1692539a22ca45e73cfebf844951c7"
+    },
+    {
+        "client_id": "3aa30a46854c8ca8038d8e9e72c9b95431b828d4cf5b7082a5a945d74a7b8d06",
+        "domain": "legolasm1.bnocs.com",
+        "provider_id": "1c70d930f04e484e46d9d09f4bfffde7354970c50f64551351698cf3895a7826"
+    },
+    {
+        "client_id": "8327c24989d1d2872cba5f41915fe5a7e17b93ca540746ca90807c4504565791",
+        "domain": "legolasm2.bnocs.com",
+        "provider_id": "5157ccfa24ad2cf79801a69b9dc95e8ffc03a1b65b1278c2c3487e8f362052bf"
+    },
+    {
+        "client_id": "ea5afccec5e6c21860d205e49755101e0618c7222fb35816f75d0e86fe1b842f",
+        "domain": "hightowerm1.bnocs.com",
+        "provider_id": "6d1d838a85731d853ee273210919daeaa50844d7e04bdfae0fbf873cbe984fa1"
+    },
+    {
+        "client_id": "21c9df3a7989b07d72372fcf87f875bf5a207f8a56f66aa28feaa876d2a4f798",
+        "domain": "napoleonm1.bnocs.com",
+        "provider_id": "8dc49e65b363f6f730f90b28cfe0969518f9bf94b83306f5ad9cc5cca459ec0b"
+    },
+    {
+        "client_id": "528728f1974e332fa3695e14b328c2438ad65c9c1ee1381c09b3fbf6e62b082e",
+        "domain": "napoleonm2.bnocs.com",
+        "provider_id": "cea0aea675acd952800ba4ad28ccd690b200d41357a32b47b4744210cf421a60"
+    },
+    {
+        "client_id": "068437ab2d00b0b66b5a10cca3d25728e14fc36e74d6d62ecd8f8355ae387f03",
+        "domain": "ironmanm1.fixx.biz",
+        "provider_id": "3f270b9f5029b14b32dcbe167b33865a2ecdfa752ad10277cfdfa45384c0bd4a"
+    },
+    {
+        "client_id": "b289389d4e80c9a0e7ee8e90daa50711db0c6029016d023fa2c2834ffd7382a6",
+        "domain": "ironmanm2.fixx.biz",
+        "provider_id": "9a1679b06d44fc01fd8bc2019adda93f92a155e5d66f48f1123da97b78d33744"
+    },
+    {
+        "client_id": "b2a996f11aabe30cb8fe50ceebb955bf644ca4ccc921d977e1f8643db18383bf",
+        "domain": "enemym1.fixx.biz",
+        "provider_id": "8b5b51672168988e964bcab5945df6b0e9d6f9af6b6e1c79aa2a5cc8aa0e451b"
+    },
+    {
+        "client_id": "7009c406cd26a490c388b66a118fd4cbec6512992ac3667dce83e3cdf38e9089",
+        "domain": "enemym2.fixx.biz",
+        "provider_id": "46ea4695d967926e4c71e4203ef98cc8e8007526632ce6ce7b31d998450dfdb6"
+    },
+    {
+        "client_id": "1b3c7abe9b953716d5485dd352d6913d13926918e2a3e63a8d54b54250d20a2d",
+        "domain": "miner.spideyzus.com",
+        "provider_id": "4f5dc2ddf98b4e5c8012234de86dfd66446e05b79916a9d7c6233c12e9f84f20"
+    },
+    {
+        "client_id": "6ff01f128cae47c32cc7fe9a2b93724b3c3706678055d65315a380d517030d78",
+        "domain": "sharder1.bytepatch.io",
+        "provider_id": "3409d86fb6b26d2d966c7e00561f7c3b9e337b5908c3989b34414deae5efb8c6"
+    },
+    {
+        "client_id": "7adf1727b3aaa53a9ecbb2bae04ea36e39a26ccdbc2dc1383a1a5a33e5d1e6d1",
+        "domain": "miner1.bytepatch.io",
+        "provider_id": "9bd0142648151c98c88523fc96656c368386fc8e92027315a8543603af681562"
+    },
+    {
+        "client_id": "211b19ed9889b78a4b5f10e0447a819b8f18c44588598d9daa3a74769991f933",
+        "domain": "zusminer1.s-togawa.com",
+        "provider_id": "8e4de505346380887ce01da5838526adde727a4d569b991dfa4ff716b34387e3"
+    },
+    {
+        "client_id": "f0533852cc0fca839409773262886cb94fd3668fe1afa162c80002503438cec9",
+        "domain": "zusminer2.s-togawa.com",
+        "provider_id": "f74514b0398e9e911deca5a68404b9fb5add40fd37427f480af1162fd9172920"
+    },
+    {
+        "client_id": "f8170a06945fbe363d55daf364b5c91e05a7868aeacb35186b33e9d7cc0a6cb2",
+        "domain": "kngrorig.tanode.net",
+        "provider_id": "9ad5587ee158b8cee9917ba152840b88a6f4a9ee452ad37ce95f4a90e0555449"
+    },
+    {
+        "client_id": "4033e8cb4d152f7a21b6ae1dec8ebbe0a23c77c09fb99b0f351bfb7842564f61",
+        "domain": "bourbon.rustictrain.com",
+        "provider_id": "5e56de39b47adb53ddee1bb742c5e3a2c85f3048e3d026344efc81305593d624"
+    },
+    {
+        "client_id": "8c495fcbe1da7bcf84278032793eb1429b74c04061224300f87f06940e1093c5",
+        "domain": "sharder1.moonboysmining.com",
+        "provider_id": "f32e7fc63a3f264b92c59885ed07866b6c4d0f2dffb0a72690ecb1e96cfcaa59"
+    },
+    {
+        "client_id": "4698c3f59c7c1f784c8b4009a5ef2b7afe9cce4c91c82088fe08e070215cc6fb",
+        "domain": "sharder2.moonboysmining.com",
+        "provider_id": "1038626bd039b9fa33f4a956e3d30a558f7007e6f99634b3724afe2c290554bf"
+    },
+    {
+        "client_id": "33126eed842c32c72519f9114fc74d89d5213cd1ef9452fc606e6c364f4f0825",
+        "domain": "miner1.moonboysmining.com",
+        "provider_id": "86886b87042cca2a5d9662e46163b6c18e7d889a2a45f2e8182e5bd80fb314ae"
+    },
+    {
+        "client_id": "9b4cf1be8518217d12310eb0cc8326e4346a8ec6e0aac6eb87dc33c66a892e12",
+        "domain": "miner2.moonboysmining.com",
+        "provider_id": "71fee18d7da67b5b4706840ffff86c2958a6569e98b9f738c3bfe85bde316a01"
+    },
+    {
+        "client_id": "1103baaa1af52f75214969dd87a558429bdc7e874d9d7a63814de88686cf6cfe",
+        "domain": "m.sdredfox.com",
+        "provider_id": "0323b5985936d73ad496979accaa4e18058e34ac7fc8539ab6f6607011c4dc8e"
+    },
+    {
+        "client_id": "8668cc85b54d26d75872a30f3987f5eb944e8d5b0c28f3c495e37b7ada149fb3",
+        "domain": "s.sdredfox.com",
+        "provider_id": "9c7db5abd2716c57ac3f60f6d10f04a1fc350ddd778dcbb37ebefefb713f2987"
+    },
+    {
+        "client_id": "9d62ea206d966db4c0b8eee0ed5a6f06ca77e479c953d53896a59a5bd97431f7",
+        "domain": "miner2.nodely.store",
+        "provider_id": "ac59d556c8bff3ccaeca40239866d66c63bfaffb9af4c212816d4de4f75fbb92"
+    },
+    {
+        "client_id": "6459a4db22bdde08795bf2177ec5fc5d995053f66b6b1249405103c26ae33960",
+        "domain": "sharder.nodely.store",
+        "provider_id": "66d8276e467d0fb2c3c49bca51e631c24871784cf9739d3cccb1f9d2a932e7ac"
+    },
+    {
+        "client_id": "12d90cf9fe4a39589ad6d844d97c3717ba385632c1a1d7a3e04105bc789a92f5",
+        "domain": "miner7.nodely.store",
+        "provider_id": "277f5d2798a39ef3219586e23e6b41846f749a724e46e3e281bdfc281e623ab5"
+    },
+    {
+        "client_id": "e05ab6465fb8bd15f1ff378112097a2f8407a029a12ac610915f19d7f636c215",
+        "domain": "jc7.jczcncloud.com",
+        "provider_id": "dad2c08eac4b36f6d03e3ca1902eeb95351cd810fbd0ca06ceec2d0070f13240"
+    },
+    {
+        "client_id": "c91e6bae707288aef8bd2c5894512944dbf43da58f65e02f0f7c77c02e63c9ba",
+        "domain": "jc4.jczcncloud.com",
+        "provider_id": "1e197eb63c5bba3344b0109694b41b4a271c51086837a9b83416a50121816d7a"
+    },
+    {
+        "client_id": "8f60100499ebd4a67f4cbb6d6765aa86733fd75da686fcda04af2269f8c6db1b",
+        "domain": "jc3.jczcncloud.com",
+        "provider_id": "02dd397fbf5774982284f4d555f6bf63e4dd708f995a797de3526fa4bdff7791"
+    },
+    {
+        "client_id": "688f5716085b8929271dd62e7bc7963464e4d56826ec7b28d19506418dd029bf",
+        "domain": "jc1.jczcncloud.com",
+        "provider_id": "10b380afea93a03baddb80d396ee8968342c3dced9111811e72c37a46233efd8"
+    },
+    {
+        "client_id": "d2389a8402d3321c55ee317490ad7b6628b1e6b43ca70af7ef1b332026ab1705",
+        "domain": "jc6.jczcncloud.com",
+        "provider_id": "3bceeb8b00f00a3208b460545fffe0566ae12d893b3651406ee454d5005e45d7"
+    },
+    {
+        "client_id": "aef900cfe57e33975180313568ee2c164d3c59cd9cc17c04701c34f98216bab7",
+        "domain": "jc5.jczcncloud.com",
+        "provider_id": "8aec4bef5f19a907f402ba7027979d29d5e34cc426704388308efe08eed2bbd1"
+    },
+    {
+        "client_id": "eba98830881187e5ef5c8529877d3a738362699a6b0b215cc196090cfc36f3e3",
+        "domain": "pointer.phatgiga.com",
+        "provider_id": "a4edf923651857f0dde722c4fca169390dbdb943a1ba7aa4a4695092cbd64048"
+    },
+    {
+        "client_id": "eba98830881187e5ef5c8529877d3a738362699a6b0b215cc196090cfc36f3e3",
+        "domain": "reaper.phatgiga.com",
+        "provider_id": "0b5c9a8ef85fee70ed275b860a6a62ac1337f93825b446f4fd74791963b85e2f"
+    },
+    {
+        "client_id": "eba98830881187e5ef5c8529877d3a738362699a6b0b215cc196090cfc36f3e3",
+        "domain": "stinger.phatgiga.com",
+        "provider_id": "b138ab1e4eb6dad58eac988365bfe6343e06d6233887a8327365a7d151c2faee"
+    },
+    {
+        "client_id": "eba98830881187e5ef5c8529877d3a738362699a6b0b215cc196090cfc36f3e3",
+        "domain": "hunter.phatgiga.com",
+        "provider_id": "0acfae0a6c71a05ecaf2fcd36382e3505298b31a444c4f13e562473c8436e0cb"
+    },
+    {
+        "client_id": "eba98830881187e5ef5c8529877d3a738362699a6b0b215cc196090cfc36f3e3",
+        "domain": "panther.phatgiga.com",
+        "provider_id": "7eb88c6e8677fb7a267aaefbfae982a5e9f91f43d54d171d537e5245f4d8ca73"
+    },
+    {
+        "client_id": "eba98830881187e5ef5c8529877d3a738362699a6b0b215cc196090cfc36f3e3",
+        "domain": "predator.phatgiga.com",
+        "provider_id": "55e52a68e5dab66942e6681425685c954174ad16c1d54cf30306ee4fa498cb3d"
+    },
+    {
+        "client_id": "eba98830881187e5ef5c8529877d3a738362699a6b0b215cc196090cfc36f3e3",
+        "domain": "falcon.phatgiga.com",
+        "provider_id": "82180ed64eced70141b7524b0f37cc8c0ef952241429240e7eda26d78520b9a7"
+    },
+    {
+        "client_id": "eba98830881187e5ef5c8529877d3a738362699a6b0b215cc196090cfc36f3e3",
+        "domain": "eagle.phatgiga.com",
+        "provider_id": "445b6def7718a5ad4bab2798f7bc386e49689644da9ffe7d7654e6455740e5f6"
+    },
+    {
+        "client_id": "eba98830881187e5ef5c8529877d3a738362699a6b0b215cc196090cfc36f3e3",
+        "domain": "hawk.phatgiga.com",
+        "provider_id": "641fa7f306ebb7b4b75f4221423ce065e9b1e72547c775e85fcf2e607f0182e7"
+    },
+    {
+        "client_id": "eba98830881187e5ef5c8529877d3a738362699a6b0b215cc196090cfc36f3e3",
+        "domain": "hornet.phatgiga.com",
+        "provider_id": "6afa5c7670a6a0304b7f7738cbff981fb3e6f3c4f272f3faa8e22c038cd17f28"
+    },
+    {
+        "client_id": "eba98830881187e5ef5c8529877d3a738362699a6b0b215cc196090cfc36f3e3",
+        "domain": "wasp.phatgiga.com",
+        "provider_id": "316104852971c9a9a8b17ae8ba19851766311fa94c158023a7c4c2f561cd9f36"
+    },
+    {
+        "client_id": "9232ba8bae473f1ed4550b9a2b556b1ed131fda4dfe8723567a45ec235e8f7dd",
+        "domain": "jc2.jczcncloud.com",
+        "provider_id": "3e6069913b384720ad3f0cc320ffd07f5d0b7018f6806ed81e78ea7d5d0d83f8"
+    },
+    {
+        "client_id": "dce8facb60cd16d9395f31c4300bcd7915ea620e241e6210f817917591f260cf",
+        "domain": "quant.zusfiver.com",
+        "provider_id": "42af9b62466e290640ce7c347384abed80618559ba59bba16577de85989dc7ab"
+    },
+    {
+        "client_id": "6bb8a578d6230f49da0065d6cf9c30512f5bc3bd8f0dafb2d4730aca3c290aca",
+        "domain": "zussharder.thecoolchase.com",
+        "provider_id": "36532a46e5fff9e856f2c0de2e2456905b03b850f3dde3d0c905d5b5991b0881"
+    },
+    {
+        "client_id": "e6069f8626ad31b55a0d3ea4f3f63493ae205e3266e38d7d0b8d2d2872a8c875",
+        "domain": "zusminer.thecoolchase.com",
+        "provider_id": "012765c29ad56e422e8404f8c99c69c1721c49f0a2e5a3645ecfce806e298f5f"
+    },
+    {
+        "client_id": "d8e7f5642d2433aaa64785bf0c6de5f4322284456cf74248ab4fff908e0de0b2",
+        "domain": "zus-miner-1.krates.ai",
+        "provider_id": "6b285d1442ce9ebbbfed43056de097dd477a8505f0bae189ef50f34eb18f95ac"
+    },
+    {
+        "client_id": "baffe59a432b8159d0ec2a1f6236fdeb3d776c1b6c355851161c64d93b3cdd50",
+        "domain": "zus-miner-2.krates.ai",
+        "provider_id": "fa74867c22e4e7cdac265dd2c3226712814db38a151146538d9a7e915bfa1f41"
+    },
+    {
+        "client_id": "53b4a4d0589073953b130f0c8e2442604eafe5dea35b84675b28a4130dd6393e",
+        "domain": "miner1.0chain.net",
+        "provider_id": "53b4a4d0589073953b130f0c8e2442604eafe5dea35b84675b28a4130dd6393e"
+    },
+    {
+        "client_id": "44b67a3967cf3b03c8c1a78aba68792b4b1cb4eb2c4c2e7f70e82cdac839b94f",
+        "domain": "miner2.0chain.net",
+        "provider_id": "44b67a3967cf3b03c8c1a78aba68792b4b1cb4eb2c4c2e7f70e82cdac839b94f"
+    },
+    {
+        "client_id": "939ffc27003e9bb9245919b1241c04736f931bfc1ee972dd68df5f602412298e",
+        "domain": "miner3.0chain.net",
+        "provider_id": "939ffc27003e9bb9245919b1241c04736f931bfc1ee972dd68df5f602412298e"
+    },
+    {
+        "client_id": "44f05cf93613e3e4a81fd302cfb8a02b659805a35e137517dcd7842734151130",
+        "domain": "miner4.0chain.net",
+        "provider_id": "44f05cf93613e3e4a81fd302cfb8a02b659805a35e137517dcd7842734151130"
+    },
+    {
+        "client_id": "13590e0a424f18e69ae02340b709224e1a35efce055075aa732355d84b24ad3f",
+        "domain": "miner5.0chain.net",
+        "provider_id": "13590e0a424f18e69ae02340b709224e1a35efce055075aa732355d84b24ad3f"
+    },
+    {
+        "client_id": "917eff333fce4ec28a7cb17766444647856dc9510a24a023ac1c77285f192d36",
+        "domain": "miner6.0chain.net",
+        "provider_id": "917eff333fce4ec28a7cb17766444647856dc9510a24a023ac1c77285f192d36"
+    },
+    {
+        "client_id": "e1d4e71b78183ff84705c8d02168e32e8a76ec640728c818a57a657e3193a4db",
+        "domain": "miner7.0chain.net",
+        "provider_id": "e1d4e71b78183ff84705c8d02168e32e8a76ec640728c818a57a657e3193a4db"
+    },
+    {
+        "client_id": "98263b134301754f22a6e4fc187d1cd47bf7283f1eac89674de727b702733fad",
+        "domain": "miner8.0chain.net",
+        "provider_id": "98263b134301754f22a6e4fc187d1cd47bf7283f1eac89674de727b702733fad"
+    },
+    {
+        "client_id": "cca8ce335e165935eb546e3631712e68413f5c23910f0941e58c889b1fc67bd5",
+        "domain": "miner9.0chain.net",
+        "provider_id": "cca8ce335e165935eb546e3631712e68413f5c23910f0941e58c889b1fc67bd5"
+    },
+    {
+        "client_id": "c0f8a22fcb41309d8927c46d471ef4989bde6ac1c72ac15858daae2bc4213236",
+        "domain": "miner10.0chain.net",
+        "provider_id": "c0f8a22fcb41309d8927c46d471ef4989bde6ac1c72ac15858daae2bc4213236"
+    }
+]

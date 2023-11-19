@@ -20,7 +20,7 @@ smart_contracts:
     max_n: 103 # 100
     min_n: 103 # 3
     # sharders
-    max_s: 28 # 30
+    max_s: 27 # 30
     min_s: 1 # 1
     # max delegates allowed by SC
     max_delegates: 200 #
