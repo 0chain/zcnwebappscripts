@@ -6,7 +6,7 @@ echo -e "\n\e[93m===============================================================
                                                                                 Setup variables
 ===============================================================================================================================================================================  \e[39m"
 export PROJECT_ROOT=/var/0chain # /var/0chain
-export BLOCK_WORKER_URL=beta.zus.network
+export BLOCK_WORKER_URL=mainnet.zus.network
 echo -e "\e[32m Successfully Created \e[23m \e[0;37m"
 
 sudo mkdir -p $PROJECT_ROOT
@@ -160,6 +160,7 @@ echo -e "\n\e[93m===============================================================
                                                                                 Deploying grafana and portainer
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT}/grafana-portainer > /dev/null;  #/sharder/ssd
+    sudo chown 10001:10001 ./loki
     bash ./start.p0monitor.sh ${HOST} admin ${PASSWORD}
 popd > /dev/null;
 

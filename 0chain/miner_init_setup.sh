@@ -9,7 +9,22 @@ export PROJECT_ROOT="/var/0chain" # /var/0chain
 export PROJECT_ROOT_SSD=/var/0chain/miner/ssd # /var/0chain/miner/ssd
 export PROJECT_ROOT_HDD=/var/0chain/miner/hdd # /var/0chain/miner/hdd
 
-mkdir -p ${PROJECT_ROOT}
+mkdir -p ${PROJECT_ROOT}/miner/ssd
+
+if [ ! -d "${PROJECT_ROOT}/backup-deploy3" ]; then
+    echo "Creating backup"
+    mkdir -p ${PROJECT_ROOT}/backup-deploy3
+    mv ${PROJECT_ROOT}/bin ${PROJECT_ROOT}/backup-deploy3/ || true
+    mv ${PROJECT_ROOT}/keys ${PROJECT_ROOT}/backup-deploy3/ || true
+    mv ${PROJECT_ROOT}/miner/*.txt ${PROJECT_ROOT}/backup-deploy3/ || true
+    mv ${PROJECT_ROOT}/output ${PROJECT_ROOT}/backup-deploy3/ || true
+    mv ${PROJECT_ROOT}/*.json ${PROJECT_ROOT}/backup-deploy3/ || true
+    mv ${PROJECT_ROOT}/*.yaml ${PROJECT_ROOT}/backup-deploy3/ || true
+    rm -rf backup-deploy1 || true
+    rm -rf backup-deploy2 || true
+else
+    echo "Backup already exists"
+fi
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                 Installing some pre-requisite tools on your server
@@ -27,6 +42,7 @@ sudo chmod 777 /var/run/docker.sock &> /dev/null
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                             Setting up ntp
 ===============================================================================================================================================================================  \e[39m"
+sudo ufw disable
 sudo ufw allow 123/udp
 sudo ufw allow out to any port 123
 sudo systemctl stop ntp
@@ -45,20 +61,20 @@ else
     exit 1
 fi
 
-echo -e "\n\e[93m===============================================================================================================================================================================
-                                                                                Disk setup
-===============================================================================================================================================================================  \e[39m"
-pushd ${PROJECT_ROOT} > /dev/null;
-    if [[ ! -d ${PROJECT_ROOT_HDD} || ! -d ${PROJECT_ROOT_SSD} ]]; then
-        sudo mkdir -p disk-setup/
-        sudo wget https://raw.githubusercontent.com/0chain/zcnwebappscripts/main/disk-setup/disk_setup.sh -O disk-setup/disk_setup.sh
-        sudo wget https://raw.githubusercontent.com/0chain/zcnwebappscripts/main/disk-setup/disk_func.sh -O disk-setup/disk_func.sh
+# echo -e "\n\e[93m===============================================================================================================================================================================
+#                                                                                 Disk setup
+# ===============================================================================================================================================================================  \e[39m"
+# pushd ${PROJECT_ROOT} > /dev/null;
+#     if [[ ! -d ${PROJECT_ROOT_HDD} || ! -d ${PROJECT_ROOT_SSD} ]]; then
+#         sudo mkdir -p disk-setup/
+#         sudo wget https://raw.githubusercontent.com/0chain/zcnwebappscripts/main/disk-setup/disk_setup.sh -O disk-setup/disk_setup.sh
+#         sudo wget https://raw.githubusercontent.com/0chain/zcnwebappscripts/main/disk-setup/disk_func.sh -O disk-setup/disk_func.sh
 
-        sudo chmod +x disk-setup/disk_setup.sh
-        bash disk-setup/disk_setup.sh $PROJECT_ROOT_SSD $PROJECT_ROOT_HDD
-    fi
-    echo -e "\e[32m Successfully Created \e[23m \e[0;37m"
-popd > /dev/null;
+#         sudo chmod +x disk-setup/disk_setup.sh
+#         bash disk-setup/disk_setup.sh $PROJECT_ROOT_SSD $PROJECT_ROOT_HDD
+#     fi
+#     echo -e "\e[32m Successfully Created \e[23m \e[0;37m"
+# popd > /dev/null;
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                 Persisting Miner inputs.
@@ -74,22 +90,13 @@ pushd ${PROJECT_ROOT} > /dev/null;
         read -p "Enter the PUBLIC_URL or your domain name. Example: john.mydomain.com : " PUBLIC_ENDPOINT
     done
 
-    #Email Input
-    if [[ -f miner/email.txt ]] ; then
-        EMAIL=$(cat miner/email.txt)
-    fi
-    while [[ -z ${EMAIL} ]]
-    do
-        read -p "Enter the EMAIL: " EMAIL
-    done
-
     #Miner
     if [[ -f miner/numminers.txt ]] ; then
         MINER=$(cat miner/numminers.txt)
     else
         sudo sh -c "echo -n 1 > miner/numminers.txt"
         sudo sh -c "echo -n ${PUBLIC_ENDPOINT} > miner/url.txt"
-        sudo sh -c "echo -n ${EMAIL} > miner/email.txt"
+        sudo sh -c "echo -n ${PUBLIC_ENDPOINT} > miner/email.txt"
     fi
 
     echo -e "\e[32m Successfully Completed \e[23m \e[0;37m"
@@ -126,9 +133,9 @@ pushd ${PROJECT_ROOT} > /dev/null;
         sudo tar -xvf keygen-linux.tar.gz
         sudo rm keygen-linux.tar.gz*
         echo "server_url : https://mb-gen.0chain.net/" | sudo tee server-config.yaml > /dev/null
-        echo "T: 2" | sudo tee -a server-config.yaml > /dev/null
-        echo "N: 104" | sudo tee -a server-config.yaml > /dev/null
-        echo "K: 3" | sudo tee -a server-config.yaml > /dev/null
+        echo "T: 66" | sudo tee -a server-config.yaml > /dev/null
+        echo "N: 103" | sudo tee -a server-config.yaml > /dev/null
+        echo "K: 66" | sudo tee -a server-config.yaml > /dev/null
     fi
 popd > /dev/null;
 
@@ -139,7 +146,7 @@ config() {
     echo "  - n2n_ip: ${PUBLIC_ENDPOINT}" | sudo tee -a config.yaml > /dev/null
     echo "    public_ip: ${PUBLIC_ENDPOINT}" | sudo tee -a config.yaml > /dev/null
     echo "    port: $1" | sudo tee -a config.yaml > /dev/null
-    echo "    description: ${EMAIL}" | sudo tee -a config.yaml > /dev/null
+    echo "    description: ${PUBLIC_ENDPOINT}" | sudo tee -a config.yaml > /dev/null
 }
 
 pushd ${PROJECT_ROOT} > /dev/null;
