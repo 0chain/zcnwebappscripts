@@ -135,7 +135,7 @@ smart_contracts:
         min: 0
       size: 2147483648
       write_price_range:
-        max: 0.25
+        max: 0.025
         min: 0
     validator_reward: 0.025
     # blobber_slash represents blobber's stake penalty when a challenge not
