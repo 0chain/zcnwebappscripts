@@ -27,6 +27,10 @@ WORKING_DIR=0chainwd
 CONFIG_DIR=$HOME/.zcn
 CONFIG_DIR_MIGRATION=${CONFIG_DIR}/migration # to store wallet.json, config.json, allocation.json
 
+sudo apt update
+DEBIAN_FRONTEND=noninteractive sudo apt install -y unzip curl containerd docker.io jq
+snap install yq
+
 if [[ -d $HOME/.zcn/docker-compose.yml ]]; then
   MINIO_TOKEN=$(yq '.services.minioserver.environment.MINIO_AUDIT_WEBHOOK_ENDPOINT' $HOME/.zcn/docker-compose.yml)
   MINIO_USERNAME=$(yq '.services.minioserver.environment.MINIO_ROOT_USER' $HOME/.zcn/docker-compose.yml)
