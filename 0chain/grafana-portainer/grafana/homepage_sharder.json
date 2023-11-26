@@ -94,7 +94,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "[![button](https://grafanadashboard.s3.us-east-2.amazonaws.com/slogs.png)](https://hostname/grafana/d/sharder/)",
+        "content": "[![button](https://grafanadashboard.s3.us-east-2.amazonaws.com/slogs.PNG)](https://hostname/grafana/d/sharder/)",
         "mode": "markdown"
       },
       "pluginVersion": "9.5.2",

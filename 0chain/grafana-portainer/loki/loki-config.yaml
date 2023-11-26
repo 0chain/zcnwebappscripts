@@ -7,7 +7,7 @@ server:
 ingester:
   wal:
     enabled: true
-    dir: /tmp/wal
+    dir: /data/wal
     #
     # Create checkpoints every minute.  I wouldn't normally do this in production,
     # but for testing/dev where I could be slamming in a bunch of events all at once
@@ -37,27 +37,37 @@ schema_config:
       schema: v11
       index:
         prefix: index_
-        period: 24h
+        period: 24h # must be set to atleast 24h for the compactor to work.
 
 storage_config:
   boltdb_shipper:
-    active_index_directory: /tmp/loki/boltdb-shipper-active
-    cache_location: /tmp/loki/boltdb-shipper-cache
+    active_index_directory: /data/boltdb-shipper-active
+    cache_location: /data/boltdb-shipper-cache
     cache_ttl: 24h         # Can be increased for faster performance over longer query periods, uses more disk space
     shared_store: filesystem
   filesystem:
-    directory: /tmp/loki/chunks
+    directory: /data/chunks
 
 compactor:
-  working_directory: /tmp/loki/boltdb-shipper-compactor
+  working_directory: /data/compactor # directory where marked chunks and temporary tables will be saved
   shared_store: filesystem
+  retention_enabled: true
+  compaction_interval: 24h
+  retention_delete_delay: 1m
+  retention_delete_worker_count: 150
 
 limits_config:
+  retention_period: 5m
   reject_old_samples: true
-  reject_old_samples_max_age: 168h
-  ingestion_rate_mb: 64
-  ingestion_burst_size_mb: 64
-
+  reject_old_samples_max_age: 24h
+  ingestion_rate_mb: 400
+  ingestion_burst_size_mb: 400
+  per_stream_rate_limit: 384MB
+  max_streams_per_user: 10000000
+  max_global_streams_per_user: 1000000
+  max_label_name_length: 2048
+  max_label_value_length: 4096
+  max_label_names_per_series: 60
 
 chunk_store_config:
   max_look_back_period: 0s
@@ -70,8 +80,8 @@ ruler:
   storage:
     type: local
     local:
-      directory: /tmp/loki/rules
-  rule_path: /tmp/loki/rules-temp
+      directory: /etc/loki/rules
+  rule_path: /etc/loki/rules-temp
   alertmanager_url: http://localhost:9093
   ring:
     kvstore:

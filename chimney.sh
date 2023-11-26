@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ "$(id -u)" -ne 0 ]; then
-    echo "This script requires sudo privileges. Please enter your password:"
-    exec sudo "$0" "$@"  # This re-executes the script with sudo
+  echo "This script requires sudo privileges. Please enter your password:"
+  exec sudo "$0" "$@" # This re-executes the script with sudo
 fi
 
 # setup variables
@@ -32,6 +32,7 @@ export DEBIAN_FRONTEND=noninteractive
 export PROJECT_ROOT_SSD=/var/0chain/blobber/ssd
 export PROJECT_ROOT_HDD=/var/0chain/blobber/hdd
 
+export BRANCH_NAME=main
 
 sudo apt update
 
@@ -48,9 +49,24 @@ install_tools_utilities() {
   echo -e "\e[37mChecking for $REQUIRED_PKG if it is already installed. \e[73m"
   if [ "" = "$PKG_OK" ]; then
     echo -e "\e[31m  No $REQUIRED_PKG is found on the server. \e[13m\e[32m$REQUIRED_PKG installed. \e[23m \n"
-    sudo apt --yes install $REQUIRED_PKG &> /dev/null
+    sudo apt --yes install $REQUIRED_PKG &>/dev/null
   else
     echo -e "\e[32m  $REQUIRED_PKG is already installed on the server/machine.  \e[23m \n"
+  fi
+}
+check_port_443() {
+  PORT=443
+  command -v netstat >/dev/null 2>&1 || {
+    echo >&2 "netstat command not found. Exiting."
+    exit 1
+  }
+
+  if netstat -tulpn | grep ":$PORT" >/dev/null; then
+    echo "Port $PORT is in use."
+    echo "Please stop the process running on port $PORT and run the script again"
+    exit 1
+  else
+    echo "Port $PORT is not in use."
   fi
 }
 
@@ -63,6 +79,7 @@ install_tools_utilities "systemd-timesyncd"
 install_tools_utilities ufw
 install_tools_utilities ntp
 install_tools_utilities ntpdate
+install_tools_utilities net-tools
 
 sudo ufw allow 123/udp
 sudo ufw allow out to any port 123
@@ -70,6 +87,9 @@ sudo systemctl stop ntp
 sudo ntpdate pool.ntp.org
 sudo systemctl start ntp
 sudo systemctl enable ntp
+
+echo "checking if ports are available..."
+check_port_443
 
 # download docker-compose
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -83,13 +103,18 @@ if [ -f "${PROJECT_ROOT}/docker-compose.yml" ]; then
   rm -rf ${PROJECT_ROOT} || true
 fi
 
-#Disk setup
-mkdir -p $PWD/disk-setup/
-wget https://raw.githubusercontent.com/0chain/zcnwebappscripts/main/disk-setup/disk_setup.sh -O $PWD/disk-setup/disk_setup.sh
-wget https://raw.githubusercontent.com/0chain/zcnwebappscripts/main/disk-setup/disk_func.sh -O $PWD/disk-setup/disk_func.sh
+# #Disk setup
+# mkdir -p $PWD/disk-setup/
+# wget https://raw.githubusercontent.com/0chain/zcnwebappscripts/${BRANCH_NAME}/disk-setup/disk_setup.sh -O $PWD/disk-setup/disk_setup.sh
+# wget https://raw.githubusercontent.com/0chain/zcnwebappscripts/${BRANCH_NAME}/disk-setup/disk_func.sh -O $PWD/disk-setup/disk_func.sh
 
-sudo chmod +x $PWD/disk-setup/disk_setup.sh
-bash $PWD/disk-setup/disk_setup.sh $PROJECT_ROOT_SSD $PROJECT_ROOT_HDD
+# sudo chmod +x $PWD/disk-setup/disk_setup.sh
+# bash $PWD/disk-setup/disk_setup.sh $PROJECT_ROOT_SSD $PROJECT_ROOT_HDD
+mkdir -p $PROJECT_ROOT_SSD
+mkdir -p ${PROJECT_ROOT_HDD}/pg_hdd_data
+
+# provide required permission for tablespace volume to mount to postgres
+chown -R "999:999" ${PROJECT_ROOT_HDD}/pg_hdd_data
 
 # generate password for portainer
 echo -n ${GF_ADMIN_PASSWORD} >/tmp/portainer_password
@@ -107,18 +132,18 @@ done
 ls -al $PROJECT_ROOT
 
 # download and unzip files
-curl -L "https://github.com/0chain/zcnwebappscripts/raw/main/artifacts/blobber-files.zip" -o /tmp/blobber-files.zip
+curl -L "https://github.com/0chain/zcnwebappscripts/raw/${BRANCH_NAME}/artifacts/blobber-files.zip" -o /tmp/blobber-files.zip
 unzip -o /tmp/blobber-files.zip -d ${PROJECT_ROOT}
 rm /tmp/blobber-files.zip
 
-curl -L "https://github.com/0chain/zcnwebappscripts/raw/main/artifacts/chimney-dashboard.zip" -o /tmp/chimney-dashboard.zip
+curl -L "https://github.com/0chain/zcnwebappscripts/raw/${BRANCH_NAME}/artifacts/chimney-dashboard.zip" -o /tmp/chimney-dashboard.zip
 unzip /tmp/chimney-dashboard.zip -d ${PROJECT_ROOT}
 rm /tmp/chimney-dashboard.zip
 
 # create 0chain_blobber.yaml file
 echo "creating 0chain_blobber.yaml"
-curl -L "https://github.com/0chain/zcnwebappscripts/raw/sprint111/config/0chain_blobber.yaml" -o ${PROJECT_ROOT}/config/0chain_blobber.yaml
-curl -L "https://github.com/0chain/zcnwebappscripts/raw/sprint111/config/0chain_validator.yaml" -o ${PROJECT_ROOT}/config/0chain_validator.yaml
+curl -L "https://github.com/0chain/zcnwebappscripts/raw/${BRANCH_NAME}/config/0chain_blobber.yaml" -o ${PROJECT_ROOT}/config/0chain_blobber.yaml
+curl -L "https://github.com/0chain/zcnwebappscripts/raw/${BRANCH_NAME}/config/0chain_validator.yaml" -o ${PROJECT_ROOT}/config/0chain_validator.yaml
 
 echo "updating write_price"
 sed -i "s/write_price.*/write_price: ${WRITE_PRICE}/g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
@@ -131,6 +156,9 @@ sed -i "s/delegate_wallet.*/delegate_wallet: ${DELEGATE_WALLET}/g" ${PROJECT_ROO
 
 echo "updating num_delegates"
 sed -i "s/num_delegates.*/num_delegates: ${NO_OF_DELEGATES}/g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
+
+echo "updating num_delegates in 0chain_validator.yaml"
+sed -i "s/num_delegates.*/num_delegates: ${NO_OF_DELEGATES}/g" ${PROJECT_ROOT}/config/0chain_validator.yaml
 
 echo "updating service_charge"
 sed -i "s/service_charge.*/service_charge: ${SERVICE_CHARGE}/g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
@@ -149,7 +177,6 @@ sed -i "s/service_charge.*/service_charge: ${SERVICE_CHARGE}/g" ${PROJECT_ROOT}/
 
 echo "updating block_worker"
 sed -i "s|block_worker.*|block_worker: ${BLOCK_WORKER_URL}|g" ${PROJECT_ROOT}/config/0chain_validator.yaml
-
 
 ### Create minio_config.txt file
 echo "creating minio_config.txt"
@@ -233,8 +260,14 @@ services:
     image: postgres:14
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: blobber_user
+      POSTGRES_DB: blobber_meta
+      POSTGRES_PASSWORD: blobber
+      SLOW_TABLESPACE_PATH: /var/lib/postgresql/hdd
+      SLOW_TABLESPACE: hdd_tablespace
     volumes:
       - ${PROJECT_ROOT_SSD}/data/postgresql:/var/lib/postgresql/data
+      - ${PROJECT_ROOT_HDD}/pg_hdd_data:/var/lib/postgresql/hdd
       - ${PROJECT_ROOT}/postgresql.conf:/var/lib/postgresql/postgresql.conf
       - ${PROJECT_ROOT}/sql_init:/docker-entrypoint-initdb.d
     command: postgres -c config_file=/var/lib/postgresql/postgresql.conf
@@ -307,6 +340,8 @@ services:
     user: "1001"
     volumes:
       - ${PROJECT_ROOT}/monitoringconfig/loki-config.yaml:/mnt/config/loki-config.yaml
+      - ${PROJECT_ROOT_HDD}/loki:/data
+      - ${PROJECT_ROOT_HDD}/loki/rules:/etc/loki/rules
     command: -config.file=/mnt/config/loki-config.yaml
     restart: "always"
 
@@ -415,17 +450,17 @@ sed -i "s/blobber_host/${BLOBBER_HOST}/g" ${DASHBOARDS}/homepage.json
 echo "setting up chimney dashboards..."
 
 curl -X POST -H "Content-Type: application/json" \
-      -d "{\"dashboard\":$(cat ${DASHBOARDS}/homepage.json)}" \
-      "https://${GF_ADMIN_USER}:${escapedPassword}@${BLOBBER_HOST}/grafana/api/dashboards/import"
+  -d "{\"dashboard\":$(cat ${DASHBOARDS}/homepage.json)}" \
+  "https://${GF_ADMIN_USER}:${escapedPassword}@${BLOBBER_HOST}/grafana/api/dashboards/import"
 
 curl -X PUT -H "Content-Type: application/json" \
-     -d '{ "theme": "", "homeDashboardUID": "homepage", "timezone": "utc" }' \
-     "https://${GF_ADMIN_USER}:${escapedPassword}@${BLOBBER_HOST}/grafana/api/org/preferences"
+  -d '{ "theme": "", "homeDashboardUID": "homepage", "timezone": "utc" }' \
+  "https://${GF_ADMIN_USER}:${escapedPassword}@${BLOBBER_HOST}/grafana/api/org/preferences"
 
 for dashboard in "${DASHBOARDS}/blobber.json" "${DASHBOARDS}/server.json" "${DASHBOARDS}/validator.json"; do
-    echo -e "\nUploading dashboard: ${dashboard}"
-    curl -X POST -H "Content-Type: application/json" \
-          -d "@${dashboard}" \
-         "https://${GF_ADMIN_USER}:${escapedPassword}@${BLOBBER_HOST}/grafana/api/dashboards/import"
-     echo ""
+  echo -e "\nUploading dashboard: ${dashboard}"
+  curl -X POST -H "Content-Type: application/json" \
+    -d "@${dashboard}" \
+    "https://${GF_ADMIN_USER}:${escapedPassword}@${BLOBBER_HOST}/grafana/api/dashboards/import"
+  echo ""
 done

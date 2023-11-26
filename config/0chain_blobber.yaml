@@ -10,7 +10,7 @@ logging:
 #    2 GB - 2147483648
 #    3 GB - 3221225472
 #  100 GB - 107374182400
-capacity: 1073741824 # 1 GB bytes total blobber capacity
+capacity: 54975581388800 # 1 GB bytes total blobber capacity
 read_price: 0.00     # token / GB for reading
 write_price: 0.025    # token / GB / time_unit for writing
 price_in_usd: false
@@ -28,7 +28,7 @@ max_dirs_files: 50000
 # delegate wallet (must be set)
 delegate_wallet: '9c693cb14f29917968d6e8c909ebbea3425b4c1bc64b6732cadc2a1869f49be9'
 # maximum allowed number of stake holders
-num_delegates: 10
+num_delegates: 1
 # service charge of the blobber
 service_charge: 0
 # min submit from miners`
@@ -65,8 +65,8 @@ rate_limiters:
   # Number of blocks downloaded in a day. Default is 100GB(the value needs to be in blocks which is data/64KB)
   block_limit_daily: 1562500
   # Max blocks per download request. Default is 500
-  block_limit_request: 500  
-  # Max blocks in a month for a client. Default is 2000GB(the value needs to be in blocks which is data/64KB)  
+  block_limit_request: 500
+  # Max blocks in a month for a client. Default is 2000GB(the value needs to be in blocks which is data/64KB)
   block_limit_monthly: 31250000
   # Max upload limit in a month for a client. Default is 2000GB(the value needs to be in blocks which is data/64KB)
   upload_limit_monthly: 31250000
@@ -121,10 +121,9 @@ storage:
 #  Similarly for some file_hash "ef935503b66b1ce026610edf18bffd756a79676a8fe317d951965b77a77c0227" with dir_level [2, 2, 1]
 #  following path is created for the file:
 # {alloc_dir}/ef/93/5/503b66b1ce026610edf18bffd756a79676a8fe317d951965b77a77c0227
-  alloc_dir_level: [2, 1] #TODO sort it out
+  alloc_dir_level: [2, 1]
   file_dir_level: [2, 2, 1]
 
-#TODO remove
 disk_update:
   # defaults to true. If false, blobber has to manually update blobber's capacity upon increase/decrease
   # If blobber has to limit its capacity to 5% of its capacity then it should turn automaci_update to false.

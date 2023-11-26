@@ -165,7 +165,7 @@ services:
       MINIO_SERVER: "minioserver:9000"
 
   s3mgrt:
-    image: bmanu199/s3mgrt:latest
+    image: 0chaindev/s3mgrt:staging
     restart: always
     volumes:
       - ${MIGRATION_ROOT}:/migrate

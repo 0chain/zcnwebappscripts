@@ -6,7 +6,7 @@ echo -e "\n\e[93m===============================================================
                                                                                 Setup variables
 ===============================================================================================================================================================================  \e[39m"
 export PROJECT_ROOT=/var/0chain # /var/0chain
-export BLOCK_WORKER_URL=beta.zus.network
+export BLOCK_WORKER_URL=mainnet.zus.network
 echo -e "\e[32m Successfully Created \e[23m \e[0;37m"
 
 sudo mkdir -p $PROJECT_ROOT
@@ -59,7 +59,12 @@ cat <<EOF >>${PROJECT_ROOT}/grafana-portainer/promtail/promtail-config.yaml
         - localhost
       labels:
         app: sharder-${i}
-        __path__: /var/log/sharder${i}/log/*log
+        __path__: /var/log/sharder${i}/log/0chain.log
+    - targets:
+        - localhost
+      labels:
+        app: n2n-sharder-${i}
+        __path__: /var/log/sharder${i}/log/n2n.log
 EOF
     done
 echo -e "\e[32m Successfully Created \e[23m \e[0;37m"
@@ -140,6 +145,7 @@ popd > /dev/null;
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                                 Generate random password for grafana and portainer
 ===============================================================================================================================================================================  \e[39m"
+mkdir -p ${PROJECT_ROOT}/grafana-portainer/portainer || true
 pushd ${PROJECT_ROOT}/grafana-portainer/portainer > /dev/null;
     if [[ -f portainer_password ]] ; then
       PASSWORD=$(cat portainer_password)
@@ -154,8 +160,19 @@ echo -e "\n\e[93m===============================================================
                                                                                 Deploying grafana and portainer
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT}/grafana-portainer > /dev/null;  #/sharder/ssd
+    sudo chown 10001:10001 ./loki
     bash ./start.p0monitor.sh ${HOST} admin ${PASSWORD}
 popd > /dev/null;
+
+echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                                  Enabling firewall
+===============================================================================================================================================================================  \e[39m"
+sudo ufw allow 22,80,443,53/tcp
+sudo ufw allow out to any port 80
+sudo ufw allow out to any port 443
+sudo ufw allow out to any port 7171
+sudo ufw allow out to any port 53
+yes y | sudo ufw enable
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                                 Adding Grafana Dashboards

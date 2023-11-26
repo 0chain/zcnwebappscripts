@@ -33,7 +33,7 @@ server_chain:
     max_block_cost: 10000 #equal to 100ms
     max_byte_size: 1638400
     min_generators: 2
-    generators_percent: 0.2
+    generators_percent: 0.15
     replicators: 0
     generation:
       timeout: 15
@@ -53,23 +53,24 @@ server_chain:
     finalization:
       timeout: 30s
 
-  round_range: 10000000 #todo remove after laxmi is merge
+  round_range: 10000000
   dkg: true
   view_change: false
   round_timeouts:
     softto_min: 1500 # in miliseconds
     softto_mult: 1 # multiples of mean network time (mnt)  softto = max{softo_min, softto_mult * mnt}
     round_restart_mult: 10 # number of soft timeouts before round is restarted
-    timeout_cap: 1 # 0 indicates no cap
+    timeout_cap: 10 # 0 indicates no cap
     vrfs_timeout_mismatch_tolerance: 5
   transaction:
     payload:
       max_size: 98304 # bytes
-    timeout: 600 # seconds
+    timeout: 1800 #30 minutes
     min_fee: 0
-    max_fee: 0.01 # max fee per txn would be 1 ZCN, adjust later if needed
+    max_fee: 0.000000001 # 10 SAS
+    cost_fee_coeff: 100000 # 1000000 costs represents 1 ZCN, 1000 cost represents 1 mZCN
     transfer_cost: 10
-    cost_fee_coeff: 1000000 # 1000 unit cost per 1 ZCN
+    future_nonce: 100 # allow 100 nonce ahead of current client state
     exempt:
       - contributeMpk
       - shareSignsOrShares
@@ -82,7 +83,7 @@ server_chain:
   messages:
     verification_tickets_to: all_miners # generator or all_miners
   state:
-    enabled: true #todo we really need it?
+    enabled: true
     prune_below_count: 100 # rounds
     sync:
       timeout: 10 # seconds
@@ -118,7 +119,7 @@ server_chain:
   lfb_ticket:
     rebroadcast_timeout: "15s" #
     ahead: 5 # should be >= 5
-    fb_fetching_lifetime: "10s" #todo add to config
+    fb_fetching_lifetime: "10s" #
   async_blocks_fetching:
     max_simultaneous_from_miners: 100
     max_simultaneous_from_sharders: 30
@@ -126,37 +127,38 @@ server_chain:
     events:
       # event database configuration local
       enabled: true
-      name: events_db
-      user: zchain_user
-      password: zchian
-      host: postgres #localhost
+      name: dummy
+      user: dummy
+      password: dummy
+      host: dummy #localhost
       port: 5432
       max_idle_conns: 100
       max_open_conns: 200
       conn_max_lifetime: 20s
+      slowtablespace: hddtablespace
     settings:
       # event database settings blockchain
-      debug: false
-      aggregate_period: 10
-      partition_change_period: 100000
-      partition_keep_count: 20
+      debug: true
+      aggregate_period: 4000
+      partition_change_period: 10000
+      partition_keep_count: 10
       page_limit: 50
 
 network:
-  magic_block_file: config/b0magicBlock_4_miners_2_sharders.json
+  magic_block_file: config/b0magicBlock.json
   initial_states: config/initial_state.yaml
   genesis_dkg: 0
   dns_url: "" # http://198.18.0.98:9091
   relay_time: 200 # milliseconds
-  max_concurrent_requests: 40
+  max_concurrent_requests: 200
   timeout:
     small_message: 1000 # milliseconds
     large_message: 3000 # milliseconds
   large_message_th_size: 5120 # anything greater than this size in bytes
   user_handlers:
-    rate_limit: 100 # 100 per second
+    rate_limit: 100000000 # 100000000 per second
   n2n_handlers:
-    rate_limit: 10000 # 10000 per second
+    rate_limit: 10000000000 # 10000000000 per second
 
 # delegate wallet is wallet that used to configure node in Miner SC; if its
 # empty, then node ID used
@@ -174,11 +176,10 @@ cassandra:
 #   port: 9042
 
 storage:
-  root_dir: "/mnt/hdd"
-  cache:
-    path: "/mnt/ssd"
-    total_blocks: 1000
-
+#  Uncomment the following lines to enable cache.
+#  cache:
+#    path: "/mnt/ssd/sharder1"
+#    total_blocks: 1000 # Total number of blocks this cache will store
 # integration tests related configurations
 integration_tests:
   # address of the server

@@ -34,10 +34,29 @@ if [[ -d $HOME/.zcn/docker-compose.yml ]]; then
 fi
 
 # docker image
-DOCKER_TAG=staging
+DOCKER_TAG=sprint-1.11-9bd91947
 
 sudo apt update
-DEBIAN_FRONTEND=noninteractive sudo apt install -y unzip curl containerd docker.io jq
+DEBIAN_FRONTEND=noninteractive sudo apt install -y unzip curl containerd docker.io jq net-tools
+snap install yq
+
+check_port_443() {
+  PORT=443
+  command -v netstat >/dev/null 2>&1 || {
+    echo >&2 "netstat command not found. Exiting."
+    exit 1
+  }
+
+  if netstat -tulpn | grep ":$PORT" >/dev/null; then
+    echo "Port $PORT is in use."
+    echo "Please stop the process running on port $PORT and run the script again"
+    exit 1
+  else
+    echo "Port $PORT is not in use."
+  fi
+}
+echo "checking if ports are available..."
+check_port_443
 
 echo "download docker-compose"
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -55,6 +74,9 @@ rm -rf ${MIGRATION_ROOT}/*
 mkdir -p ${MIGRATION_LOGS}
 mkdir -p ${CONFIG_DIR}
 mkdir -p ${CONFIG_DIR_MIGRATION}
+
+MINIO_ROOT_USER=$(cat docker-compose.yml |  yq e '.services.minioserver.environment | select(.MINIO_ROOT_USER != null) | .MINIO_ROOT_USER')
+MINIO_ROOT_PASSWORD=$(cat docker-compose.yml |  yq e '.services.minioserver.environment | select(.MINIO_ROOT_PASSWORD != null) | .MINIO_ROOT_PASSWORD')
 
 # create wallet.json
 cat <<EOF >${CONFIG_DIR_MIGRATION}/wallet.json
@@ -165,8 +187,8 @@ services:
       MINIO_AUDIT_WEBHOOK_ENDPOINT: ${MINIO_TOKEN}
       MINIO_AUDIT_WEBHOOK_AUTH_TOKEN: 12345
       MINIO_AUDIT_WEBHOOK_ENABLE: "on"
-      MINIO_ROOT_USER: ${MINIO_USERNAME}
-      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
+      MINIO_ROOT_USER: ${MINIO_ROOT_USERNAME}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
       MINIO_BROWSER: "OFF"
     links:
       - api:api
@@ -184,7 +206,7 @@ services:
       MINIO_SERVER: "minioserver:9000"
 
   s3mgrt:
-    image: 0chaindev/s3mgrt:pr-756-b0886880
+    image: 0chaindev/s3mgrt:staging
     restart: always
     environment:
       BUCKET: "${BUCKET}"

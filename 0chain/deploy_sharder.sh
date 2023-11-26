@@ -3,19 +3,36 @@
 set -e
 
 echo -e "\n\e[93m===============================================================================================================================================================================
-                                                                                setup variables 
+                                                                Installing yq on your server
+===============================================================================================================================================================================  \e[39m"
+echo -e "\e[32m 1. Setting up yaml query. \e[23m \e[0;37m"
+sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 || true
+sudo chmod a+x /usr/local/bin/yq || true
+yq --version || true
+
+echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                                setup variables
 ===============================================================================================================================================================================  \e[39m"
 export PROJECT_ROOT=/var/0chain # /var/0chain
 echo -e "\e[32m Successfully Created \e[23m \e[0;37m"
 
 echo -e "\n\e[93m===============================================================================================================================================================================
-                                                                            Checking Sharder counts. 
+                                                                            Checking Sharder counts.
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
     #Sharder
     if [[ -f sharder/numsharder.txt ]] ; then
         echo -e "\e[32m Sharders count present \e[23m \e[0;37m"
         SHARDER=$(cat sharder/numsharder.txt)
+    fi
+
+    #Sharder Delegate wallet
+    if [[ -f del_wal_id.txt ]] ; then
+        echo -e "\e[32m Sharders delegate wallet id present \e[23m \e[0;37m"
+        SHARDER_DEL=$(cat del_wal_id.txt)
+    else
+        echo "Unable to find sharder delegate wallet"
+        exit 1
     fi
 
     #Checking shader var's
@@ -43,7 +60,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
         echo "Copying sharder keys & configs."
         sudo cp -rf keys/b0s* sharder/ssd/docker.local/config    # sharder/ssd/docker.local/config
         sudo cp -f nodes.yaml sharder/ssd/docker.local/config/nodes.yaml
-        sudo cp -f b0magicBlock.json sharder/ssd/docker.local/config/b0magicBlock_4_miners_2_sharders.json
+        sudo cp -f b0magicBlock.json sharder/ssd/docker.local/config/b0magicBlock.json
         sudo cp -f initial_states.yaml sharder/ssd/docker.local/config/initial_state.yaml
     fi
 popd > /dev/null;
@@ -68,10 +85,23 @@ pushd ${PROJECT_ROOT}/sharder/ssd > /dev/null;
       tr -dc A-Za-z0-9 </dev/urandom | head -c 13 > sharder_pg_password
       PG_PASSWORD=$(cat sharder_pg_password)
     fi
-    echo -e "\e[32m Successfully Created \e[23m \e[0;37m"
-    sed -i "s/zchian/${PG_PASSWORD}/g" ./docker.local/config/0chain.yaml
+    echo -e "\e[32m Successfully Created the password\e[23m \e[0;37m"
+    yq e -i '.delegate_wallet = "${SHARDER_DEL}"' ./docker.local/config/0chain.yaml
     sed -i "s/zchian/${PG_PASSWORD}/g" ./docker.local/sql_script/00-create-user.sql
     sed -i "s/zchian/${PG_PASSWORD}/g" ./docker.local/build.sharder/p0docker-compose.yaml
+    echo -e "\e[32m Successfully Updated the configs\e[23m \e[0;37m"
+popd > /dev/null;
+
+echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                                Tablespace permission to sharder postgres
+===============================================================================================================================================================================  \e[39m"
+pushd ${PROJECT_ROOT}/sharder/hdd/docker.local > /dev/null;
+    for i in $(seq 1 $SHARDER)
+    do
+        cd sharder${i}/data/
+        chown -R 999:999 postgresql2
+        cd ../../
+    done
 popd > /dev/null;
 
 echo -e "\n\e[93m===============================================================================================================================================================================

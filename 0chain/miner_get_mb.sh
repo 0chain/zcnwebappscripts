@@ -7,6 +7,8 @@ echo -e "\n\e[93m===============================================================
 ===============================================================================================================================================================================  \e[39m"
 
 export PROJECT_ROOT="/var/0chain" # /var/0chain
+export PROJECT_ROOT_SSD=/var/0chain/miner/ssd # /var/0chain/miner/ssd
+export PROJECT_ROOT_HDD=/var/0chain/miner/hdd # /var/0chain/miner/hdd
 echo -e "\e[32m Successfully Created \e[23m \e[0;37m"
 
 echo -e "\n\e[93m===============================================================================================================================================================================
@@ -36,7 +38,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
             wget https://github.com/0chain/onboarding-cli/releases/download/binary%2Fubuntu-18/keygen-linux.tar.gz
             tar -xvf keygen-linux.tar.gz
             rm keygen-linux.tar.gz*
-            echo "server_url : http://65.108.96.106:3000/" > server-config.yaml
+            echo "server_url : https://mb-gen.0chain.net/" > server-config.yaml
         fi
     else
         echo "No miner present."
