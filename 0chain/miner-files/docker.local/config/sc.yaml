@@ -237,7 +237,7 @@ smart_contracts:
     min_authorizers: 1
     percent_authorizers: 0.7
     max_delegates: 10
-    max_fee: 0.001 #todo change the wording
+    max_fee: 10000000 #todo change the wording
     burn_address: "0000000000000000000000000000000000000000000000000000000000000000" #todo maybe we should use sc address
     health_check_period: 90m
     cost:
