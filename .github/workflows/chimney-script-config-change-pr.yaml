@@ -1,4 +1,4 @@
-name: chimney_script_config_change_PR
+name: chimney_script_config_change_PR.
 
 on:
   workflow_dispatch:
@@ -8,3 +8,49 @@ jobs:
     runs-on: arc-runner
     steps:
       - uses: actions/checkout@v3
+
+      - name: "Clone Blobber Repo"
+        uses: actions/checkout@v3
+        with:
+          ref: staging
+          repository: 0chain/blobber
+          fetch-depth: 1
+          path: ./blobber
+
+      - name: "Copy Config Files"
+        run: |
+           cp ./blobber/config/0chain_blobber.yaml  ./config/0chain_blobber.yaml
+           cp ./blobber/config/0chain_validator.yaml  ./config/0chain_validator.yaml
+      
+      - name: " Config Files"
+        run: |
+          cat  ./config/0chain_blobber.yaml
+          echo " -------------###-----------------"
+          cat  ./config/0chain_validator.yaml
+
+      - name: " remove blobber repo"
+        run: |
+           rm -rf blobber
+      
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+         github_token: ${{ secrets.ACCESS_TOKEN }}
+         branch: feature/config-ci
+         message: "changes in config file"
+
+  PR:
+    runs-on: 'arc-runner'
+    needs: [ChimneyScriptUpdate]
+    steps:   
+    
+      - name: Create pull request
+        uses: thomaseizinger/create-pull-request@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          head: feature/config-ci
+          base: main
+          title: "PR automated!"
+          reviewers: "boddumanohar"
+
+    
