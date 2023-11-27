@@ -133,6 +133,10 @@ EOF
 mkdir -p ${CONFIG_DIR}/caddyfiles
 
 cat <<EOF >${CONFIG_DIR}/caddyfiles/Caddyfile
+{
+  acme_ca https://acme.zerossl.com/v2/DV90
+  email   sbasu999@gmail.com
+}
 import /etc/caddy/*.caddy
 EOF
 
