@@ -53,7 +53,7 @@ server_chain:
       max_size: 98304 # bytes
     timeout: 1800 #30 minutes
     min_fee: 0.0001
-    max_fee: 1 # max fee per txn would be 1 ZCN, adjust later if needed
+    max_fee: 0.2 # max fee per txn would be 1 ZCN, adjust later if needed
     transfer_cost: 10
     cost_fee_coeff: 100000 # 100000 unit cost per 1 ZCN
     future_nonce: 100 # allow 100 nonce ahead of current client state
