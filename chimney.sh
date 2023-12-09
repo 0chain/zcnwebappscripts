@@ -208,11 +208,6 @@ cat <<EOF >${PROJECT_ROOT}/Caddyfile
   }
 }
 
-{
-  acme_ca https://acme.zerossl.com/v2/DV90
-  email   sbasu999@gmail.com
-}
-
 ${BLOBBER_HOST} {
   import cors https://${BLOBBER_HOST}
   log {
