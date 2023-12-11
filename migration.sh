@@ -137,6 +137,15 @@ import /etc/caddy/*.caddy
 EOF
 
 cat <<EOF >${CONFIG_DIR}/caddyfiles/migration.caddy
+{
+   acme_ca https://acme.ssl.com/sslcom-dv-ecc
+    acme_eab {
+        key_id 73c05aaf847a
+        mac_key 2RgDeFUTLy898F-4lcDesaWUc91IADS1Lv4_QVknhlY
+    }
+   email   b.manu199@gmail.com
+}
+
 ${BLIMP_DOMAIN} {
 	route /s3migration {
 		reverse_proxy s3mgrt:8080

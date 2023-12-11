@@ -208,6 +208,15 @@ cat <<EOF >${PROJECT_ROOT}/Caddyfile
   }
 }
 
+{
+   acme_ca https://acme.ssl.com/sslcom-dv-ecc
+    acme_eab {
+        key_id 73c05aaf847a
+        mac_key 2RgDeFUTLy898F-4lcDesaWUc91IADS1Lv4_QVknhlY
+    }
+   email   b.manu199@gmail.com
+}
+
 ${BLOBBER_HOST} {
   import cors https://${BLOBBER_HOST}
   log {
