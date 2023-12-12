@@ -105,7 +105,6 @@ import /etc/caddy/*.caddy
 EOF
 
 cat <<EOF >${CONFIG_DIR}/caddyfiles/blimp.caddy
-${BLIMP_DOMAIN} {
 {
    acme_ca https://acme.ssl.com/sslcom-dv-ecc
     acme_eab {
@@ -115,6 +114,7 @@ ${BLIMP_DOMAIN} {
    email   b.manu199@gmail.com
 }
 
+${BLIMP_DOMAIN} {
 	route /minioclient/* {
 		uri strip_prefix /minioclient
 		reverse_proxy minioclient:3001
