@@ -34,8 +34,8 @@ services:
       - postgres
     volumes:
       - ../config:/0chain/config
-      - ${PROJECT_ROOT_HDD}/sharder${SHARDER}/log:/0chain/log
-      - ${PROJECT_ROOT_HDD}/sharder${SHARDER}/data:/0chain/data
+      - ${PROJECT_ROOT_HDD}/docker.local/sharder${SHARDER}/log:/0chain/log
+      - ${PROJECT_ROOT_HDD}/docker.local/sharder${SHARDER}/data:/0chain/data
     ports:
       - "717${SHARDER}:717${SHARDER}"
     command:
