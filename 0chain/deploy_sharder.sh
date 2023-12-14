@@ -68,7 +68,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
         sudo cp -rf keys/b0s* sharder/ssd/docker.local/config    # sharder/ssd/docker.local/config
         sudo cp -f nodes.yaml sharder/ssd/docker.local/config/nodes.yaml
         sudo cp -f b0magicBlock.json sharder/ssd/docker.local/config/b0magicBlock.json
-        sudo cp -f initial_states.yaml sharder/ssd/docker.local/config/initial_state.yaml
+        sudo cp -f initial_states.yaml sharder/ssd/docker.local/config/initial_states.yaml
     fi
 popd > /dev/null;
 

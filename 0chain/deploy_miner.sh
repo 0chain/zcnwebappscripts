@@ -72,7 +72,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
         sudo cp -rf dkgSummary-* miner/ssd/docker.local/config
         sudo cp -f nodes.yaml miner/ssd/docker.local/config/nodes.yaml
         sudo cp -f b0magicBlock.json miner/ssd/docker.local/config/b0magicBlock.json
-        sudo cp -f initial_states.yaml miner/ssd/docker.local/config/initial_state.yaml
+        sudo cp -f initial_states.yaml miner/ssd/docker.local/config/initial_states.yaml
     fi
 popd > /dev/null;
 
