@@ -12,8 +12,8 @@ sudo rm -rf zwallet-binary
 
 echo "block_worker: https://beta.zus.network/dns" > config.yaml
 echo "signature_scheme: bls0chain" >> config.yaml
-echo "min_submit: 50" >> config.yaml
-echo "min_confirmation: 50" >> config.yaml
+echo "min_submit: 20" >> config.yaml
+echo "min_confirmation: 20" >> config.yaml
 echo "confirmation_chain_length: 3" >> config.yaml
 echo "max_txn_query: 5" >> config.yaml
 echo "query_sleep_time: 5" >> config.yaml
