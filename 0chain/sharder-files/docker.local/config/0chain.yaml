@@ -112,8 +112,8 @@ server_chain:
     events:
       # event database configuration local
       enabled: true
-      name: dummy
-      user: dummy
+      name: events_db
+      user: zchain_user
       password: dummy
       host: dummy #localhost
       port: 5432
