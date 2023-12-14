@@ -6,7 +6,7 @@ echo -e "\n\e[93m===============================================================
 ===============================================================================================================================================================================  \e[39m"
 cd ~
 rm /var/0chain/initial_states.yaml || true
-wget -N https://raw.githubusercontent.com/0chain/zcnwebappscripts/test-deploy-changes/0chain/others/initial_states.yaml
+wget -N https://raw.githubusercontent.com/0chain/zcnwebappscripts/as-deploy/0chain/others/initial_states.yaml
 mv initial_states.yaml /var/0chain/
 
 echo -e "\n\e[93m===============================================================================================================================================================================
@@ -55,7 +55,7 @@ echo -e "\n\e[93m===============================================================
                                                                         Extract miner files
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
-    curl -L "https://github.com/0chain/zcnwebappscripts/raw/test-deploy-changes/0chain/artifacts/miner-files.zip" -o /tmp/miner-files.zip
+    curl -L "https://github.com/0chain/zcnwebappscripts/raw/as-deploy/0chain/artifacts/miner-files.zip" -o /tmp/miner-files.zip
     sudo unzip -o /tmp/miner-files.zip && rm -rf /tmp/miner-files.zip
     sudo cp -rf miner-files/* ${PROJECT_ROOT}/miner/ssd/
     sudo rm -rf miner-files
