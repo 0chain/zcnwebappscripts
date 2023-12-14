@@ -115,10 +115,9 @@ echo -e "\n\e[93m===============================================================
                                                                             Backing up keys and configs for sharder.
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
-    timestamp=archive-sharder-$(date +"%Y-%m-%d-%T")
+    export timestamp=archive-sharder-$(date +"%Y-%m-%d-%T")
     zip -r $timestamp.zip .
     cp $timestamp.zip ~
-    echo "Please backup the $PWD/$timestamp.zip file to your local or to another server."
 popd
 
 echo -e "\n\e[93m===============================================================================================================================================================================
@@ -132,3 +131,6 @@ pushd ${PROJECT_ROOT}/sharder/ssd/docker.local > /dev/null;  #/sharder/ssd
         cd ../
     done
 popd > /dev/null;
+
+echo
+echo "Please backup the $HOME/$timestamp.zip file to your local or to another server."

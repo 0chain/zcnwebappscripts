@@ -101,7 +101,6 @@ pushd ${PROJECT_ROOT} > /dev/null;
     timestamp=archive-miner-$(date +"%Y-%m-%d-%T")
     zip -r $timestamp.zip .
     cp $timestamp.zip ~
-    echo "Please backup the $PWD/$timestamp.zip file to your local or to another server."
 popd
 
 echo -e "\n\e[93m===============================================================================================================================================================================
@@ -115,3 +114,6 @@ pushd ${PROJECT_ROOT}/miner/ssd/docker.local > /dev/null;  #/miner/ssd
         cd ../
     done
 popd > /dev/null;
+
+echo
+echo "Please backup the $HOME/$timestamp.zip file to your local or to another server."
