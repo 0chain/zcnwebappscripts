@@ -37,7 +37,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
     #Miner Delegate wallet
     if [[ -f del_wal_id.txt ]] ; then
         echo -e "\e[32m Miner delegate wallet id present \e[23m \e[0;37m"
-        MINER_DEL=$(cat del_wal_id.txt)
+        export MINER_DEL=$(cat del_wal_id.txt)
     else
         echo "Unable to find miner delegate wallet"
         exit 1
@@ -90,7 +90,7 @@ echo -e "\n\e[93m===============================================================
                                                                                 Updating for delegate wallet in 0chain.yaml
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT}/miner/ssd > /dev/null;
-    yq e -i '.delegate_wallet = "${MINER_DEL}"' ./docker.local/config/0chain.yaml
+    yq e -i '.delegate_wallet = env(MINER_DEL)' ./docker.local/config/0chain.yaml
     echo -e "\e[32m Successfully Updated \e[23m \e[0;37m"
 popd > /dev/null;
 

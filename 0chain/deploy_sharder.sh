@@ -36,7 +36,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
     #Sharder Delegate wallet
     if [[ -f del_wal_id.txt ]] ; then
         echo -e "\e[32m Sharders delegate wallet id present \e[23m \e[0;37m"
-        SHARDER_DEL=$(cat del_wal_id.txt)
+        export SHARDER_DEL=$(cat del_wal_id.txt)
     else
         echo "Unable to find sharder delegate wallet"
         exit 1
@@ -93,7 +93,7 @@ pushd ${PROJECT_ROOT}/sharder/ssd > /dev/null;
       PG_PASSWORD=$(cat sharder_pg_password)
     fi
     echo -e "\e[32m Successfully Created the password\e[23m \e[0;37m"
-    yq e -i '.delegate_wallet = "${SHARDER_DEL}"' ./docker.local/config/0chain.yaml
+    yq e -i .delegate_wallet = env(SHARDER_DEL)" ./docker.local/config/0chain.yaml
     sed -i "s/zchian/${PG_PASSWORD}/g" ./docker.local/sql_script/00-create-user.sql
     sed -i "s/zchian/${PG_PASSWORD}/g" ./docker.local/build.sharder/p0docker-compose.yaml
     echo -e "\e[32m Successfully Updated the configs\e[23m \e[0;37m"
