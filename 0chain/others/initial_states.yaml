@@ -334,7 +334,7 @@ initialStates:
 
 # zcnsc
 - id: 6dba10422e368813802877a85039d3985d96760ed844092319743fb3a76712e0
-  tokens: 2400000000000000000
+  tokens: 2000100000000000000
   initial_states:
     #authorizer
     - id: eb6c7c5400fb0b598dc60a2087099edde4046441e3c6c05a094db68ed01bcf1f
@@ -363,6 +363,6 @@ initialStates:
     #owner_wallet
     - id: ac112d5620eb7918e08086506b4c5fba9419be09b3dd97e47e02778b0927dcc4
       tokens: 200000000000000000
-    # wifi
+    # reserved_for_future
     - id: dc10a6c023e958c5f78ec25f5d670cdbcdb57beecd05d6876cf2f57567edcae6
       tokens: 200000000000000000
