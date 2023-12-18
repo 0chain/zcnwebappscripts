@@ -183,12 +183,12 @@ pushd ${PROJECT_ROOT}/grafana-portainer/grafana > /dev/null;
   sleep 20s
 
   curl -X POST -H "Content-Type: application/json" \
-       -d "@./server.json" \
+        -d "{\"dashboard\":$(cat ./docker_system_monitoring.json)}" \
       "https://admin:${PASSWORD}@${HOST}/grafana/api/dashboards/import"
 
-  # curl -X POST -H "Content-Type: application/json" \
-  #      -d "@./docker_system_monitoring.json" \
-  #     "https://admin:${PASSWORD}@${HOST}/grafana/api/dashboards/import"
+  curl -X POST -H "Content-Type: application/json" \
+       -d "@./server.json" \
+      "https://admin:${PASSWORD}@${HOST}/grafana/api/dashboards/import"
 
   if [[ ${MINER} -gt 0 ]] ; then
       curl -X POST -H "Content-Type: application/json" \
