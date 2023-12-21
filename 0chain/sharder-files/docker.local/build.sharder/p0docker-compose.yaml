@@ -41,7 +41,7 @@ services:
     command:
       - /bin/sh
       - -c
-      - mkdir -p /0chain/data/blocks && mkdir -p /0chain/data/rocksdb && ./bin/sharder --deployment_mode 0 --keys_file config/b0snode${SHARDER}_keys.txt
+      - mkdir -p /0chain/data/blocks && mkdir -p /0chain/data/rocksdb && ./bin/sharder --deployment_mode 2 --keys_file config/b0snode${SHARDER}_keys.txt
     restart: unless-stopped
     networks:
       testnet0:

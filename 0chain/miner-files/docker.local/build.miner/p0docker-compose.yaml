@@ -51,7 +51,7 @@ services:
       - ${PROJECT_ROOT_SSD}/miner${MINER}/log:/0chain/log
     ports:
       - "707${MINER}:707${MINER}"
-    command: ./bin/miner  --deployment_mode 0 --keys_file config/b0mnode${MINER}_keys.txt --dkg_file config/dkgSummary-${MINER}_dkg.json
+    command: ./bin/miner  --deployment_mode 2 --keys_file config/b0mnode${MINER}_keys.txt --dkg_file config/dkgSummary-${MINER}_dkg.json
     restart: unless-stopped
     networks:
       testnet0:
