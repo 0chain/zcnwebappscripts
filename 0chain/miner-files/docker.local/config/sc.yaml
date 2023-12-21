@@ -99,7 +99,7 @@ smart_contracts:
     # min possible allocations size in bytes allowed by the SC
     min_alloc_size: 1073741824
     # max challenge completion round of a blobber allowed by the SC
-    max_challenge_completion_rounds: 720
+    max_challenge_completion_rounds: 1200
     # min blobber's offer duration allowed by the SC
     min_offer_duration: "8760h" #todo based on timeunit
     # min blobber capacity allowed by the SC
@@ -248,4 +248,3 @@ smart_contracts:
       authorizer-health-check: 100
       delete-authorizer: 100
       update-global-config: 100
-      
