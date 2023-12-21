@@ -160,7 +160,7 @@ echo -e "\n\e[93m===============================================================
                                                                                 Deploying grafana and portainer
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT}/grafana-portainer > /dev/null;  #/miner/ssd
-    sudo chown 10001:10001 ./loki
+    sudo chown 1001:1001 ./loki
     bash ./start.p0monitor.sh ${HOST} admin ${PASSWORD}
 popd > /dev/null;
 
