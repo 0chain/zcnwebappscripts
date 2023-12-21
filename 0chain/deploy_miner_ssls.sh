@@ -213,3 +213,17 @@ echo "Grafana Username --> admin"
 echo "Grafana Password --> ${PASSWORD}"
 echo -e "\nPortainer Username --> admin"
 echo "Portainer Password --> ${PASSWORD}"
+
+echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                                Loki logs cleanup
+===============================================================================================================================================================================  \e[39m"
+pushd ${PROJECT_ROOT} > /dev/null;
+cat <<EOF >loki-logs-cleanup-job.sh
+docker stop loki
+cd ${PROJECT_ROOT}grafana-portainer/loki/chunks
+rm -rf ./*
+docker start loki
+EOF
+echo "0 0 */3 * * ${PROJECT_ROOT}/loki-logs-cleanup-job.sh" > crontab_loki
+crontab crontab_loki
+popd > /dev/null;
