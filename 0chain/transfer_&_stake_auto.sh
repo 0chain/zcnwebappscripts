@@ -10,7 +10,7 @@ sudo unzip -o /tmp/zwallet-binary.zip && rm -rf /tmp/zwallet-binary.zip
 sudo cp -rf zwallet-binary/* .
 sudo rm -rf zwallet-binary
 
-echo "block_worker: https://beta.zus.network/dns" > config.yaml
+echo "block_worker: https://mainnnet.zus.network/dns" > config.yaml
 echo "signature_scheme: bls0chain" >> config.yaml
 echo "min_submit: 20" >> config.yaml
 echo "min_confirmation: 20" >> config.yaml
@@ -24,7 +24,7 @@ echo -e "\n\e[93m===============================================================
 i=1
 for del_wal in $(jq -r .[].client_id others/del_wallets.json); do
     echo "wallet $i --> $del_wal"
-    ./zwallet send --to_client_id ${del_wal} --tokens 50000 --desc "delegate" --wallet ./wallet.json --configDir . --config ./config.yaml --silent
+    ./zwallet send --to_client_id ${del_wal} --tokens 50001 --desc "delegate" --wallet ./wallet.json --configDir . --config ./config.yaml --silent
     ((i++))
 done
 
