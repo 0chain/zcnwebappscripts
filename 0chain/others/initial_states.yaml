@@ -335,7 +335,7 @@ initialStates:
 # zcnsc
 - id: 6dba10422e368813802877a85039d3985d96760ed844092319743fb3a76712e0
   tokens: 2400000000000000000
-  initial_states:
+  state:
     #authorizer
     - id: eb6c7c5400fb0b598dc60a2087099edde4046441e3c6c05a094db68ed01bcf1f
       tokens: 10000000000000
