@@ -11,13 +11,13 @@ echo -e "\n\e[93m===============================================================
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
     docker rm -f $(docker ps -a -q)
-    rm -rf /var/0chain/miner/ssd/* || true
-    rm -rf /var/0chain/miner/hdd/* || true
-    rm -rf /var/0chain/grafana-portainer/* || true
-    rm -rf /var/0chain/sharder/ssd/* || true
-    rm -rf /var/0chain/sharder/hdd/* || true
-    rm -rf /var/0chain/*.zip || true
-    rm -rf /var/0chain/initial_states.yaml || true
+    rm -rf miner/ssd/* || true
+    rm -rf miner/hdd/* || true
+    rm -rf grafana-portainer/* || true
+    rm -rf sharder/ssd/* || true
+    rm -rf sharder/hdd/* || true
+    rm -rf *.zip || true
+    rm -rf initial_states.yaml || true
     echo 'y' | docker system prune -a || true
     echo 'y' | docker volume prune -a || true
 popd > /dev/null;
