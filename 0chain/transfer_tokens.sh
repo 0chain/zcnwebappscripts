@@ -40,10 +40,10 @@ domains=$(jq -r .[].domain others/del_wallets.json)
 arr=($domains)
 for del_wal in $(jq -r .[].client_id others/del_wallets.json); do
     echo "###################################################################################################################################################################################"
-    echo "## SNo.$i :: Transfering 5001 tokens for domain ${arr[i]} to delegate wallet $del_wal from team wallet ##"
+    echo "## SNo.$i :: Transfering 51000 tokens for domain ${arr[i]} to delegate wallet $del_wal from team wallet ##"
     echo "###################################################################################################################################################################################"
     sleep 2s
-    ./bin/zwallet send --to_client_id ${del_wal} --tokens 50001 --desc "delegate" --wallet ./team_wallet.json --configDir . --config ./config.yaml
+    ./bin/zwallet send --to_client_id ${del_wal} --tokens 51000 --desc "delegate" --wallet ./team_wallet.json --configDir . --config ./config.yaml
     echo
     echo
     ((i++))
