@@ -63,9 +63,15 @@ pushd ${PROJECT_ROOT} > /dev/null;
 popd > /dev/null;
 
 echo -e "\n\e[93m===============================================================================================================================================================================
-                                                                            Staking using delegate wallets.
+                                                                            Staking miner using delegate wallets.
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
     echo "./bin/zwallet mn-lock --miner_id ${MINER_ID} --tokens 50000 --configDir . --config ./config.yaml --wallet delegate_wallet.json"
-    ./bin/zwallet mn-lock --miner_id ${MINER_ID} --tokens 50000 --configDir . --config ./config.yaml --wallet delegate_wallet.json | tee ./miner_staking.log
+    ./bin/zwallet mn-lock --miner_id ${MINER_ID} --tokens 50000 --configDir . --config ./config.yaml --wallet delegate_wallet.json
 popd > /dev/null;
+
+
+############ Steps to run the script ############
+# 1. wget -N https://raw.githubusercontent.com/0chain/zcnwebappscripts/as-deploy/0chain/stake_miner.sh;
+# 2. bash miner_sharder.sh &> ./miner_staking.log
+################################################
