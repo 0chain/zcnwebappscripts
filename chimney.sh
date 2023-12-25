@@ -98,7 +98,12 @@ docker-compose --version
 
 ## cleanup server before starting the deployment
 if [ -f "${PROJECT_ROOT}/docker-compose.yml" ]; then
-  echo "previous deployment exists. Clean it up..."
+  echo "previous deployment exists"
+  read -p "This will remove all the data and tokens. Are you sure you want to continue? " -n 1 -r
+  if [[ ! $REPLY =~ ^[Yy]$ ]]
+  then
+    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
+  fi
   docker-compose -f ${PROJECT_ROOT}/docker-compose.yml down --volumes
   docker system prune --volumes --force
   rm -rf ${PROJECT_ROOT} || true
