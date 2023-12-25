@@ -100,6 +100,7 @@ docker-compose --version
 if [ -f "${PROJECT_ROOT}/docker-compose.yml" ]; then
   echo "previous deployment exists. Clean it up..."
   docker-compose -f ${PROJECT_ROOT}/docker-compose.yml down --volumes
+  docker system prune --volumes --force
   rm -rf ${PROJECT_ROOT} || true
 fi
 
