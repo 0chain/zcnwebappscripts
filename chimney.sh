@@ -99,7 +99,7 @@ docker-compose --version
 ## cleanup server before starting the deployment
 if [ -f "${PROJECT_ROOT}/docker-compose.yml" ]; then
   echo "previous deployment exists"
-  read -p "This will remove all the data and tokens. Are you sure you want to continue? " -n 1 -r
+  read -p "This will remove all the data and tokens. Are you sure you want to continue [N]? " -n 1 -r REPLY
   if [[ ! $REPLY =~ ^[Yy]$ ]]
   then
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1
