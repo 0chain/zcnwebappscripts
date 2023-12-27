@@ -29,9 +29,9 @@ smart_contracts:
     k_percent: .75 # of registered
     x_percent: 0.70 # percentage of prev mb miners required to be part of next mb
     # etc
-    min_stake: 1000.0 # min stake can be set by a node (boundary for all nodes)
+    min_stake: 1.0 # min stake can be set by a node (boundary for all nodes)
     max_stake: 2000000.0 # max stake can be set by a node (boundary for all nodes)
-    min_stake_per_delegate: 50000.0
+    min_stake_per_delegate: 1.0
     start_rounds: 50
     contribute_rounds: 50
     share_rounds: 50
@@ -97,13 +97,13 @@ smart_contracts:
     max_mint: 75000000.0 # tokens, max amount of tokens can be minted by SC
     min_stake_per_delegate: 10.0
     # min possible allocations size in bytes allowed by the SC
-    min_alloc_size: 1073741824
+    min_alloc_size: 1048576
     # max challenge completion round of a blobber allowed by the SC
     max_challenge_completion_rounds: 1200
     # min blobber's offer duration allowed by the SC
     min_offer_duration: "8760h" #todo based on timeunit
     # min blobber capacity allowed by the SC
-    min_blobber_capacity: 10995116277760
+    min_blobber_capacity: 1073741824
     # fraction of the allocation cost that is locked in the cancellation charge
     cancellation_charge: 0.2
     min_lock_demand: 1
