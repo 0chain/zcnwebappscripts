@@ -214,5 +214,15 @@ volumes:
 
 EOF
 
+
 sudo docker-compose -f ${CONFIG_DIR}/docker-compose.yml pull
 sudo docker-compose -f ${CONFIG_DIR}/docker-compose.yml up -d
+
+CERTIFICATES_DIR=caddy/caddy_data/caddy/certificates/acme.ssl.com-sslcom-dv-ecc
+
+while [ ! -d ${CONFIG_DIR}/${CERTIFICATES_DIR}/${BLIMP_DOMAIN} ]; do
+  echo "waiting for certificates to be provisioned"
+  sleep 2
+done
+
+echo "S3 Server deployment completed."

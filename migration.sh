@@ -241,6 +241,17 @@ EOF
 /usr/local/bin/docker-compose -f ${CONFIG_DIR}/docker-compose.yml pull
 /usr/local/bin/docker-compose -f ${CONFIG_DIR}/docker-compose.yml up -d
 
+CERTIFICATES_DIR=caddy/caddy_data/caddy/certificates/acme.ssl.com-sslcom-dv-ecc
+
+while [ ! -d ${CONFIG_DIR}/${CERTIFICATES_DIR}/${BLIMP_DOMAIN} ]; do
+  echo "waiting for certificates to be provisioned"
+  sleep 2
+done
+
+
+echo "Starting migration..."
+echo ""
+
 flags="--configDir ${CONFIG_DIR_MIGRATION} --wd ${MIGRATION_ROOT} --access-key ${ACCESS_KEY} --secret-key ${SECRET_KEY} --allocation ${ALLOCATION} --bucket ${BUCKET} "
 
 # setup optional parameters
@@ -257,3 +268,5 @@ if [ $MIGRATE_TO != "0chainmigrateto" ]; then flags=$flags" --migrate-to ${MIGRA
 
 cd ${MIGRATION_LOGS}
 /usr/local/bin/s3mgrt migrate $flags
+
+echo "Migration complete..."

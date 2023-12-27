@@ -479,3 +479,5 @@ for dashboard in "${DASHBOARDS}/blobber.json" "${DASHBOARDS}/server.json" "${DAS
     "https://${GF_ADMIN_USER}:${escapedPassword}@${BLOBBER_HOST}/grafana/api/dashboards/import"
   echo ""
 done
+
+echo "Blobber deployment complete."
