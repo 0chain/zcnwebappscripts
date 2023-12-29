@@ -44,7 +44,7 @@ fi
 
 # docker image
 DOCKER_TAG=v1.11.0
-S3MGRT_AGENT_TAG=v1.11.5
+S3MGRT_AGENT_TAG=staging
 
 sudo apt update
 DEBIAN_FRONTEND=noninteractive sudo apt install -y unzip curl containerd docker.io jq net-tools
