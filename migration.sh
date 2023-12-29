@@ -43,7 +43,7 @@ if [[ -d $HOME/.zcn/docker-compose.yml ]]; then
 fi
 
 # docker image
-DOCKER_TAG=sprint-1.11
+DOCKER_TAG=v1.11.0
 
 sudo apt update
 DEBIAN_FRONTEND=noninteractive sudo apt install -y unzip curl containerd docker.io jq net-tools
@@ -224,7 +224,7 @@ services:
       MINIO_SERVER: "minioserver:9000"
 
   s3mgrt:
-    image: 0chaindev/s3mgrt:${DOCKER_TAG}
+    image: 0chaindev/s3mgrt:staging
     restart: always
     environment:
       BUCKET: "${BUCKET}"

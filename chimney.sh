@@ -33,6 +33,7 @@ export PROJECT_ROOT_SSD=/var/0chain/blobber/ssd
 export PROJECT_ROOT_HDD=/var/0chain/blobber/hdd
 
 export BRANCH_NAME=main
+export DOCKER_IMAGE=v1.11.2
 
 sudo apt update
 
@@ -289,7 +290,7 @@ services:
     restart: "always"
 
   validator:
-    image: 0chaindev/validator:sprint-1.11
+    image: 0chaindev/validator:${DOCKER_IMAGE}
     environment:
       - DOCKER= true
     volumes:
@@ -303,7 +304,7 @@ services:
     restart: "always"
 
   blobber:
-    image: 0chaindev/blobber:sprint-1.11
+    image: 0chaindev/blobber:${DOCKER_IMAGE}
     environment:
       DOCKER: "true"
       DB_NAME: blobber_meta
