@@ -44,6 +44,7 @@ fi
 
 # docker image
 DOCKER_TAG=v1.11.0
+S3MGRT_AGENT_TAG=v1.11.5
 
 sudo apt update
 DEBIAN_FRONTEND=noninteractive sudo apt install -y unzip curl containerd docker.io jq net-tools
@@ -224,7 +225,7 @@ services:
       MINIO_SERVER: "minioserver:9000"
 
   s3mgrt:
-    image: 0chaindev/s3mgrt:staging
+    image: 0chaindev/s3mgrt:${S3MGRT_AGENT_TAG}
     restart: always
     environment:
       BUCKET: "${BUCKET}"
