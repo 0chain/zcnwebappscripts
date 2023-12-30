@@ -13,7 +13,7 @@ echo -e "\n\e[93m===============================================================
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
     echo "generating config.yaml file"
-    echo "block_worker: https://mainnnet.zus.network/dns" > config.yaml
+    echo "block_worker: https://mainnet.zus.network/dns" > config.yaml
     echo "signature_scheme: bls0chain" >> config.yaml
     echo "min_submit: 20" >> config.yaml
     echo "min_confirmation: 20" >> config.yaml
@@ -49,11 +49,12 @@ pushd ${PROJECT_ROOT} > /dev/null;
         CLIENTID=$(cat del_wal_id.txt)
         echo "Delegate wallet id exists i.e.: ${CLIENTID}"
         if [[ -f keys/b0snode1_keys.json ]] ; then
-            SHARDER_ID=$(jq -r .[].client_id keys/b0snode1_keys.json)
+            SHARDER_ID=$(jq -r .client_id keys/b0snode1_keys.json)
         else
             echo "##### Sharder wallet not present on your server. Please stake sharder manually using delegate_wallet.json using below command. #####"
             echo "./bin/zwallet mn-lock --sharder_id <sharder-id> --tokens 50000 --configDir . --config ./config.yaml --wallet delegate_wallet.json"
             exit 1
+        fi
     else
         echo "##### Delegate wallet not present on your server. Please stake sharder manually using delegate_wallet.json using below command. #####"
         echo "./bin/zwallet mn-lock --sharder_id <sharder-id> --tokens 50000 --configDir . --config ./config.yaml --wallet delegate_wallet.json"
@@ -65,5 +66,12 @@ echo -e "\n\e[93m===============================================================
                                                                             Staking using delegate wallets.
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT} > /dev/null;
-    ./bin/zwallet mn-lock --sharder_id ${SHARDER_ID} --tokens 50000 --configDir . --config ./config.yaml --wallet delegate_wallet.json | tee ./sharder_staking.log
+    echo "./bin/zwallet mn-lock --sharder_id ${SHARDER_ID} --tokens 50000 --configDir . --config ./config.yaml --wallet delegate_wallet.json"
+    ./bin/zwallet mn-lock --sharder_id ${SHARDER_ID} --tokens 50000 --configDir . --config ./config.yaml --wallet delegate_wallet.json
 popd > /dev/null;
+
+
+############ Steps to run the script ############
+# 1. wget -N https://raw.githubusercontent.com/0chain/zcnwebappscripts/as-deploy/0chain/stake_sharder.sh;
+# 2. bash stake_sharder.sh &> ./sharder_staking.log
+################################################
