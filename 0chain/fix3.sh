@@ -15,7 +15,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
     if [[ -f loki-logs-cleanup-job.sh ]] ; then
         echo -e "\e[32m loki-logs-cleanup-job.sh file is present \e[23m \e[0;37m"
         sudo rm loki-logs-cleanup-job.sh
-        wget -N https://raw.githubusercontent.com/0chain/zcnwebappscripts/update/loki-clean/0chain/loki-logs-cleanup-job.sh
+        wget -N https://raw.githubusercontent.com/0chain/zcnwebappscripts/as-deploy/0chain/loki-logs-cleanup-job.sh
         sudo chmod +x loki-logs-cleanup-job.sh
     else
         echo -e "\e[31m loki-logs-cleanup-job.sh file is not present. Please contact zus team \e[13m \e[0;37m"
