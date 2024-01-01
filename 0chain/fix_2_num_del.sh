@@ -20,7 +20,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
         elif [[ -f keys/b0snode1_keys.json ]] ; then
             echo -e "\e[32m Updating sharder \e[23m \e[0;37m"
             prov_shar_id=$(jq -r .client_id keys/b0snode1_keys.json)
-            ./bin/zwallet mn-update-settings --id ${prov_shar_id} --num_delegates 1 --configDir . --config ./config.yaml --wallet delegate_wallet.json
+            ./bin/zwallet mn-update-settings --sharder true --id ${prov_shar_id} --num_delegates 1 --configDir . --config ./config.yaml --wallet delegate_wallet.json
         else
             echo -e "\e[31m didn't found sharder/miner keys on the server. Please connect with zus team. \e[13m \e[0;37m"
             exit 1
