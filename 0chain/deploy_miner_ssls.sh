@@ -220,10 +220,10 @@ echo -e "\n\e[93m===============================================================
 pushd ${PROJECT_ROOT} > /dev/null;
 cat <<EOF >loki-logs-cleanup-job.sh
 docker stop loki
-cd ${PROJECT_ROOT}/grafana-portainer/loki/chunks
-rm -rf ./*
+rm -rf /var/0chain/grafana-portainer/loki/chunks
 docker start loki
 EOF
+sudo chmod +x loki-logs-cleanup-job.sh
 echo "0 0 */3 * * ${PROJECT_ROOT}/loki-logs-cleanup-job.sh" > crontab_loki
 crontab crontab_loki
 popd > /dev/null;
