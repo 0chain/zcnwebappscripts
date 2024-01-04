@@ -16,7 +16,17 @@ the script [migration.sh](https://github.com/0chain/zcnwebappscripts/blob/main/m
 
 # preparing Zip file
 
+create zip file for grafana dashboard files
 ```
-zip -r artifacts/chimney-dashboard.zip chimney-dashboard
-zip -r artifacts/blobber-files.zip blobber-files/*
+rm artifacts/chimney-dashboard.zip
+cd chimney-dashboard
+zip -r ../artifacts/chimney-dashboard.zip . -x ".*" -x "*/.*"
 ```
+
+create zip file for blobber files
+```
+rm artifacts/blobber-files.zip
+cd blobber-files
+zip -r ../artifacts/blobber-files.zip . -x ".*" -x "*/.*"
+```
+
