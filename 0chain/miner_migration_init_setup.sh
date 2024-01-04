@@ -10,6 +10,7 @@ export PROJECT_ROOT_SSD=/var/0chain/miner/ssd # /var/0chain/miner/ssd
 export PROJECT_ROOT_HDD=/var/0chain/miner/hdd # /var/0chain/miner/hdd
 
 mkdir -p ${PROJECT_ROOT}/miner/ssd
+mkdir -p ${PROJECT_ROOT}/miner/hdd
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                 Installing some pre-requisite tools on your server
