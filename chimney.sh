@@ -32,7 +32,7 @@ export DEBIAN_FRONTEND=noninteractive
 export PROJECT_ROOT_SSD=/var/0chain/blobber/ssd
 export PROJECT_ROOT_HDD=/var/0chain/blobber/hdd
 
-export BRANCH_NAME=main
+export BRANCH_NAME=add-gosdk-logs-chimney
 export DOCKER_IMAGE=v1.11.2
 
 sudo apt update

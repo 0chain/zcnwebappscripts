@@ -21,3 +21,8 @@ scrape_configs:
     labels:
       app: validator
       __path__: /logs/validator.log
+  - targets:
+      - localhost
+    labels:
+      app: gosdk-logs
+      __path__: /logs/0chainBlobber-sdk.log
