@@ -99,7 +99,7 @@ smart_contracts:
     # min possible allocations size in bytes allowed by the SC
     min_alloc_size: 1073741824
     # max challenge completion round of a blobber allowed by the SC
-    max_challenge_completion_rounds: 720
+    max_challenge_completion_rounds: 1200
     # min blobber's offer duration allowed by the SC
     min_offer_duration: "8760h" #todo based on timeunit
     # min blobber capacity allowed by the SC
@@ -127,8 +127,8 @@ smart_contracts:
     # allocation settings for free storage
     # these values are applied to all free allocations
     free_allocation_settings:
-      data_shards: 10
-      parity_shards: 5
+      data_shards: 6
+      parity_shards: 3
       read_pool_fraction: 0
       read_price_range:
         max: 0
@@ -203,7 +203,6 @@ smart_contracts:
       read_pool_lock: 170
       read_pool_unlock: 104
       write_pool_lock: 186
-      write_pool_unlock: 121
       stake_pool_lock: 635
       stake_pool_unlock: 272
       commit_settings_changes: 245
@@ -233,6 +232,7 @@ smart_contracts:
     min_mint: 1
     min_burn: 1
     min_stake: 1000
+    max_stake: 20000.0 # max stake can be set by a node (boundary for all nodes)
     min_stake_per_delegate: 10000
     min_authorizers: 1
     percent_authorizers: 0.7
@@ -247,3 +247,4 @@ smart_contracts:
       add-authorizer: 100
       authorizer-health-check: 381
       delete-authorizer: 100
+      update-global-config: 100

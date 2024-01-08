@@ -548,55 +548,5 @@
         "client_id": "baffe59a432b8159d0ec2a1f6236fdeb3d776c1b6c355851161c64d93b3cdd50",
         "domain": "zus-miner-2.krates.ai",
         "provider_id": "fa74867c22e4e7cdac265dd2c3226712814db38a151146538d9a7e915bfa1f41"
-    },
-    {
-        "client_id": "53b4a4d0589073953b130f0c8e2442604eafe5dea35b84675b28a4130dd6393e",
-        "domain": "miner1.0chain.net",
-        "provider_id": "53b4a4d0589073953b130f0c8e2442604eafe5dea35b84675b28a4130dd6393e"
-    },
-    {
-        "client_id": "44b67a3967cf3b03c8c1a78aba68792b4b1cb4eb2c4c2e7f70e82cdac839b94f",
-        "domain": "miner2.0chain.net",
-        "provider_id": "44b67a3967cf3b03c8c1a78aba68792b4b1cb4eb2c4c2e7f70e82cdac839b94f"
-    },
-    {
-        "client_id": "939ffc27003e9bb9245919b1241c04736f931bfc1ee972dd68df5f602412298e",
-        "domain": "miner3.0chain.net",
-        "provider_id": "939ffc27003e9bb9245919b1241c04736f931bfc1ee972dd68df5f602412298e"
-    },
-    {
-        "client_id": "44f05cf93613e3e4a81fd302cfb8a02b659805a35e137517dcd7842734151130",
-        "domain": "miner4.0chain.net",
-        "provider_id": "44f05cf93613e3e4a81fd302cfb8a02b659805a35e137517dcd7842734151130"
-    },
-    {
-        "client_id": "13590e0a424f18e69ae02340b709224e1a35efce055075aa732355d84b24ad3f",
-        "domain": "miner5.0chain.net",
-        "provider_id": "13590e0a424f18e69ae02340b709224e1a35efce055075aa732355d84b24ad3f"
-    },
-    {
-        "client_id": "917eff333fce4ec28a7cb17766444647856dc9510a24a023ac1c77285f192d36",
-        "domain": "miner6.0chain.net",
-        "provider_id": "917eff333fce4ec28a7cb17766444647856dc9510a24a023ac1c77285f192d36"
-    },
-    {
-        "client_id": "e1d4e71b78183ff84705c8d02168e32e8a76ec640728c818a57a657e3193a4db",
-        "domain": "miner7.0chain.net",
-        "provider_id": "e1d4e71b78183ff84705c8d02168e32e8a76ec640728c818a57a657e3193a4db"
-    },
-    {
-        "client_id": "98263b134301754f22a6e4fc187d1cd47bf7283f1eac89674de727b702733fad",
-        "domain": "miner8.0chain.net",
-        "provider_id": "98263b134301754f22a6e4fc187d1cd47bf7283f1eac89674de727b702733fad"
-    },
-    {
-        "client_id": "cca8ce335e165935eb546e3631712e68413f5c23910f0941e58c889b1fc67bd5",
-        "domain": "miner9.0chain.net",
-        "provider_id": "cca8ce335e165935eb546e3631712e68413f5c23910f0941e58c889b1fc67bd5"
-    },
-    {
-        "client_id": "c0f8a22fcb41309d8927c46d471ef4989bde6ac1c72ac15858daae2bc4213236",
-        "domain": "miner10.0chain.net",
-        "provider_id": "c0f8a22fcb41309d8927c46d471ef4989bde6ac1c72ac15858daae2bc4213236"
     }
 ]

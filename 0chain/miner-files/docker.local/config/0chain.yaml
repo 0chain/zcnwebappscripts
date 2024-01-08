@@ -25,7 +25,7 @@ server_chain:
       timeout: 15
       retry_wait_time: 5 #milliseconds
     proposal:
-      max_wait_time: 180ms
+      max_wait_time: 250ms
       wait_mode: static # static or dynamic
     consensus:
       threshold_by_count: 66 # percentage (registration)
@@ -131,7 +131,7 @@ server_chain:
 
 network:
   magic_block_file: config/b0magicBlock.json
-  initial_states: config/initial_state.yaml
+  initial_states: config/initial_states.yaml
   genesis_dkg: 0
   dns_url: "" # http://198.18.0.98:9091
   relay_time: 200 # milliseconds

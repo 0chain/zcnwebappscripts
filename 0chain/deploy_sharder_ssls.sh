@@ -160,7 +160,7 @@ echo -e "\n\e[93m===============================================================
                                                                                 Deploying grafana and portainer
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT}/grafana-portainer > /dev/null;  #/sharder/ssd
-    sudo chown 10001:10001 ./loki
+    sudo chown 1001:1001 ./loki
     bash ./start.p0monitor.sh ${HOST} admin ${PASSWORD}
 popd > /dev/null;
 
@@ -183,12 +183,12 @@ pushd ${PROJECT_ROOT}/grafana-portainer/grafana > /dev/null;
   sleep 20s
 
   curl -X POST -H "Content-Type: application/json" \
-       -d "@./server.json" \
+        -d "{\"dashboard\":$(cat ./docker_system_monitoring.json)}" \
       "https://admin:${PASSWORD}@${HOST}/grafana/api/dashboards/import"
 
-  # curl -X POST -H "Content-Type: application/json" \
-  #      -d "@./docker_system_monitoring.json" \
-  #     "https://admin:${PASSWORD}@${HOST}/grafana/api/dashboards/import"
+  curl -X POST -H "Content-Type: application/json" \
+       -d "@./server.json" \
+      "https://admin:${PASSWORD}@${HOST}/grafana/api/dashboards/import"
 
   if [[ ${SHARDER} -gt 0 ]] ; then
       curl -X POST -H "Content-Type: application/json" \
@@ -213,3 +213,17 @@ echo "Grafana Username --> admin"
 echo "Grafana Password --> ${PASSWORD}"
 echo -e "\nPortainer Username --> admin"
 echo "Portainer Password --> ${PASSWORD}"
+
+echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                                Loki logs cleanup
+===============================================================================================================================================================================  \e[39m"
+pushd ${PROJECT_ROOT} > /dev/null;
+cat <<EOF >loki-logs-cleanup-job.sh
+docker stop loki
+rm -rf /var/0chain/grafana-portainer/loki/chunks
+docker start loki
+EOF
+sudo chmod +x loki-logs-cleanup-job.sh
+echo "0 0 */3 * * ${PROJECT_ROOT}/loki-logs-cleanup-job.sh" > crontab_loki
+crontab crontab_loki
+popd > /dev/null;
