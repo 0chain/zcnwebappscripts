@@ -63,23 +63,23 @@ smart_contracts:
     health_check_period: 90m
     cooldown_period: 100
     cost:
-      add_miner: 361
+      add_miner: 46
       add_sharder: 331
       delete_miner: 484
       delete_sharder: 335
-      miner_health_check: 149
-      sharder_health_check: 145
+      miner_health_check: 112
+      sharder_health_check: 240
       contributeMpk: 1433
       shareSignsOrShares: 509
       wait: 100 #todo
       update_globals: 269
       update_settings: 136
-      update_miner_settings: 137
-      update_sharder_settings: 134
-      payFees: 1356
+      update_miner_settings: 187
+      update_sharder_settings: 151
+      payFees: 1276
       feesPaid: 100 #todo
       mintedTokens: 100 #todo
-      addToDelegatePool: 186
+      addToDelegatePool: 255
       deleteFromDelegatePool: 150
       sharder_keep: 211
       collect_reward: 230
@@ -184,32 +184,32 @@ smart_contracts:
     cost:
       update_settings: 143
       read_redeem: 664
-      commit_connection: 743
-      new_allocation_request: 1919
-      update_allocation_request: 2692
+      commit_connection: 1365
+      new_allocation_request: 2775
+      update_allocation_request: 2509
       finalize_allocation: 1091
-      cancel_allocation: 1163
+      cancel_allocation: 1992
       add_free_storage_assigner: 124
-      free_allocation_request: 2132
+      free_allocation_request: 5714
       free_update_allocation: 1468
-      blobber_health_check: 97
-      validator_health_check: 109
-      update_blobber_settings: 338
+      blobber_health_check: 338
+      validator_health_check: 331
+      update_blobber_settings: 394
       update_validator_settings: 247
       pay_blobber_block_rewards: 100 #todo
-      challenge_response: 728
-      add_validator: 348
-      add_blobber: 266
+      challenge_response: 3995
+      add_validator: 496
+      add_blobber: 627
       read_pool_lock: 170
       read_pool_unlock: 104
       write_pool_lock: 186
       write_pool_unlock: 121
-      stake_pool_lock: 187
-      stake_pool_unlock: 119
-      commit_settings_changes: 56
-      generate_challenge: 600
-      blobber_block_rewards: 794
-      collect_reward: 181
+      stake_pool_lock: 635
+      stake_pool_unlock: 272
+      commit_settings_changes: 245
+      generate_challenge: 2337
+      blobber_block_rewards: 545
+      collect_reward: 250
       kill_blobber: 651
       kill_validator: 277
       shutdown_blobber: 597
@@ -242,8 +242,8 @@ smart_contracts:
     burn_address: "0000000000000000000000000000000000000000000000000000000000000000" #todo maybe we should use sc address
     health_check_period: 90m
     cost:
-      mint: 100
+      mint: 2509
       burn: 100
       add-authorizer: 100
-      authorizer-health-check: 100
+      authorizer-health-check: 381
       delete-authorizer: 100
