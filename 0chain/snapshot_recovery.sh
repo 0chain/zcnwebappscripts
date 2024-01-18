@@ -48,6 +48,6 @@ tar -zxvf sharder-ssd-sql.tar.gz -C /
 tar -zxvf sharder-sql2.tar.gz -C /
 
 # Starting Sharder with snapshot data
-yq e -i ".services.sharder.image = \"0chaindev/sharder:v1.11.7\"" /var/0chain/sharder/ssd/docker.local/build.sharder/p0docker-compose.yaml
+yq e -i ".services.sharder.image = \"0chaindev/sharder:v1.11.8\"" /var/0chain/sharder/ssd/docker.local/build.sharder/p0docker-compose.yaml
 cd /var/0chain/sharder/ssd/docker.local/sharder1/
 sudo bash ../bin/start.p0sharder.sh /var/0chain/sharder/ssd /var/0chain/sharder/hdd/
