@@ -19,7 +19,7 @@ else
 fi
 
 # Downloading snapshot
-cd ~
+cd /var/0chain/sharder/hdd
 
 mkdir snapshot || true
 cd snapshot
