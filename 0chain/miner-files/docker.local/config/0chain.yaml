@@ -25,7 +25,7 @@ server_chain:
       timeout: 15
       retry_wait_time: 5 #milliseconds
     proposal:
-      max_wait_time: 250ms
+      max_wait_time: 150ms
       wait_mode: static # static or dynamic
     consensus:
       threshold_by_count: 66 # percentage (registration)
