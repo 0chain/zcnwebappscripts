@@ -24,10 +24,10 @@ cd /var/0chain/sharder/hdd
 mkdir snapshot || true
 cd snapshot
 
-wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-blocks-14-Feb.tar.gz
-wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-mpt-14-Feb.tar.gz
-wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-sql2-14-Feb.tar.gz
-wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-ssd-sql-14-Feb.tar.gz
+wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-blocks-5-Mar.tar.gz
+wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-mpt-5-Mar.tar.gz
+wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-sql2-5-Mar.tar.gz
+wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-ssd-sql-5-Mar.tar.gz
 
 # extract sharder-blocks.tar.gz
 tar -xzvf sharder-blocks-14-Feb.tar.gz
@@ -48,6 +48,6 @@ tar -zxvf sharder-ssd-sql-14-Feb.tar.gz -C /
 tar -zxvf sharder-sql2-14-Feb.tar.gz -C /
 
 # Starting Sharder with snapshot data
-yq e -i ".services.sharder.image = \"0chaindev/sharder:v1.11.8\"" /var/0chain/sharder/ssd/docker.local/build.sharder/p0docker-compose.yaml
+yq e -i ".services.sharder.image = \"0chaindev/sharder:v1.12.3\"" /var/0chain/sharder/ssd/docker.local/build.sharder/p0docker-compose.yaml
 cd /var/0chain/sharder/ssd/docker.local/sharder1/
 sudo bash ../bin/start.p0sharder.sh /var/0chain/sharder/ssd /var/0chain/sharder/hdd/
