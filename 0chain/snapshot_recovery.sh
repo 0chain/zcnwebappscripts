@@ -6,14 +6,14 @@ docker rm -f sharder-1 sharder-postgres-1
 # Removing old data
 cd /var/0chain/sharder/hdd/docker.local/sharder1/
 if [ ! -d "./data_backup" ]; then
-    mv data data_backup-14-feb
+    mv data data_backup
 else
     rm -rf data
 fi
 
 cd /var/0chain/sharder/ssd/docker.local/sharder1/
 if [ ! -d "./data_backup" ]; then
-    mv data data_backup-14-feb
+    mv data data_backup
 else
     rm -rf data
 fi
