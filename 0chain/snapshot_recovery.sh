@@ -24,6 +24,10 @@ cd /var/0chain/sharder/hdd
 mkdir snapshot || true
 cd snapshot
 
+rm sharder-blocks-5-Mar.tar.gz || true
+rm sharder-mpt-5-Mar.tar.gz || true
+rm sharder-sql2-5-Mar.tar.gz || true
+rm sharder-ssd-sql-5-Mar.tar.gz || true
 wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-blocks-5-Mar.tar.gz
 wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-mpt-5-Mar.tar.gz
 wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-sql2-5-Mar.tar.gz
