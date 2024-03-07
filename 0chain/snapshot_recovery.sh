@@ -23,6 +23,7 @@ cd /var/0chain/sharder/hdd
 
 mkdir snapshot || true
 cd snapshot
+rm -rf ./*
 
 rm sharder-blocks-5-Mar.tar.gz || true
 rm sharder-mpt-5-Mar.tar.gz || true
