@@ -39,13 +39,13 @@ find sharder-blocks -type f -name "*.tar.gz" -print0 | while IFS= read -r -d '' 
 done
 
 # extract sharder-mpt.tar.gz to path /var/0chain/sharder/hdd/docker.local/sharder1/data/
-tar -zxvf sharder-mpt-14-Feb.tar.gz -C /
+tar -zxvf sharder-mpt-5-Mar.tar.gz -C /
 
 # extract sharder-ssd-sql.tar.gz /var/0chain/sharder/ssd/docker.local/sharder1/data/
-tar -zxvf sharder-ssd-sql-14-Feb.tar.gz -C /
+tar -zxvf sharder-ssd-sql-5-Mar.tar.gz -C /
 
 # extract sharder-sql2.tar.gz /var/0chain/sharder/hdd/docker.local/sharder1/data/
-tar -zxvf sharder-sql2-14-Feb.tar.gz -C /
+tar -zxvf sharder-sql2-5-Mar.tar.gz -C /
 
 # Starting Sharder with snapshot data
 yq e -i ".services.sharder.image = \"0chaindev/sharder:v1.12.3\"" /var/0chain/sharder/ssd/docker.local/build.sharder/p0docker-compose.yaml
