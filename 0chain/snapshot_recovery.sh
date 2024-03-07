@@ -30,7 +30,7 @@ wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-sql2-5-M
 wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-ssd-sql-5-Mar.tar.gz
 
 # extract sharder-blocks.tar.gz
-tar -xzvf sharder-blocks-14-Feb.tar.gz
+tar -xzvf sharder-blocks-5-Mar.tar.gz
 
 # Find all .tar.gz files in sharder_blocks and its subdirectories
 find sharder-blocks -type f -name "*.tar.gz" -print0 | while IFS= read -r -d '' file; do
