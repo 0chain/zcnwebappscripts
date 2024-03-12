@@ -36,10 +36,10 @@ rm sharder-sql2-* || true
 rm sharder-ssd-sql-* || true
 
 echo "Downloading new snapshot"
-wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-blocks-12-Mar.tar.gz
-wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-mpt-12-Mar.tar.gz
-wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-sql2-12-Mar.tar.gz
-wget https://zus-snapshots.s3.amazonaws.com/sharder4_0chain_net/sharder-ssd-sql-12-Mar.tar.gz
+wget https://zus-snapshots.s3.amazonaws.com/sharder2_0chain_net/sharder-blocks-12-Mar.tar.gz
+wget https://zus-snapshots.s3.amazonaws.com/sharder2_0chain_net/sharder-mpt-12-Mar.tar.gz
+wget https://zus-snapshots.s3.amazonaws.com/sharder2_0chain_net/sharder-sql2-12-Mar.tar.gz
+wget https://zus-snapshots.s3.amazonaws.com/sharder2_0chain_net/sharder-ssd-sql-12-Mar.tar.gz
 
 # extract sharder-blocks.tar.gz
 echo "extract sharder-blocks.tar.gz"
