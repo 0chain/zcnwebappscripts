@@ -65,6 +65,6 @@ echo "extract sharder-sql2.tar.gz /var/0chain/sharder/hdd/docker.local/sharder1/
 tar -zxvf sharder-sql2-12-Mar.tar.gz -C /
 
 # Starting Sharder with snapshot data
-yq e -i ".services.sharder.image = \"0chaindev/sharder:v1.13.1 \"" /var/0chain/sharder/ssd/docker.local/build.sharder/p0docker-compose.yaml
+yq e -i ".services.sharder.image = \"0chaindev/sharder:v1.13.1\"" /var/0chain/sharder/ssd/docker.local/build.sharder/p0docker-compose.yaml
 cd /var/0chain/sharder/ssd/docker.local/sharder1/
 sudo bash ../bin/start.p0sharder.sh /var/0chain/sharder/ssd /var/0chain/sharder/hdd/
