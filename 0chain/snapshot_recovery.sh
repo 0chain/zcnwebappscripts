@@ -16,25 +16,19 @@ echo -e "\n\e[93m===============================================================
 ===============================================================================================================================================================================  \e[39m"
 cd /var/0chain/sharder/hdd/docker.local/sharder1/
 if [ -d "./data_backup" ]; then
-    echo "Removing hdd older /data_backup"
+    echo "Removing older hdd /data_backup"
     rm -rf data_backup
-    echo "Backup hdd recent /data"
-    mv data data_backup
-else
-    echo "Backup hdd recent /data"
-    mv data data_backup
 fi
+echo "Backup recent hdd /data1"
+mv data data_backup || true
 
 cd /var/0chain/sharder/ssd/docker.local/sharder1/
 if [ -d "./data_backup" ]; then
-    echo "Removing ssd older /data_backup"
+    echo "Removing older ssd /data_backup"
     rm -rf data_backup
-    echo "Backup ssd recent /data"
-    mv data data_backup
-else
-    echo "Backup ssd recent /data"
-    mv data data_backup
 fi
+echo "Backup recent ssd /data"
+mv data data_backup || true
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                             Downloading latest snapshot from the server.
