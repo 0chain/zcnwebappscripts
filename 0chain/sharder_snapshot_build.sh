@@ -21,6 +21,9 @@ echo -e "\n\e[93m===============================================================
 ===============================================================================================================================================================================  \e[39m"
 # Downloading snapshot
 cd ~/snapshots
+rm -rf sharder-sql2-${SNAP_VERSION}.tar.gz
+rm -rf sharder-ssd-sql-${SNAP_VERSION}.tar.gz
+rm -rf sharder-mpt-${SNAP_VERSION}.tar.gz
 
 echo "Creating tar file for sharder-sql2-${SNAP_VERSION}.tar.gz"
 tar -cvf - /var/0chain/sharder/hdd/docker.local/sharder1/data/postgresql2 | pigz -p 10 > sharder-sql2-${SNAP_VERSION}.tar.gz
@@ -31,18 +34,18 @@ tar -cvf - /var/0chain/sharder/ssd/docker.local/sharder1/data/postgresql | pigz 
 echo "Creating tar file for sharder-mpt-${SNAP_VERSION}.tar.gz"
 tar -cvf - /var/0chain/sharder/hdd/docker.local/sharder1/data/rocksdb | pigz -p 10 > sharder-mpt-${SNAP_VERSION}.tar.gz
 
-echo "Creating tar files for sharder-blocks-${SNAP_VERSION} files"
-for ((idx=0; idx<=15; idx++))
-do
-  hex=$(printf "%x" $idx)
-  echo "pack $hex"
-  mkdir -p sharder-blocks-${SNAP_VERSION}/$hex
-  packss -path /var/0chain/sharder/hdd/docker.local/sharder1/data/blocks/$hex -dest sharder-blocks-${SNAP_VERSION}/$hex -thread 36
-  # go run main.go -path /var/0chain/sharder/hdd/docker.local/sharder1/data/blocks/$hex -dest sharder-blocks-${SNAP_VERSION}/$hex --depth 2 --thread 25
-done
+# echo "Creating tar files for sharder-blocks-${SNAP_VERSION} files"
+# for ((idx=0; idx<=15; idx++))
+# do
+#   hex=$(printf "%x" $idx)
+#   echo "pack $hex"
+#   mkdir -p sharder-blocks-${SNAP_VERSION}/$hex
+#   packss -path /var/0chain/sharder/hdd/docker.local/sharder1/data/blocks/$hex -dest sharder-blocks-${SNAP_VERSION}/$hex -thread 36
+#   # go run main.go -path /var/0chain/sharder/hdd/docker.local/sharder1/data/blocks/$hex -dest sharder-blocks-${SNAP_VERSION}/$hex --depth 2 --thread 25
+# done
 
-echo "Creating tar file for sharder-blocks-${SNAP_VERSION}.tar.gz"
-tar -cvf - sharder-blocks-${SNAP_VERSION} | pigz -p 10 > sharder-blocks-${SNAP_VERSION}.tar.gz
+# echo "Creating tar file for sharder-blocks-${SNAP_VERSION}.tar.gz"
+# tar -cvf - sharder-blocks-${SNAP_VERSION} | pigz -p 10 > sharder-blocks-${SNAP_VERSION}.tar.gz
 
 # Start sharder and postgres container on the server
 echo -e "\n\e[93m===============================================================================================================================================================================
@@ -54,7 +57,7 @@ docker start sharder-1 sharder-postgres-1
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                             Moving snapshot files to s3.
 ===============================================================================================================================================================================  \e[39m"
-aws s3 cp sharder-blocks-${SNAP_VERSION}.tar.gz s3://zus-snapshots/${SHARDER_SNAP}/
+# aws s3 cp sharder-blocks-${SNAP_VERSION}.tar.gz s3://zus-snapshots/${SHARDER_SNAP}/
 aws s3 cp sharder-sql2-${SNAP_VERSION}.tar.gz s3://zus-snapshots/${SHARDER_SNAP}/
 aws s3 cp sharder-ssd-sql-${SNAP_VERSION}.tar.gz s3://zus-snapshots/${SHARDER_SNAP}/
 aws s3 cp sharder-mpt-${SNAP_VERSION}.tar.gz.tar.gz s3://zus-snapshots/${SHARDER_SNAP}/
