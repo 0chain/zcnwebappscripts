@@ -84,7 +84,7 @@ echo -e "\n\e[93m===============================================================
 # aws s3 cp sharder-blocks-${SNAP_VERSION}.tar.gz s3://zus-snapshots/${SHARDER_SNAP}/
 aws s3 cp sharder-sql2-${SNAP_VERSION}.tar.gz s3://zus-snapshots/${SHARDER_SNAP}/
 aws s3 cp sharder-ssd-sql-${SNAP_VERSION}.tar.gz s3://zus-snapshots/${SHARDER_SNAP}/
-aws s3 cp sharder-mpt-${SNAP_VERSION}.tar.gz.tar.gz s3://zus-snapshots/${SHARDER_SNAP}/
+aws s3 cp sharder-mpt-${SNAP_VERSION}.tar.gz s3://zus-snapshots/${SHARDER_SNAP}/
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                             Link to docs to deploy sharder snapshot.
