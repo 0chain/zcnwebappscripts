@@ -1,6 +1,13 @@
 #!/bin/bash
 
 set -e
+echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                Updating initial-states.yaml file on your server
+===============================================================================================================================================================================  \e[39m"
+cd ~
+rm /var/0chain/initial_states.yaml || true
+wget -N https://raw.githubusercontent.com/0chain/zcnwebappscripts/as-deploy/0chain/others/initial_states.yaml
+mv initial_states.yaml /var/0chain/
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                 Installing yq on your server
@@ -30,7 +37,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
     #Miner Delegate wallet
     if [[ -f del_wal_id.txt ]] ; then
         echo -e "\e[32m Miner delegate wallet id present \e[23m \e[0;37m"
-        MINER_DEL=$(cat del_wal_id.txt)
+        export MINER_DEL=$(cat del_wal_id.txt)
     else
         echo "Unable to find miner delegate wallet"
         exit 1
@@ -65,7 +72,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
         sudo cp -rf dkgSummary-* miner/ssd/docker.local/config
         sudo cp -f nodes.yaml miner/ssd/docker.local/config/nodes.yaml
         sudo cp -f b0magicBlock.json miner/ssd/docker.local/config/b0magicBlock.json
-        sudo cp -f initial_states.yaml miner/ssd/docker.local/config/initial_state.yaml
+        sudo cp -f initial_states.yaml miner/ssd/docker.local/config/initial_states.yaml
     fi
 popd > /dev/null;
 
@@ -83,9 +90,18 @@ echo -e "\n\e[93m===============================================================
                                                                                 Updating for delegate wallet in 0chain.yaml
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT}/miner/ssd > /dev/null;
-    yq e -i '.delegate_wallet = "${MINER_DEL}"' ./docker.local/config/0chain.yaml
+    yq e -i '.delegate_wallet = env(MINER_DEL)' ./docker.local/config/0chain.yaml
     echo -e "\e[32m Successfully Updated \e[23m \e[0;37m"
 popd > /dev/null;
+
+echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                            Backing up keys and configs for miner.
+===============================================================================================================================================================================  \e[39m"
+pushd ${PROJECT_ROOT} > /dev/null;
+    timestamp=archive-miner-$(date +"%Y-%m-%d-%T")
+    zip -r $timestamp.zip .
+    cp $timestamp.zip ~
+popd
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                         Starting miners
@@ -98,3 +114,6 @@ pushd ${PROJECT_ROOT}/miner/ssd/docker.local > /dev/null;  #/miner/ssd
         cd ../
     done
 popd > /dev/null;
+
+echo
+echo "Please backup the $HOME/$timestamp.zip file to your local or to another server."

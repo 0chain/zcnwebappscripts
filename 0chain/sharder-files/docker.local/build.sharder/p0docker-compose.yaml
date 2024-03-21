@@ -10,14 +10,14 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_PASSWORD: zchian
       SLOW_TABLESPACE_PATH: /var/lib/postgresql/hdd_ts
-      SLOW_TABLESPACE: hddtablespace # this should match with the dbs.events.slowtablespace in 0chain.yaml
+      SLOW_TABLESPACE: hdd_tablespace # this should match with the dbs.events.slowtablespace in 0chain.yaml
     # ports:
     #   - 5432
     volumes:
       - ../config/postgresql.conf:/etc/postgresql/postgresql.conf
-      - ${PROJECT_ROOT_SSD}/docker.local/sharder${SHARDER}/data/postgresql:/var/lib/postgresql/data
+      - ${PROJECT_ROOT_SSD}/sharder${SHARDER}/data/postgresql:/var/lib/postgresql/data
       - ../sql_script/:/docker-entrypoint-initdb.d/
-      - ${PROJECT_ROOT_HDD}/docker.local/sharder${SHARDER}/data/postgresql2:/var/lib/postgresql/hdd_ts
+      - ${PROJECT_ROOT_HDD}/sharder${SHARDER}/data/postgresql2:/var/lib/postgresql/hdd_ts
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
     restart: unless-stopped
     networks:
@@ -26,7 +26,7 @@ services:
 
   sharder:
     container_name: sharder-${SHARDER}
-    image: 0chaindev/sharder:v1.10.0
+    image: 0chaindev/sharder:v1.11.0
     environment:
       - POSTGRES_HOST=sharder-postgres-${SHARDER}
       - DOCKER=true
@@ -41,7 +41,7 @@ services:
     command:
       - /bin/sh
       - -c
-      - mkdir -p /0chain/data/blocks && mkdir -p /0chain/data/rocksdb && ./bin/sharder --deployment_mode 0 --keys_file config/b0snode${SHARDER}_keys.txt
+      - mkdir -p /0chain/data/blocks && mkdir -p /0chain/data/rocksdb && ./bin/sharder --deployment_mode 2 --keys_file config/b0snode${SHARDER}_keys.txt
     restart: unless-stopped
     networks:
       testnet0:

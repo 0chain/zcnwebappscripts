@@ -10,5 +10,5 @@ do
   mkdir -p $SSD_PATH/docker.local/miner"$i"/data/redis/transactions
   mkdir -p $SSD_PATH/docker.local/miner"$i"/data/rocksdb
   mkdir -p $SSD_PATH/docker.local/miner"$i"/log
-  chmod 755 -R $SSD_PATH/docker.local/miner"$i"
+  chmod 777 -R $SSD_PATH/docker.local/miner"$i"
 done

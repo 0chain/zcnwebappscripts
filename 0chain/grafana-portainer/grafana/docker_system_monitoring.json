@@ -26,7 +26,7 @@
     "fiscalYearStartMonth": 0,
     "gnetId": 893,
     "graphTooltip": 1,
-    "id": 1,
+    "id": null,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -2087,7 +2087,7 @@
           },
           "datasource": {
             "type": "prometheus",
-            "uid": "P86337B8C7A1323D2"
+            "uid": "${Datasource}"
           },
           "definition": "label_values(node_boot_time_seconds, instance)",
           "hide": 0,
