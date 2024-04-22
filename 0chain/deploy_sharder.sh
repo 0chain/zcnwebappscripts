@@ -1,6 +1,13 @@
 #!/bin/bash
 
 set -e
+echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                Updating initial-states.yaml file on your server
+===============================================================================================================================================================================  \e[39m"
+cd ~
+rm /var/0chain/initial_states.yaml || true
+wget -N https://raw.githubusercontent.com/0chain/zcnwebappscripts/as-deploy/0chain/others/initial_states.yaml
+mv initial_states.yaml /var/0chain/
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                 Installing yq on your server
@@ -29,7 +36,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
     #Sharder Delegate wallet
     if [[ -f del_wal_id.txt ]] ; then
         echo -e "\e[32m Sharders delegate wallet id present \e[23m \e[0;37m"
-        SHARDER_DEL=$(cat del_wal_id.txt)
+        export SHARDER_DEL=$(cat del_wal_id.txt)
     else
         echo "Unable to find sharder delegate wallet"
         exit 1
@@ -61,7 +68,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
         sudo cp -rf keys/b0s* sharder/ssd/docker.local/config    # sharder/ssd/docker.local/config
         sudo cp -f nodes.yaml sharder/ssd/docker.local/config/nodes.yaml
         sudo cp -f b0magicBlock.json sharder/ssd/docker.local/config/b0magicBlock.json
-        sudo cp -f initial_states.yaml sharder/ssd/docker.local/config/initial_state.yaml
+        sudo cp -f initial_states.yaml sharder/ssd/docker.local/config/initial_states.yaml
     fi
 popd > /dev/null;
 
@@ -86,7 +93,7 @@ pushd ${PROJECT_ROOT}/sharder/ssd > /dev/null;
       PG_PASSWORD=$(cat sharder_pg_password)
     fi
     echo -e "\e[32m Successfully Created the password\e[23m \e[0;37m"
-    yq e -i '.delegate_wallet = "${SHARDER_DEL}"' ./docker.local/config/0chain.yaml
+    yq e -i '.delegate_wallet = env(SHARDER_DEL)' ./docker.local/config/0chain.yaml
     sed -i "s/zchian/${PG_PASSWORD}/g" ./docker.local/sql_script/00-create-user.sql
     sed -i "s/zchian/${PG_PASSWORD}/g" ./docker.local/build.sharder/p0docker-compose.yaml
     echo -e "\e[32m Successfully Updated the configs\e[23m \e[0;37m"
@@ -105,6 +112,15 @@ pushd ${PROJECT_ROOT}/sharder/hdd/docker.local > /dev/null;
 popd > /dev/null;
 
 echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                            Backing up keys and configs for sharder.
+===============================================================================================================================================================================  \e[39m"
+pushd ${PROJECT_ROOT} > /dev/null;
+    export timestamp=archive-sharder-$(date +"%Y-%m-%d-%T")
+    zip -r $timestamp.zip .
+    cp $timestamp.zip ~
+popd
+
+echo -e "\n\e[93m===============================================================================================================================================================================
                                                                             Starting sharders
 ===============================================================================================================================================================================  \e[39m"
 pushd ${PROJECT_ROOT}/sharder/ssd/docker.local > /dev/null;  #/sharder/ssd
@@ -115,3 +131,6 @@ pushd ${PROJECT_ROOT}/sharder/ssd/docker.local > /dev/null;  #/sharder/ssd
         cd ../
     done
 popd > /dev/null;
+
+echo
+echo "Please backup the $HOME/$timestamp.zip file to your local or to another server."

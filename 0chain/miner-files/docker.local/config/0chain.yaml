@@ -1,29 +1,15 @@
 version: 1.0
 
 logging:
-  level: "debug"
-  verbose: true
+  level: "error"
+  verbose: false
   console: false # printing log to console is only supported in development mode
   goroutines: false
   memlog: false
 
-development:
-  smart_contract:
-    zrc20: true
-  txn_generation:
-    wallets: 50
-    max_transactions: 0
-    max_txn_fee: 10000
-    min_txn_fee: 0
-    max_txn_value: 10000000000
-    min_txn_value: 100
-  faucet:
-    refill_amount: 1000000000000000
-  pprof: true
-
 server_chain:
   id: "0afc093ffb509f059c55478bc1a60351cef7b4e9c008a53a6cc8241ca8617dfe"
-  owner: "edb90b850f2e7e7cbd0a1fa370fdcc5cd378ffbec95363a7bc0e5a98b8ba5759"
+  owner: "ac112d5620eb7918e08086506b4c5fba9419be09b3dd97e47e02778b0927dcc4"
   decimals: 10
   tokens: 200000000
   genesis_block:
@@ -33,13 +19,13 @@ server_chain:
     max_block_cost: 10000 #equal to 100ms
     max_byte_size: 1638400
     min_generators: 2
-    generators_percent: 0.15
+    generators_percent: 0.1
     replicators: 0
     generation:
       timeout: 15
       retry_wait_time: 5 #milliseconds
     proposal:
-      max_wait_time: 180ms
+      max_wait_time: 250ms
       wait_mode: static # static or dynamic
     consensus:
       threshold_by_count: 66 # percentage (registration)
@@ -66,16 +52,15 @@ server_chain:
     payload:
       max_size: 98304 # bytes
     timeout: 1800 #30 minutes
-    min_fee: 0
-    max_fee: 0.000000001 # 10 SAS
-    cost_fee_coeff: 100000 # 1000000 costs represents 1 ZCN, 1000 cost represents 1 mZCN
+    min_fee: 0.0001
+    max_fee: 0.2 # max fee per txn would be 1 ZCN, adjust later if needed
     transfer_cost: 10
+    cost_fee_coeff: 100000 # 100000 unit cost per 1 ZCN
     future_nonce: 100 # allow 100 nonce ahead of current client state
     exempt:
       - contributeMpk
       - shareSignsOrShares
       - wait
-      - mint
       - pour
   client:
     signature_scheme: bls0chain # ed25519 or bls0chain
@@ -95,7 +80,7 @@ server_chain:
     setting_update_period: 200 #rounds
     timeout: 8000ms
     storage: true
-    faucet: true
+    faucet: false
     miner: true
     multisig: false
     vesting: false
@@ -135,10 +120,10 @@ server_chain:
       max_idle_conns: 100
       max_open_conns: 200
       conn_max_lifetime: 20s
-      slowtablespace: hddtablespace
+      slowtablespace: hdd_tablespace
     settings:
       # event database settings blockchain
-      debug: true
+      debug: false
       aggregate_period: 4000
       partition_change_period: 10000
       partition_keep_count: 10
@@ -146,7 +131,7 @@ server_chain:
 
 network:
   magic_block_file: config/b0magicBlock.json
-  initial_states: config/initial_state.yaml
+  initial_states: config/initial_states.yaml
   genesis_dkg: 0
   dns_url: "" # http://198.18.0.98:9091
   relay_time: 200 # milliseconds
@@ -156,27 +141,25 @@ network:
     large_message: 3000 # milliseconds
   large_message_th_size: 5120 # anything greater than this size in bytes
   user_handlers:
-    rate_limit: 100000000 # 100000000 per second
+    rate_limit: 1000 # 1000 per second
   n2n_handlers:
-    rate_limit: 10000000000 # 10000000000 per second
+    rate_limit: 1000 # 10000 per second
 
 # delegate wallet is wallet that used to configure node in Miner SC; if its
 # empty, then node ID used
 delegate_wallet: ""
 # % of fees and rewards for generator
-service_charge: 0.10 # [0; 1) of all fees
+service_charge: 0 # [0; 1) of all fees
 # max number of delegate pools allowed by a node in miner SC
-number_of_delegates: 10 # max number of delegate pools
+number_of_delegates: 100 # max number of delegate pools
 
-cassandra:
-  connection:
-    delay: 10 # in seconds
-    retries: 10
-#   host: cassandra
-#   port: 9042
-
+# There's a TODO comment in fs_store.go. Please check this while we go into production.
 storage:
-#  Uncomment the following lines to enable cache.
+# cache is optional. It should be SSD drive. Having HDD drive as cache is not effective.
+# Cache is effective when blocks are stored in HDD. Cache stores uncompressed blocks so that
+# accessing and unmarshalling is faster than with compressed block in HDD.
+#
+# Uncomment the following lines to enable cache.
 #  cache:
 #    path: "/mnt/ssd/sharder1"
 #    total_blocks: 1000 # Total number of blocks this cache will store
