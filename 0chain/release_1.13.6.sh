@@ -115,6 +115,12 @@ echo -e "\n\e[93m===============================================================
 ===============================================================================================================================================================================  \e[39m"
 docker exec sharder-postgres-1 psql -U zchain_user -d events_db -c """BEGIN; SELECT create_partition_tables('public', 'transactions', 'round', 2000000); SELECT create_partition_tables('public', 'blocks', 'round', 2000000); COMMIT;"""
 
+# Executing next partition script on the sharder postgres
+echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                            Executing next partition script on the sharder postgres.
+===============================================================================================================================================================================  \e[39m"
+docker exec sharder-postgres-1 psql -U zchain_user -d events_db -c """CREATE TABLE IF NOT EXISTS blocks_part_24000000_26000000 PARTITION OF blocks FOR VALUES FROM (24000000) TO (26000000); CREATE TABLE IF NOT EXISTS blocks_part_26000000_28000000 PARTITION OF blocks FOR VALUES FROM (26000000) TO (28000000); CREATE TABLE IF NOT EXISTS transactions_part_24000000_26000000 PARTITION OF transactions FOR VALUES FROM (24000000) TO (26000000); CREATE TABLE IF NOT EXISTS transactions_part_26000000_28000000 PARTITION OF transactions FOR VALUES FROM (26000000) TO (28000000);"""
+
 # Deploying new release tag on sharder
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                             Deploying new release tag v1.13.6 on sharder.
