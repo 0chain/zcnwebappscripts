@@ -11,7 +11,7 @@ echo -e "\n\e[93m===============================================================
 ===============================================================================================================================================================================  \e[39m"
 cd ~
 wget -N https://github.com/0chain/zcnwebappscripts/raw/main/0chain/sharder-files/docker.local/config/postgresql.conf
-mv postgresql.conf /var/0chain/sharder/ssd/docker.local/config/postgresql.conf
+cp -f postgresql.conf /var/0chain/sharder/ssd/docker.local/config/postgresql.conf
 
 echo -e "\n\e[93m===============================================================================================================================================================================
                                                                 Starting postgres and sharder
