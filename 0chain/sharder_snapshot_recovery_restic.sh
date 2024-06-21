@@ -24,7 +24,7 @@ export AWS_SECRET_ACCESS_KEY=rootroot
 export RESTIC_REPOSITORY="s3:http://65.109.152.43:9003/backup/"
 export RESTIC_PASSWORD="resticroot"
 
-restic restore ${SNAP_ID} --target ./
+restic restore latest --target ./
 
 if [ $? -eq 0 ]; then
     echo "Snapshot downloaded from zus successfully."
@@ -77,7 +77,7 @@ echo -e "\n\e[93m===============================================================
 #     echo "Extracting $file..."
 #     tar -xzvf "$file" -C /
 # done
-
+cd /var/0chain/sharder/hdd/snapshot/snapshot
 # extract sharder-mpt.tar.gz to path /var/0chain/sharder/hdd/docker.local/sharder1/data/
 echo "extract sharder-mpt-${SNAP_VERSION}.tar.gz to path /var/0chain/sharder/hdd/docker.local/sharder1/data/"
 tar -zxvf sharder-mpt-${SNAP_VERSION}.tar.gz -C /
