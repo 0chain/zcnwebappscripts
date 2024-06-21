@@ -24,7 +24,7 @@ export AWS_SECRET_ACCESS_KEY=rootroot
 export RESTIC_REPOSITORY="s3:http://65.109.152.43:9003/backup/"
 export RESTIC_PASSWORD="resticroot"
 
-restic restore latest --target ./
+restic restore ${SNAP_ID} --target ./
 
 if [ $? -eq 0 ]; then
     echo "Snapshot downloaded from zus successfully."
