@@ -147,7 +147,7 @@ pushd ${PROJECT_ROOT} > /dev/null;
           mkdir bin || true
           sudo cp -rf zwallet-binary/* ./bin/
           sudo rm -rf zwallet-binary
-          echo "block_worker: https://mainnet.zus.network/dns" > config.yaml
+          echo "block_worker: https://dev.zus.network/dns" > config.yaml
           echo "signature_scheme: bls0chain" >> config.yaml
           echo "min_submit: 50" >> config.yaml
           echo "min_confirmation: 50" >> config.yaml
