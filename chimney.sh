@@ -20,12 +20,12 @@ export PROJECT_ROOT=/var/0chain/blobber
 export BLOCK_WORKER_URL=0chainblockworker
 export BLOBBER_HOST=0chainblobberhost
 
-export VALIDATOR_WALLET_ID=0chainvalwalletid
-export VALIDATOR_WALLET_PUBLIC_KEY=0chainvalwalletpublickey
-export VALIDATOR_WALLET_PRIV_KEY=0chainvalwalletprivkey
-export BLOBBER_WALLET_ID=0chainblobwalletid
-export BLOBBER_WALLET_PUBLIC_KEY=0chainblobwalletpublickey
-export BLOBBER_WALLET_PRIV_KEY=0chainblobwalletprivkey
+# export VALIDATOR_WALLET_ID=0chainvalwalletid
+# export VALIDATOR_WALLET_PUBLIC_KEY=0chainvalwalletpublickey
+# export VALIDATOR_WALLET_PRIV_KEY=0chainvalwalletprivkey
+# export BLOBBER_WALLET_ID=0chainblobwalletid
+# export BLOBBER_WALLET_PUBLIC_KEY=0chainblobwalletpublickey
+# export BLOBBER_WALLET_PRIV_KEY=0chainblobwalletprivkey
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -33,7 +33,7 @@ export PROJECT_ROOT_SSD=/var/0chain/blobber/ssd
 export PROJECT_ROOT_HDD=/var/0chain/blobber/hdd
 
 export BRANCH_NAME=main
-export DOCKER_IMAGE=v1.15.2
+export DOCKER_IMAGE=sprint-1.16
 
 sudo apt update
 
@@ -82,6 +82,7 @@ install_tools_utilities ntp
 install_tools_utilities ntpdate
 install_tools_utilities net-tools
 install_tools_utilities python3
+install_tools_utilities jq
 
 sudo ufw allow 123/udp
 sudo ufw allow out to any port 123
@@ -89,8 +90,10 @@ sudo systemctl stop ntp
 sudo ntpdate pool.ntp.org
 sudo systemctl start ntp
 sudo systemctl enable ntp
-
-
+sudo ufw allow 22,80,443,53/tcp
+sudo ufw allow out to any port 80
+sudo ufw allow out to any port 443
+sudo ufw allow out to any port 53
 
 # download docker-compose
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -115,6 +118,7 @@ check_port_443
 
 # sudo chmod +x $PWD/disk-setup/disk_setup.sh
 # bash $PWD/disk-setup/disk_setup.sh $PROJECT_ROOT_SSD $PROJECT_ROOT_HDD
+
 mkdir -p $PROJECT_ROOT_SSD
 mkdir -p ${PROJECT_ROOT_HDD}/pg_hdd_data
 
@@ -123,6 +127,40 @@ chown -R "999:999" ${PROJECT_ROOT_HDD}/pg_hdd_data
 
 # generate password for portainer
 echo -n ${GF_ADMIN_PASSWORD} >/tmp/portainer_password
+
+echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                            Generating blobber/validator Operational wallet.
+===============================================================================================================================================================================  \e[39m"
+pushd ${PROJECT_ROOT} > /dev/null;
+  mkdir -p bin
+  echo -e "\e[32m Creating new operational wallets. \e[23m \e[0;37m"
+  if [[ -f bin/zwallet ]] ; then
+      echo "zwallet binary already present"
+  else
+      ubuntu_version=$(lsb_release -rs | cut -f1 -d'.')
+      if [[ ${ubuntu_version} -eq 18 ]]; then
+          echo "Ubuntu 18 is not supported"
+          exit 1
+      elif [[ ${ubuntu_version} -eq 20 || ${ubuntu_version} -eq 22 ]]; then
+          curl -L "https://github.com/0chain/zcnwebappscripts/raw/as-deploy/0chain/artifacts/zwallet-binary.zip" -o /tmp/zwallet-binary.zip
+          sudo unzip -o /tmp/zwallet-binary.zip && rm -rf /tmp/zwallet-binary.zip
+          mkdir bin || true
+          sudo cp -rf zwallet-binary/* ./bin/
+          sudo rm -rf zwallet-binary
+          echo "block_worker: https://mainnet.zus.network/dns" > config.yaml
+          echo "signature_scheme: bls0chain" >> config.yaml
+          echo "min_submit: 50" >> config.yaml
+          echo "min_confirmation: 50" >> config.yaml
+          echo "confirmation_chain_length: 3" >> config.yaml
+          echo "max_txn_query: 5" >> config.yaml
+          echo "query_sleep_time: 5" >> config.yaml
+      else
+          echo "Didn't found any Ubuntu version with 20/22."
+      fi
+  fi
+  ./bin/zwallet create-wallet --wallet blob_op_wallet.json --configDir . --config config.yaml --silent
+  ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
+popd > /dev/null;
 
 #### ---- Start Blobber Setup ----- ####
 
@@ -444,15 +482,15 @@ volumes:
 
 EOF
 
-cat <<EOF >${PROJECT_ROOT}/keys_config/b0bnode01_keys.txt
-${BLOBBER_WALLET_PUBLIC_KEY}
-${BLOBBER_WALLET_PRIV_KEY}
-EOF
+pushd ${PROJECT_ROOT} > /dev/null;
+  jq -r .client_key blob_op_wallet.json > keys_config/b0bnode01_keys.txt
+  jq -r '.keys | .[] | .private_key' blob_op_wallet.json >> keys_config/b0bnode01_keys.txt
+popd > /dev/null;
 
-cat <<EOF >${PROJECT_ROOT}/keys_config/b0vnode01_keys.txt
-${VALIDATOR_WALLET_PUBLIC_KEY}
-${VALIDATOR_WALLET_PRIV_KEY}
-EOF
+pushd ${PROJECT_ROOT} > /dev/null;
+  jq -r .client_key vald_op_wallet.json > keys_config/b0vnode01_keys.txt
+  jq -r '.keys | .[] | .private_key' vald_op_wallet.json >> keys_config/b0vnode01_keys.txt
+popd > /dev/null;
 
 /usr/local/bin/docker-compose -f ${PROJECT_ROOT}/docker-compose.yml pull
 /usr/local/bin/docker-compose -f ${PROJECT_ROOT}/docker-compose.yml up -d
@@ -489,3 +527,4 @@ for dashboard in "${DASHBOARDS}/blobber.json" "${DASHBOARDS}/server.json" "${DAS
 done
 
 echo "Blobber deployment complete."
+yes y | sudo ufw enable
