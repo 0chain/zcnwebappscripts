@@ -21,7 +21,7 @@ sudo apt install restic -y
 echo "Set environment variable to zs3server"
 export AWS_ACCESS_KEY_ID=rootroot
 export AWS_SECRET_ACCESS_KEY=rootroot
-export RESTIC_REPOSITORY="s3:http://65.109.152.43:9003/backup/"
+export RESTIC_REPOSITORY="s3:http://65.109.152.43:9003/sharder/"
 export RESTIC_PASSWORD="resticroot"
 
 restic restore ${SNAP_ID} --target ./
@@ -77,7 +77,7 @@ echo -e "\n\e[93m===============================================================
 #     echo "Extracting $file..."
 #     tar -xzvf "$file" -C /
 # done
-cd /var/0chain/sharder/hdd/snapshot/snapshot
+cd /var/0chain/sharder/hdd/snapshot/
 # extract sharder-mpt.tar.gz to path /var/0chain/sharder/hdd/docker.local/sharder1/data/
 echo "extract sharder-mpt-${SNAP_VERSION}.tar.gz to path /var/0chain/sharder/hdd/docker.local/sharder1/data/"
 tar -zxvf sharder-mpt-${SNAP_VERSION}.tar.gz -C /
