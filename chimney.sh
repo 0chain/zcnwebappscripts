@@ -19,6 +19,7 @@ export GF_ADMIN_PASSWORD='0chaingfadminpassword'
 export PROJECT_ROOT=/var/0chain/blobber
 export BLOCK_WORKER_URL=0chainblockworker
 export BLOBBER_HOST=0chainblobberhost
+export IS_ENTERPRISE=isenterprise
 
 # export VALIDATOR_WALLET_ID=0chainvalwalletid
 # export VALIDATOR_WALLET_PUBLIC_KEY=0chainvalwalletpublickey
@@ -33,7 +34,7 @@ export PROJECT_ROOT_SSD=/var/0chain/blobber/ssd
 export PROJECT_ROOT_HDD=/var/0chain/blobber/hdd
 
 export BRANCH_NAME=main
-export DOCKER_IMAGE=v1.16.1
+export DOCKER_IMAGE=pr-1463
 
 sudo apt update
 
@@ -208,6 +209,9 @@ sed -i "s/service_charge.*/service_charge: ${SERVICE_CHARGE}/g" ${PROJECT_ROOT}/
 
 echo "updating block_worker"
 sed -i "s|block_worker.*|block_worker: ${BLOCK_WORKER_URL}|g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
+
+echo "updating is_enterprise"
+sed -i "s/is_enterprise.*/is_enterprise: ${IS_ENTERPRISE}/g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
 
 echo "updating username"
 rev ${PROJECT_ROOT}/config/0chain_blobber.yaml | sed -i "s/.*username.*/  username: ${GF_ADMIN_USER}/g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
