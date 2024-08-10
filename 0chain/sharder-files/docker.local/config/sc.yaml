@@ -248,3 +248,5 @@ smart_contracts:
       authorizer-health-check: 100
       delete-authorizer: 100
       update-global-config: 100
+      add-to-delegate-pool: 100
+      delete-from-delegate-pool: 100
