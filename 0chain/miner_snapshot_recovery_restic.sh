@@ -56,6 +56,7 @@ cd ~/snapshots
 # extract miner-rocksdb.tar.gz to path /var/0chain/miner/ssd/docker.local/miner1/data/
 echo "extract miner-rocksdb-${SNAP_VERSION}.tar.gz to path /var/0chain/miner/ssd/docker.local/miner1/data/rocksdb"
 tar -zxvf miner1-${SNAP_VERSION}.tar.gz -C /
+chmod 777 -R /var/0chain/miner/ssd/docker.local/miner1
 
 # Starting miner with snapshot data
 yq e -i ".services.miner.image = \"0chaindev/miner:${TAG}\"" /var/0chain/miner/ssd/docker.local/build.miner/p0docker-compose.yaml
