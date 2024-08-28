@@ -349,7 +349,7 @@ services:
     restart: "always"
 
   blobber:
-    image: 0chaindev/blobber:${DOCKER_IMAGE}
+    image: 0chaindev/eblobber:v1.17.0-RC1-59dcd545
     environment:
       DOCKER: "true"
       DB_NAME: blobber_meta
