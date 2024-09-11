@@ -56,7 +56,7 @@ echo -e "\n\e[93m===============================================================
 cd ~/snapshots
 # extract miner-rocksdb.tar.gz to path /var/0chain/miner/ssd/docker.local/miner1/data/
 echo "extract miner-rocksdb-${SNAP_VERSION}.tar.gz to path /var/0chain/miner/ssd/docker.local/miner1/data/rocksdb"
-tar -zxvf miner1-${SNAP_VERSION}.tar.gz -C /
+tar -zxvf miner-rocksdb-${SNAP_VERSION}.tar.gz -C /
 chmod 777 -R /var/0chain/miner/ssd/docker.local/miner1
 
 # Starting miner with snapshot data
