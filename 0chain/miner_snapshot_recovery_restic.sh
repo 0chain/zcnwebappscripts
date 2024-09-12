@@ -25,7 +25,7 @@ export RESTIC_REPOSITORY="s3:http://65.109.152.43:9004/miner/"
 export RESTIC_PASSWORD="resticroot"
 
 restic cache --cleanup
-restic restore ${SNAP_ID} --target ./
+restic restore ${SNAP_ID} --target ./ --verbose
 
 # if [ $? -eq 0 ]; then
 #     echo "snapshots downloaded from zus successfully."
