@@ -21,10 +21,11 @@ sudo apt install restic -y
 echo "Set environment variable to zs3server"
 export AWS_ACCESS_KEY_ID=rootroot
 export AWS_SECRET_ACCESS_KEY=rootroot
-export RESTIC_REPOSITORY="s3:http://65.109.152.43:9004/sharder/"
+export RESTIC_REPOSITORY="s3:http://65.109.152.43:9004/miner/"
 export RESTIC_PASSWORD="resticroot"
 
-restic restore ${SNAP_ID} --target ./
+restic cache --cleanup
+restic restore ${SNAP_ID} --target ./ --verbose
 
 # if [ $? -eq 0 ]; then
 #     echo "Snapshot downloaded from zus successfully."
