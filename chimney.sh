@@ -375,6 +375,8 @@ services:
       - ${PROJECT_ROOT_HDD}/files:/blobber/files
       - ${PROJECT_ROOT_HDD}/data:/blobber/data
       - ${PROJECT_ROOT_HDD}/log:/blobber/log
+      - ${PROJECT_ROOT_HDD}/data/pebble/data:/pebble/data
+      - ${PROJECT_ROOT_HDD}/data/pebble/wal:/pebble/wal
       - ${PROJECT_ROOT}/keys_config:/blobber/keysconfig # keys and minio config
       - ${PROJECT_ROOT_HDD}/data/tmp:/tmp
       - ${PROJECT_ROOT}/sql:/blobber/sql
