@@ -10,8 +10,7 @@ MIGRATION_LOGS=$HOME/s3migration/logs
 MINIO_USERNAME=0chainminiousername
 MINIO_PASSWORD=0chainminiopassword
 MINIO_TOKEN=0chainminiotoken
-ACCESS_KEY=0chainaccesskey
-SECRET_KEY=0chainsecretkey
+
 ALLOCATION=0chainallocation
 BUCKET=0chainbucket
 BLIMP_DOMAIN=blimpdomain
@@ -21,7 +20,13 @@ WALLET_PRIVATE_KEY=0chainwalletprivatekey
 BLOCK_WORKER_URL=0chainblockworker
 SOURCE=0chainsource
 
+
 # optional params
+ACCESS_KEY=0chainaccesskey
+SECRET_KEY=0chainsecretkey
+ACCOUNT_NAME=0chainaccountname
+CONTAINER_NAME=0chaincontainername
+CONNECTION_STRING=0chainconnectionstring
 CONCURRENCY=1
 DELETE_SOURCE=0chaindeletesource
 ENCRYPT=0chainencrypt
@@ -259,8 +264,13 @@ done
 echo "Starting migration..."
 echo ""
 
-flags="--configDir ${CONFIG_DIR_MIGRATION} --source ${SOURCE} --wd ${MIGRATION_ROOT} --access-key ${ACCESS_KEY}  --secret-key ${SECRET_KEY} --allocation ${ALLOCATION} --bucket ${BUCKET} "
-
+flags="--configDir ${CONFIG_DIR_MIGRATION} --source ${SOURCE} --wd ${MIGRATION_ROOT} --allocation ${ALLOCATION} --bucket ${BUCKET} "
+# --access-key ${ACCESS_KEY}  --secret-key ${SECRET_KEY}
+if [$ACCESS_KEY != "0chainaccesskey"]; then flags=$flags" --access-key ${ACCESS_KEY}"; fi
+if [$SECRET_KEY != "0chainsecretkey"]; then flags=$flags" --secret-key ${SECRET_KEY}"; fi
+if [$ACCOUNT_NAME != "0chainaccountname"]; then flags=$flags" --account-name ${ACCOUNT_NAME}"; fi
+if [$CONTAINER_NAME != "0chaincontainername"]; then flags=$flags" --container-name ${CONTAINER_NAME}"; fi
+if [$CONNECTION_STRING != "0chainconnectionstring"]; then flags=$flags" --connection-string ${CONNECTION_STRING}"; fi
 if [ $ENCRYPT == "true" ]; then flags=$flags" --encrypt true"; fi
 if [ $DELETE_SOURCE == "true" ]; then flags=$flags" --delete-source true"; fi
 if [ $REGION != "0chainregion" ]; then flags=$flags"--region ${REGION}"; fi
