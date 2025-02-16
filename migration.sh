@@ -50,7 +50,7 @@ fi
 
 #Setting latest docker image wrt latest release
 export DOCKER_TAG=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/blimp-minioserver/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | .name' | sort -V | tail -n 1)
-export S3MGRT_AGENT_TAG=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/s3mgrt/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | .name' | sort -V | tail -n 1)
+export export S3MGRT_AGENT_TAG=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/s3mgrt/tags?page_size=100 | jq -r '.results[].name' | sort -V | tail -n 1)
 
 sudo apt update
 DEBIAN_FRONTEND=noninteractive sudo apt install -y unzip curl containerd docker.io jq net-tools
