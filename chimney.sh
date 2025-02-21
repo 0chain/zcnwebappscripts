@@ -346,6 +346,7 @@ services:
     networks:
       default:
     restart: "always"
+    shm_size: 16gb
 
   validator:
     image: 0chaindev/validator:${DOCKER_IMAGE}
