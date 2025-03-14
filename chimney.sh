@@ -20,6 +20,13 @@ export PROJECT_ROOT=/var/0chain/blobber
 export BLOCK_WORKER_URL=0chainblockworker
 export BLOBBER_HOST=0chainblobberhost
 export IS_ENTERPRISE=isenterprise
+export IS_KMS_ENABLED=iskmsenabled
+export KMS_PUBLIC_KEY=kmspublickey
+export KMS_PRIVATE_KEY=kmsprivatekey
+export KMS_CLIENT_KEY=kmsclientkey
+
+# TODO: how to make firebase token persistent, because if user doesn't use his script for some time, then firebase token would expire
+# TODO: probably do some expiration time for the script.
 
 # export VALIDATOR_WALLET_ID=0chainvalwalletid
 # export VALIDATOR_WALLET_PUBLIC_KEY=0chainvalwalletpublickey
@@ -165,6 +172,18 @@ pushd ${PROJECT_ROOT} > /dev/null;
   ./bin/zwallet create-wallet --wallet blob_op_wallet.json --configDir . --config config.yaml --silent
   ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
 popd > /dev/null;
+
+  # sed -i "s/validator:${DOCKER_IMAGE}/evalidator:${DOCKER_IMAGE_EBLOBBER}/g" ${PROJECT_ROOT}/docker-compose.yml
+  # sed -i "s/blobber:${DOCKER_IMAGE}/eblobber:${DOCKER_IMAGE_EBLOBBER}/g" ${PROJECT_ROOT}/docker-compose.yml
+
+if [ "$IS_KMS_ENABLED" = true ]; then
+  echo -e "\n\e[93m===============================================================================================================================================================================
+                                                                            Saving blobber/validator Operational wallets to KMS.
+  ===============================================================================================================================================================================  \e[39m"
+
+  # TODO: how to create JWT token from script? CREATE SIGNATURE ON FE AND PASS IT TO THE SCRIPT
+  # TODO: or create JWT token on FE and pass it to the user
+fi
 
 #### ---- Start Blobber Setup ----- ####
 
@@ -322,6 +341,12 @@ ${BLOBBER_HOST} {
 
 EOF
 
+if [ -n "$IS_KMS_ENABLED" ]; then
+  KMS_COMMANDS="--keys_file_is_split --keys_file_public_key ${KMS_PUBLIC_KEY} --keys_file_private_key ${KMS_PRIVATE_KEY} --keys_file_client_key ${KMS_CLIENT_KEY}"
+else
+  KMS_COMMANDS=""
+fi
+
 ### docker-compose.yaml
 echo "creating docker-compose file"
 cat <<EOF >${PROJECT_ROOT}/docker-compose.yml
@@ -384,7 +409,7 @@ services:
       - ${PROJECT_ROOT}/keys_config:/blobber/keysconfig # keys and minio config
       - ${PROJECT_ROOT_HDD}/data/tmp:/tmp
       - ${PROJECT_ROOT}/sql:/blobber/sql
-    command: ./bin/blobber --port 5051 --grpc_port 31501 --hostname ${BLOBBER_HOST}  --deployment_mode 0 --keys_file keysconfig/b0bnode01_keys.txt --files_dir /blobber/files --log_dir /blobber/log --db_dir /blobber/data --hosturl https://${BLOBBER_HOST}
+    command: ./bin/blobber --port 5051 --grpc_port 31501 --hostname ${BLOBBER_HOST}  --deployment_mode 0 --keys_file keysconfig/b0bnode01_keys.txt --files_dir /blobber/files --log_dir /blobber/log --db_dir /blobber/data --hosturl https://${BLOBBER_HOST} ${KMS_COMMANDS}
     networks:
       default:
     restart: "always"
