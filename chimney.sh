@@ -25,9 +25,6 @@ export KMS_PUBLIC_KEY=kmspublickey
 export KMS_PRIVATE_KEY=kmsprivatekey
 export KMS_CLIENT_KEY=kmsclientkey
 
-# TODO: how to make firebase token persistent, because if user doesn't use his script for some time, then firebase token would expire
-# TODO: probably do some expiration time for the script.
-
 # export VALIDATOR_WALLET_ID=0chainvalwalletid
 # export VALIDATOR_WALLET_PUBLIC_KEY=0chainvalwalletpublickey
 # export VALIDATOR_WALLET_PRIV_KEY=0chainvalwalletprivkey
@@ -62,6 +59,7 @@ install_tools_utilities() {
     echo -e "\e[32m  $REQUIRED_PKG is already installed on the server/machine.  \e[23m \n"
   fi
 }
+
 check_port_443() {
   PORT=443
   command -v netstat >/dev/null 2>&1 || {
@@ -175,15 +173,6 @@ popd > /dev/null;
 
   # sed -i "s/validator:${DOCKER_IMAGE}/evalidator:${DOCKER_IMAGE_EBLOBBER}/g" ${PROJECT_ROOT}/docker-compose.yml
   # sed -i "s/blobber:${DOCKER_IMAGE}/eblobber:${DOCKER_IMAGE_EBLOBBER}/g" ${PROJECT_ROOT}/docker-compose.yml
-
-if [ "$IS_KMS_ENABLED" = true ]; then
-  echo -e "\n\e[93m===============================================================================================================================================================================
-                                                                            Saving blobber/validator Operational wallets to KMS.
-  ===============================================================================================================================================================================  \e[39m"
-
-  # TODO: how to create JWT token from script? CREATE SIGNATURE ON FE AND PASS IT TO THE SCRIPT
-  # TODO: or create JWT token on FE and pass it to the user
-fi
 
 #### ---- Start Blobber Setup ----- ####
 
@@ -409,7 +398,7 @@ services:
       - ${PROJECT_ROOT}/keys_config:/blobber/keysconfig # keys and minio config
       - ${PROJECT_ROOT_HDD}/data/tmp:/tmp
       - ${PROJECT_ROOT}/sql:/blobber/sql
-    command: ./bin/blobber --port 5051 --grpc_port 31501 --hostname ${BLOBBER_HOST}  --deployment_mode 0 --keys_file keysconfig/b0bnode01_keys.txt --files_dir /blobber/files --log_dir /blobber/log --db_dir /blobber/data --hosturl https://${BLOBBER_HOST} ${KMS_COMMANDS}
+    command: ./bin/blobber --port 5051 --grpc_port 31501 --hostname ${BLOBBER_HOST} --deployment_mode 0 --keys_file keysconfig/b0bnode01_keys.txt --files_dir /blobber/files --log_dir /blobber/log --db_dir /blobber/data --hosturl https://${BLOBBER_HOST} ${KMS_COMMANDS}
     networks:
       default:
     restart: "always"
