@@ -163,8 +163,11 @@ pushd ${PROJECT_ROOT} > /dev/null;
       fi
   fi
   ./bin/zwallet create-wallet --wallet blob_op_wallet.json --configDir . --config config.yaml --silent
-  ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
+  if [ "$IS_ENTERPRISE" != true ]; then
+    ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
+  fi
 popd > /dev/null;
+
 
 #### ---- Start Blobber Setup ----- ####
 
@@ -288,13 +291,19 @@ ${BLOBBER_HOST} {
   }
 
   route {
-    reverse_proxy blobber:5051
-  }
+      reverse_proxy blobber:5051
+    }
 
-  route /validator* {
-    uri strip_prefix /validator
-    reverse_proxy validator:5061
-  }
+    # Add validator routes only for non-enterprise deployments
+    if [ "$IS_ENTERPRISE" != true ]; then
+      cat <<EOF >>${PROJECT_ROOT}/Caddyfile
+    route /validator* {
+      uri strip_prefix /validator
+      reverse_proxy validator:5061
+    }
+  EOF
+    fi
+
 
   route /portainer* {
     uri strip_prefix /portainer
@@ -347,19 +356,24 @@ services:
       default:
     restart: "always"
 
-  validator:
-    image: 0chaindev/validator:${DOCKER_IMAGE}
-    environment:
-      - DOCKER= true
-    volumes:
-      - ${PROJECT_ROOT}/config:/validator/config
-      - ${PROJECT_ROOT_HDD}/data:/validator/data
-      - ${PROJECT_ROOT_HDD}/log:/validator/log
-      - ${PROJECT_ROOT}/keys_config:/validator/keysconfig
-    command: ./bin/validator --port 5061 --hostname ${BLOBBER_HOST} --deployment_mode 0 --keys_file keysconfig/b0vnode01_keys.txt --log_dir /validator/log --hosturl https://${BLOBBER_HOST}/validator
-    networks:
-      default:
-    restart: "always"
+  # Add validator service only for non-enterprise deployments
+    if [ "$IS_ENTERPRISE" != true ]; then
+      cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
+    validator:
+      image: 0chaindev/validator:${DOCKER_IMAGE}
+      environment:
+        - DOCKER= true
+      volumes:
+        - ${PROJECT_ROOT}/config:/validator/config
+        - ${PROJECT_ROOT_HDD}/data:/validator/data
+        - ${PROJECT_ROOT_HDD}/log:/validator/log
+        - ${PROJECT_ROOT}/keys_config:/validator/keysconfig
+      command: ./bin/validator --port 5061 --hostname ${BLOBBER_HOST} --deployment_mode 0 --keys_file keysconfig/b0vnode01_keys.txt --log_dir /validator/log --hosturl https://${BLOBBER_HOST}/validator
+      networks:
+        default:
+      restart: "always"
+  EOF
+    fi
 
   blobber:
     image: 0chaindev/blobber:${DOCKER_IMAGE}
@@ -371,7 +385,7 @@ services:
       DB_PORT: "5432"
       DB_HOST: postgres
     depends_on:
-      - validator
+      - postgres
     links:
       - validator:validator
     volumes:
@@ -502,8 +516,13 @@ volumes:
 EOF
 
 if [ "$IS_ENTERPRISE" = true ]; then
-  sed -i "s/validator:${DOCKER_IMAGE}/evalidator:${DOCKER_IMAGE_EBLOBBER}/g" ${PROJECT_ROOT}/docker-compose.yml
   sed -i "s/blobber:${DOCKER_IMAGE}/eblobber:${DOCKER_IMAGE_EBLOBBER}/g" ${PROJECT_ROOT}/docker-compose.yml
+else
+  # Add validator dependency and link for non-enterprise deployments if USE_VALIDATOR is true
+  if [ "$USE_VALIDATOR" = true ]; then
+    sed -i '/depends_on:/a\      - validator' ${PROJECT_ROOT}/docker-compose.yml
+    sed -i '/links:/a\      - validator:validator' ${PROJECT_ROOT}/docker-compose.yml
+  fi
 fi
 
 pushd ${PROJECT_ROOT} > /dev/null;
@@ -511,10 +530,12 @@ pushd ${PROJECT_ROOT} > /dev/null;
   jq -r '.keys | .[] | .private_key' blob_op_wallet.json >> keys_config/b0bnode01_keys.txt
 popd > /dev/null;
 
-pushd ${PROJECT_ROOT} > /dev/null;
-  jq -r .client_key vald_op_wallet.json > keys_config/b0vnode01_keys.txt
-  jq -r '.keys | .[] | .private_key' vald_op_wallet.json >> keys_config/b0vnode01_keys.txt
-popd > /dev/null;
+if [ "$IS_ENTERPRISE" != true ]; then
+  pushd ${PROJECT_ROOT} > /dev/null;
+    jq -r .client_key vald_op_wallet.json > keys_config/b0vnode01_keys.txt
+    jq -r '.keys | .[] | .private_key' vald_op_wallet.json >> keys_config/b0vnode01_keys.txt
+  popd > /dev/null;
+fi
 
 /usr/local/bin/docker-compose -f ${PROJECT_ROOT}/docker-compose.yml pull
 /usr/local/bin/docker-compose -f ${PROJECT_ROOT}/docker-compose.yml up -d
