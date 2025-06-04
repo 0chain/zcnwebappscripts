@@ -518,9 +518,11 @@ EOF
 if [ "$IS_ENTERPRISE" = true ]; then
   sed -i "s/blobber:${DOCKER_IMAGE}/eblobber:${DOCKER_IMAGE_EBLOBBER}/g" ${PROJECT_ROOT}/docker-compose.yml
 else
-  # Add validator dependency and link for non-enterprise deployments
-  sed -i '/depends_on:/a\      - validator' ${PROJECT_ROOT}/docker-compose.yml
-  sed -i '/links:/a\      - validator:validator' ${PROJECT_ROOT}/docker-compose.yml
+  # Add validator dependency and link for non-enterprise deployments if USE_VALIDATOR is true
+  if [ "$USE_VALIDATOR" = true ]; then
+    sed -i '/depends_on:/a\      - validator' ${PROJECT_ROOT}/docker-compose.yml
+    sed -i '/links:/a\      - validator:validator' ${PROJECT_ROOT}/docker-compose.yml
+  fi
 fi
 
 pushd ${PROJECT_ROOT} > /dev/null;
