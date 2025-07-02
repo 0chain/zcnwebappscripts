@@ -163,7 +163,10 @@ pushd ${PROJECT_ROOT} > /dev/null;
       fi
   fi
   ./bin/zwallet create-wallet --wallet blob_op_wallet.json --configDir . --config config.yaml --silent
-  ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
+  if [ "$IS_ENTERPRISE" != true ]; then
+    ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
+  fi
+
 popd > /dev/null;
 
 #### ---- Start Blobber Setup ----- ####
@@ -190,7 +193,10 @@ rm /tmp/chimney-dashboard.zip
 # create 0chain_blobber.yaml file
 echo "creating 0chain_blobber.yaml"
 curl -L "https://github.com/0chain/zcnwebappscripts/raw/${BRANCH_NAME}/config/0chain_blobber.yaml" -o ${PROJECT_ROOT}/config/0chain_blobber.yaml
-curl -L "https://github.com/0chain/zcnwebappscripts/raw/${BRANCH_NAME}/config/0chain_validator.yaml" -o ${PROJECT_ROOT}/config/0chain_validator.yaml
+
+if [ "$IS_ENTERPRISE" != true ]; then
+  curl -L "https://github.com/0chain/zcnwebappscripts/raw/${BRANCH_NAME}/config/0chain_validator.yaml" -o ${PROJECT_ROOT}/config/0chain_validator.yaml
+fi
 
 echo "updating write_price"
 sed -i "s/write_price.*/write_price: ${WRITE_PRICE}/g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
@@ -204,8 +210,10 @@ sed -i "s/delegate_wallet.*/delegate_wallet: ${DELEGATE_WALLET}/g" ${PROJECT_ROO
 echo "updating num_delegates"
 sed -i "s/num_delegates.*/num_delegates: ${NO_OF_DELEGATES}/g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
 
-echo "updating num_delegates in 0chain_validator.yaml"
-sed -i "s/num_delegates.*/num_delegates: ${NO_OF_DELEGATES}/g" ${PROJECT_ROOT}/config/0chain_validator.yaml
+if [ "$IS_ENTERPRISE" != true ]; then
+  echo "updating num_delegates in 0chain_validator.yaml"
+  sed -i "s/num_delegates.*/num_delegates: ${NO_OF_DELEGATES}/g" ${PROJECT_ROOT}/config/0chain_validator.yaml
+fi
 
 echo "updating service_charge"
 sed -i "s/service_charge.*/service_charge: ${SERVICE_CHARGE}/g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
@@ -232,14 +240,16 @@ rev ${PROJECT_ROOT}/config/0chain_blobber.yaml | sed -i "s/.*username.*/  userna
 echo "updating password"
 rev ${PROJECT_ROOT}/config/0chain_blobber.yaml | sed -i "s/.*password.*/  password: ${GF_ADMIN_PASSWORD}/g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
 
-echo "updating service_charge"
-sed -i "s/service_charge.*/service_charge: ${SERVICE_CHARGE}/g" ${PROJECT_ROOT}/config/0chain_validator.yaml
+if [ "$IS_ENTERPRISE" != true ]; then
+  echo "updating service_charge"
+  sed -i "s/service_charge.*/service_charge: ${SERVICE_CHARGE}/g" ${PROJECT_ROOT}/config/0chain_validator.yaml
 
-echo "updating block_worker"
-sed -i "s|block_worker.*|block_worker: ${BLOCK_WORKER_URL}|g" ${PROJECT_ROOT}/config/0chain_validator.yaml
+  echo "updating block_worker"
+  sed -i "s|block_worker.*|block_worker: ${BLOCK_WORKER_URL}|g" ${PROJECT_ROOT}/config/0chain_validator.yaml
 
-echo "updating delegate_wallet"
-sed -i "s/delegate_wallet.*/delegate_wallet: ${DELEGATE_WALLET}/g" ${PROJECT_ROOT}/config/0chain_validator.yaml
+  echo "updating delegate_wallet"
+  sed -i "s/delegate_wallet.*/delegate_wallet: ${DELEGATE_WALLET}/g" ${PROJECT_ROOT}/config/0chain_validator.yaml
+fi
 
 ### Create minio_config.txt file
 echo "creating minio_config.txt"
@@ -290,11 +300,21 @@ ${BLOBBER_HOST} {
   route {
     reverse_proxy blobber:5051
   }
+EOF
+
+# Conditionally add /validator* route if NOT enterprise
+if [ "$IS_ENTERPRISE" != true ]; then
+cat <<EOF >>${PROJECT_ROOT}/Caddyfile
 
   route /validator* {
     uri strip_prefix /validator
     reverse_proxy validator:5061
   }
+EOF
+fi
+
+# Append rest of the Caddyfile
+cat <<EOF >>${PROJECT_ROOT}/Caddyfile
 
   route /portainer* {
     uri strip_prefix /portainer
@@ -319,8 +339,8 @@ ${BLOBBER_HOST} {
     reverse_proxy grafana:3000
   }
 }
-
 EOF
+
 
 ### docker-compose.yaml
 echo "creating docker-compose file"
@@ -346,6 +366,11 @@ services:
     networks:
       default:
     restart: "always"
+EOF
+
+# Add validator service only if not enterprise
+if [ "$IS_ENTERPRISE" != true ]; then
+cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
 
   validator:
     image: 0chaindev/validator:${DOCKER_IMAGE}
@@ -360,6 +385,11 @@ services:
     networks:
       default:
     restart: "always"
+EOF
+fi
+
+# Continue with blobber and rest of services
+cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
 
   blobber:
     image: 0chaindev/blobber:${DOCKER_IMAGE}
@@ -370,10 +400,20 @@ services:
       DB_PASSWORD: blobber
       DB_PORT: "5432"
       DB_HOST: postgres
+EOF
+
+# Add `depends_on` and `links` only if not enterprise
+if [ "$IS_ENTERPRISE" != true ]; then
+cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
     depends_on:
       - validator
     links:
       - validator:validator
+EOF
+fi
+
+# Continue blobber config
+cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
     volumes:
       - ${PROJECT_ROOT}/config:/blobber/config
       - ${PROJECT_ROOT_HDD}/files:/blobber/files
@@ -498,11 +538,10 @@ volumes:
   grafana_data:
   prometheus_data:
   portainer_data:
-
 EOF
 
+
 if [ "$IS_ENTERPRISE" = true ]; then
-  sed -i "s/validator:${DOCKER_IMAGE}/evalidator:${DOCKER_IMAGE_EBLOBBER}/g" ${PROJECT_ROOT}/docker-compose.yml
   sed -i "s/blobber:${DOCKER_IMAGE}/eblobber:${DOCKER_IMAGE_EBLOBBER}/g" ${PROJECT_ROOT}/docker-compose.yml
 fi
 
@@ -542,13 +581,23 @@ curl -X PUT -H "Content-Type: application/json" \
   -d '{ "theme": "", "homeDashboardUID": "homepage", "timezone": "utc" }' \
   "https://${GF_ADMIN_USER}:${escapedPassword}@${BLOBBER_HOST}/grafana/api/org/preferences"
 
-for dashboard in "${DASHBOARDS}/blobber.json" "${DASHBOARDS}/server.json" "${DASHBOARDS}/validator.json"; do
+for dashboard in "${DASHBOARDS}/blobber.json" "${DASHBOARDS}/server.json"; do
   echo -e "\nUploading dashboard: ${dashboard}"
   curl -X POST -H "Content-Type: application/json" \
     -d "@${dashboard}" \
     "https://${GF_ADMIN_USER}:${escapedPassword}@${BLOBBER_HOST}/grafana/api/dashboards/import"
   echo ""
 done
+
+if [ "$IS_ENTERPRISE" != true ]; then
+  dashboard="${DASHBOARDS}/validator.json"
+  echo -e "\nUploading dashboard: ${dashboard}"
+  curl -X POST -H "Content-Type: application/json" \
+    -d "@${dashboard}" \
+    "https://${GF_ADMIN_USER}:${escapedPassword}@${BLOBBER_HOST}/grafana/api/dashboards/import"
+  echo ""
+fi
+
 
 echo "Blobber deployment complete."
 yes y | sudo ufw enable
