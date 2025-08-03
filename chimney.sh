@@ -138,19 +138,40 @@ echo -e "\n\e[93m===============================================================
 pushd ${PROJECT_ROOT} > /dev/null;
   mkdir -p bin
   echo -e "\e[32m Creating new operational wallets. \e[23m \e[0;37m"
-  if [[ -f bin/zwallet ]] ; then
-      echo "zwallet binary already present"
-  else
+  echo "[DEBUG] Current user: $(whoami)"
+  echo "[DEBUG] Current directory: $(pwd)"
+  echo "[DEBUG] zwallet binary permissions: $(ls -l ./bin/zwallet)"
+  echo "[DEBUG] Directory permissions: $(ls -ld .)"
+  echo "[DEBUG] About to create blobber wallet at $(pwd)/blob_op_wallet.json"
+  # Always ensure zwallet binary is available
+  if [[ ! -f bin/zwallet ]] ; then
+      echo "zwallet binary not found, downloading..."
       ubuntu_version=$(lsb_release -rs | cut -f1 -d'.')
       if [[ ${ubuntu_version} -eq 18 ]]; then
           echo "Ubuntu 18 is not supported"
           exit 1
       elif [[ ${ubuntu_version} -eq 20 || ${ubuntu_version} -eq 22 || ${ubuntu_version} -eq 24 ]]; then
+          echo "Downloading zwallet binary..."
           curl -L "https://github.com/0chain/zcnwebappscripts/raw/as-deploy/0chain/artifacts/zwallet-binary.zip" -o /tmp/zwallet-binary.zip
-          sudo unzip -o /tmp/zwallet-binary.zip && rm -rf /tmp/zwallet-binary.zip
-          mkdir bin || true
-          sudo cp -rf zwallet-binary/* ./bin/
-          sudo rm -rf zwallet-binary
+          if [ $? -ne 0 ]; then
+              echo "ERROR: Failed to download zwallet binary"
+              exit 1
+          fi
+          
+          echo "Extracting zwallet binary..."
+          sudo unzip -o /tmp/zwallet-binary.zip -d /tmp/
+          if [ $? -ne 0 ]; then
+              echo "ERROR: Failed to extract zwallet binary"
+              exit 1
+          fi
+          
+          echo "Installing zwallet binary..."
+          mkdir -p bin
+          sudo cp -rf /tmp/zwallet-binary/* ./bin/
+          sudo chmod +x ./bin/zwallet
+          sudo rm -rf /tmp/zwallet-binary /tmp/zwallet-binary.zip
+          
+          echo "Creating config.yaml..."
           echo "block_worker: https://mainnet.zus.network/dns" > config.yaml
           echo "signature_scheme: bls0chain" >> config.yaml
           echo "min_submit: 50" >> config.yaml
@@ -160,11 +181,38 @@ pushd ${PROJECT_ROOT} > /dev/null;
           echo "query_sleep_time: 5" >> config.yaml
       else
           echo "Didn't found any Ubuntu version with 20/22."
+          exit 1
+      fi
+  else
+      echo "zwallet binary already present"
+      # Ensure config.yaml exists even if zwallet was already present
+      if [[ ! -f config.yaml ]]; then
+          echo "Creating config.yaml..."
+          echo "block_worker: https://mainnet.zus.network/dns" > config.yaml
+          echo "signature_scheme: bls0chain" >> config.yaml
+          echo "min_submit: 50" >> config.yaml
+          echo "min_confirmation: 50" >> config.yaml
+          echo "confirmation_chain_length: 3" >> config.yaml
+          echo "max_txn_query: 5" >> config.yaml
+          echo "query_sleep_time: 5" >> config.yaml
       fi
   fi
-  ./bin/zwallet create-wallet --wallet blob_op_wallet.json --configDir . --config config.yaml --silent
+  echo "[DEBUG] Running: sudo ./bin/zwallet create-wallet --wallet blob_op_wallet.json --configDir . --config config.yaml --silent"
+  sudo ./bin/zwallet create-wallet --wallet blob_op_wallet.json --configDir . --config config.yaml --silent
+  WALLET_STATUS=$?
+  if [[ $WALLET_STATUS -ne 0 ]]; then
+    echo "[ERROR] zwallet create-wallet command failed with exit code $WALLET_STATUS"
+  fi
+  if [[ -f blob_op_wallet.json ]]; then
+    echo "[SUCCESS] blob_op_wallet.json created successfully."
+    ls -l blob_op_wallet.json
+  else
+    echo "[ERROR] blob_op_wallet.json was NOT created! Check permissions and zwallet output above."
+    ls -ld .
+    ls -l
+  fi
   if [ "$IS_ENTERPRISE" != true ]; then
-    ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
+    sudo ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
   fi
 
 popd > /dev/null;
