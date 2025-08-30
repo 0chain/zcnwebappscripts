@@ -558,10 +558,26 @@ popd > /dev/null;
 /usr/local/bin/docker-compose -f ${PROJECT_ROOT}/docker-compose.yml pull
 /usr/local/bin/docker-compose -f ${PROJECT_ROOT}/docker-compose.yml up -d
 
-while [ ! -d ${PROJECT_ROOT}/caddy_data/caddy/certificates ]; do
-  echo "waiting for certificates to be provisioned"
-  sleep 2
+MAX_WAIT=600   # 10 minutes
+WAIT_INTERVAL=5
+ELAPSED=0
+
+echo "Waiting for SSL certificates to be provisioned by Caddy (max ${MAX_WAIT}s)..."
+
+while [ ! -d "${PROJECT_ROOT}/caddy_data/caddy/certificates" ]; do
+  if [ $ELAPSED -ge $MAX_WAIT ]; then
+    echo "ERROR: Certificates were not provisioned within ${MAX_WAIT}s."
+    echo "==== Showing last 50 lines of Caddy logs for debugging ===="
+    docker logs --tail 50 $(docker ps --filter "ancestor=caddy:2.6.4" --format "{{.ID}}") || true
+    exit 1
+  fi
+  echo "Still waiting... elapsed ${ELAPSED}s"
+  sleep $WAIT_INTERVAL
+  ELAPSED=$((ELAPSED + WAIT_INTERVAL))
 done
+
+echo "Certificates provisioned successfully."
+
 
 DASHBOARDS=${PROJECT_ROOT}/chimney-dashboard
 echo "sleeping for 10secs.."
