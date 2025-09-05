@@ -162,9 +162,9 @@ pushd ${PROJECT_ROOT} > /dev/null;
           echo "Didn't found any Ubuntu version with 20/22."
       fi
   fi
-  ./bin/zwallet create-wallet --wallet blob_op_wallet.json --configDir . --config config.yaml --silent
+  sudo ./bin/zwallet create-wallet --wallet blob_op_wallet.json --configDir . --config config.yaml --silent
   if [ "$IS_ENTERPRISE" != true ]; then
-    ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
+    sudo ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
   fi
 
 popd > /dev/null;
