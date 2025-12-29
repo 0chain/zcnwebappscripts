@@ -88,6 +88,28 @@ install_tools_utilities jq
 export DOCKER_IMAGE=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/blobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | .name' | sort -V | tail -n 1)
 export DOCKER_IMAGE_EBLOBBER=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/eblobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | .name' | sort -V | tail -n 1)
 
+# Check if we should build eblobber from source (branch or PR)
+EBLOBBER_BUILD_FROM_SOURCE=false
+EBLOBBER_REPO="${EBLOBBER_REPO:-}"
+EBLOBBER_BRANCH="${EBLOBBER_BRANCH:-}"
+EBLOBBER_PR="${EBLOBBER_PR:-}"
+
+if [ -n "$EBLOBBER_BRANCH" ] || [ -n "$EBLOBBER_PR" ]; then
+  EBLOBBER_BUILD_FROM_SOURCE=true
+  if [ -z "$EBLOBBER_REPO" ]; then
+    EBLOBBER_REPO="https://github.com/0chain/eblobber.git"
+  fi
+  echo "=========================================="
+  echo "Building eblobber from source"
+  echo "Repository: $EBLOBBER_REPO"
+  if [ -n "$EBLOBBER_PR" ]; then
+    echo "PR: $EBLOBBER_PR"
+  elif [ -n "$EBLOBBER_BRANCH" ]; then
+    echo "Branch: $EBLOBBER_BRANCH"
+  fi
+  echo "=========================================="
+fi
+
 sudo ufw allow 123/udp
 sudo ufw allow out to any port 123
 sudo systemctl stop ntp
@@ -229,7 +251,10 @@ if [ "$BLOCK_WORKER_URL" != "https://mainnet.zus.network/dns/" ]; then
   sed -i "s/c88b543dbad234b181f4d28c3a6962496970ed2794ebaa3c414f770b75153612c1ab6728be203b00157e6ba349b0273a1f3c2a2be274a2ba6baaccb9a8a81f16/381fb2e8298680fc9c71e664821394adaa5db4537456aaa257ef4388ba8c090e476c89fbcd2c8a1b0871ba36b7001f778d178c8dfff1504fbafb43f7ee3b3c92" ${PROJECT_ROOT}/config/0chain_blobber.yaml
   sed -i "s/a4e6999add55dd7ac050904d2af2d248dd3329cdde953021bfa9ed9ef677f942/65b32a635cffb6b6f3c73f09da617c29569a5f690662b5be57ed0d994f234335/g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
   export DOCKER_IMAGE=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/blobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+(-RC[0-9]+)?$")) | .name' | sort -V | tail -n 1)
-  export DOCKER_IMAGE_EBLOBBER=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/eblobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+(-RC[0-9]+)?$")) | .name' | sort -V | tail -n 1)
+  # Only update DOCKER_IMAGE_EBLOBBER if we didn't build from source
+  if [ "$EBLOBBER_BUILD_FROM_SOURCE" != true ]; then
+    export DOCKER_IMAGE_EBLOBBER=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/eblobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+(-RC[0-9]+)?$")) | .name' | sort -V | tail -n 1)
+  fi
 else 
   echo "Blobber is deployed on some internal networks."
 fi
@@ -341,6 +366,83 @@ cat <<EOF >>${PROJECT_ROOT}/Caddyfile
 }
 EOF
 
+
+### Build eblobber from source if requested
+if [ "$EBLOBBER_BUILD_FROM_SOURCE" = true ]; then
+  echo "=========================================="
+  echo "Building eblobber from source..."
+  echo "=========================================="
+  
+  # Install build dependencies
+  install_tools_utilities git
+  install_tools_utilities build-essential
+  install_tools_utilities cmake
+  install_tools_utilities libgmp-dev
+  install_tools_utilities libssl-dev
+  
+  # Create temporary directory for building
+  EBLOBBER_BUILD_DIR="/tmp/eblobber-build-$$"
+  mkdir -p "$EBLOBBER_BUILD_DIR"
+  cd "$EBLOBBER_BUILD_DIR"
+  
+  # Clone the repository
+  echo "Cloning eblobber repository..."
+  if [ -n "$EBLOBBER_PR" ]; then
+    # For PR, we need to fetch the PR branch
+    git clone "$EBLOBBER_REPO" eblobber
+    cd eblobber
+    git fetch origin "pull/${EBLOBBER_PR}/head:pr-${EBLOBBER_PR}"
+    git checkout "pr-${EBLOBBER_PR}"
+  elif [ -n "$EBLOBBER_BRANCH" ]; then
+    git clone -b "$EBLOBBER_BRANCH" "$EBLOBBER_REPO" eblobber
+    cd eblobber
+  else
+    git clone "$EBLOBBER_REPO" eblobber
+    cd eblobber
+  fi
+  
+  # Get commit hash for image tag
+  GIT_COMMIT=$(git rev-parse --short HEAD)
+  GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD | tr '/' '-')
+  LOCAL_IMAGE_TAG="local-${GIT_BRANCH}-${GIT_COMMIT}"
+  
+  echo "Building Docker image: 0chaindev/eblobber:${LOCAL_IMAGE_TAG}"
+  
+  # Check if Dockerfile exists
+  if [ -f "docker.aws/build.blobber/Dockerfile" ]; then
+    DOCKERFILE_PATH="docker.aws/build.blobber/Dockerfile"
+  elif [ -f "docker.local/blobber.Dockerfile" ]; then
+    DOCKERFILE_PATH="docker.local/blobber.Dockerfile"
+  else
+    echo "ERROR: Could not find Dockerfile in eblobber repository"
+    exit 1
+  fi
+  
+  # Build the Docker image
+  docker build \
+    --build-arg image_tag="${LOCAL_IMAGE_TAG}" \
+    --build-arg go_build_mode="bn256" \
+    --build-arg go_bls_tag="bn256" \
+    -f "$DOCKERFILE_PATH" \
+    -t "0chaindev/eblobber:${LOCAL_IMAGE_TAG}" \
+    .
+  
+  if [ $? -eq 0 ]; then
+    echo "Successfully built eblobber image: 0chaindev/eblobber:${LOCAL_IMAGE_TAG}"
+    export DOCKER_IMAGE_EBLOBBER="${LOCAL_IMAGE_TAG}"
+  else
+    echo "ERROR: Failed to build eblobber Docker image"
+    exit 1
+  fi
+  
+  # Cleanup
+  cd /
+  rm -rf "$EBLOBBER_BUILD_DIR"
+  
+  echo "=========================================="
+  echo "Build complete. Using image: 0chaindev/eblobber:${DOCKER_IMAGE_EBLOBBER}"
+  echo "=========================================="
+fi
 
 ### docker-compose.yaml
 echo "creating docker-compose file"
@@ -541,7 +643,8 @@ volumes:
 EOF
 
 
-if [ "$IS_ENTERPRISE" = true ]; then
+# Use eblobber if enterprise mode OR if building from source
+if [ "$IS_ENTERPRISE" = true ] || [ "$EBLOBBER_BUILD_FROM_SOURCE" = true ]; then
   sed -i "s/blobber:${DOCKER_IMAGE}/eblobber:${DOCKER_IMAGE_EBLOBBER}/g" ${PROJECT_ROOT}/docker-compose.yml
 fi
 
