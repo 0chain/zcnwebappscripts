@@ -14,8 +14,8 @@ export MIN_STAKE=0chainminStake
 export MAX_STAKE=0chainmaxStake
 export NO_OF_DELEGATES=0chaindelegates
 export SERVICE_CHARGE=0chainserviceCharge
-export GF_ADMIN_USER=0chaingfadminuser
-export GF_ADMIN_PASSWORD='0chaingfadminpassword'
+export GF_ADMIN_USER=zus
+export GF_ADMIN_PASSWORD='zus.is.cool'
 export PROJECT_ROOT=/var/0chain/blobber
 export BLOCK_WORKER_URL=0chainblockworker
 export BLOBBER_HOST=0chainblobberhost
@@ -86,7 +86,8 @@ install_tools_utilities jq
 
 #Setting latest docker image wrt latest release
 export DOCKER_IMAGE=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/blobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | .name' | sort -V | tail -n 1)
-export DOCKER_IMAGE_EBLOBBER=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/eblobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | .name' | sort -V | tail -n 1)
+# Use staging tag for eblobber (has health checks disabled)
+export DOCKER_IMAGE_EBLOBBER="staging"
 
 sudo ufw allow 123/udp
 sudo ufw allow out to any port 123
@@ -130,6 +131,8 @@ mkdir -p ${PROJECT_ROOT_HDD}/pg_hdd_data
 chown -R "999:999" ${PROJECT_ROOT_HDD}/pg_hdd_data
 
 # generate password for portainer
+# Note: Portainer admin username is always "admin" on first setup and cannot be changed via config.
+# To change username to "zus", login with admin/${GF_ADMIN_PASSWORD} and change it in Settings > Users after first login.
 echo -n ${GF_ADMIN_PASSWORD} >/tmp/portainer_password
 
 echo -e "\n\e[93m===============================================================================================================================================================================
@@ -352,9 +355,9 @@ services:
     image: postgres:14
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_USER: blobber_user
-      POSTGRES_DB: blobber_meta
-      POSTGRES_PASSWORD: blobber
+      POSTGRES_USER: zus
+      POSTGRES_DB: blobber
+      POSTGRES_PASSWORD: zus.is.cool
       SLOW_TABLESPACE_PATH: /var/lib/postgresql/hdd
       SLOW_TABLESPACE: hdd_tablespace
     volumes:
@@ -395,9 +398,9 @@ cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
     image: 0chaindev/blobber:${DOCKER_IMAGE}
     environment:
       DOCKER: "true"
-      DB_NAME: blobber_meta
-      DB_USER: blobber_user
-      DB_PASSWORD: blobber
+      DB_NAME: blobber
+      DB_USER: zus
+      DB_PASSWORD: zus.is.cool
       DB_PORT: "5432"
       DB_HOST: postgres
 EOF
