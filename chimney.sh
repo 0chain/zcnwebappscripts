@@ -366,6 +366,11 @@ services:
       - ${PROJECT_ROOT}/postgresql.conf:/var/lib/postgresql/postgresql.conf
       - ${PROJECT_ROOT}/sql_init:/docker-entrypoint-initdb.d
     command: postgres -c config_file=/var/lib/postgresql/postgresql.conf
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zus -d blobber"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       default:
     restart: "always"
@@ -405,13 +410,23 @@ cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
       DB_HOST: postgres
 EOF
 
-# Add `depends_on` and `links` only if not enterprise
+# Add depends_on (postgres always, validator only if not enterprise) and links
+# Use condition: service_healthy for postgres to ensure init scripts complete
 if [ "$IS_ENTERPRISE" != true ]; then
 cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
     depends_on:
-      - validator
+      postgres:
+        condition: service_healthy
+      validator:
+        condition: service_started
     links:
       - validator:validator
+EOF
+else
+cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
+    depends_on:
+      postgres:
+        condition: service_healthy
 EOF
 fi
 
