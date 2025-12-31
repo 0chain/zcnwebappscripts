@@ -355,9 +355,9 @@ services:
     image: postgres:14
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_USER: zus
-      POSTGRES_DB: blobber
-      POSTGRES_PASSWORD: zus.is.cool
+      POSTGRES_USER: blobber_user
+      POSTGRES_DB: blobber_meta
+      POSTGRES_PASSWORD: blobber
       SLOW_TABLESPACE_PATH: /var/lib/postgresql/hdd
       SLOW_TABLESPACE: hdd_tablespace
     volumes:
@@ -367,10 +367,11 @@ services:
       - ${PROJECT_ROOT}/sql_init:/docker-entrypoint-initdb.d
     command: postgres -c config_file=/var/lib/postgresql/postgresql.conf
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U zus -d blobber"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U blobber_user -d blobber_meta && psql -U blobber_user -d blobber_meta -tc \"SELECT 1 FROM pg_roles WHERE rolname='blobber_user'\" | grep -q 1"]
+      interval: 3s
       timeout: 5s
-      retries: 10
+      retries: 30
+      start_period: 40s
     networks:
       default:
     restart: "always"
@@ -403,9 +404,9 @@ cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
     image: 0chaindev/blobber:${DOCKER_IMAGE}
     environment:
       DOCKER: "true"
-      DB_NAME: blobber
-      DB_USER: zus
-      DB_PASSWORD: zus.is.cool
+      DB_NAME: blobber_meta
+      DB_USER: blobber_user
+      DB_PASSWORD: blobber
       DB_PORT: "5432"
       DB_HOST: postgres
 EOF
