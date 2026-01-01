@@ -76,6 +76,19 @@ install_tools_utilities unzip
 install_tools_utilities curl
 install_tools_utilities containerd
 install_tools_utilities docker.io
+
+# Ensure Docker uses the EBS volume data-root (configured in blobber-script.sh.tpl)
+# Stop and restart Docker to ensure it picks up the daemon.json configuration
+if [ -f /etc/docker/daemon.json ]; then
+  echo "[INFO] Found Docker daemon.json, restarting Docker to apply configuration..."
+  systemctl stop docker 2>/dev/null || true
+  systemctl stop containerd 2>/dev/null || true
+  sleep 2
+  systemctl start containerd 2>/dev/null || true
+  systemctl start docker 2>/dev/null || true
+  echo "[INFO] Docker restarted with daemon.json configuration"
+fi
+
 install_tools_utilities systemd
 install_tools_utilities "systemd-timesyncd"
 install_tools_utilities ufw
