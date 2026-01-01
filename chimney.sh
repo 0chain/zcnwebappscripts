@@ -30,7 +30,8 @@ export IS_ENTERPRISE=isenterprise
 
 export DEBIAN_FRONTEND=noninteractive
 
-export PROJECT_ROOT_SSD=/var/0chain/blobber/ssd
+# Both SSD and HDD directories are now on the EBS volume to prevent root filesystem from filling up
+export PROJECT_ROOT_SSD=/var/0chain/blobber/hdd/ssd
 export PROJECT_ROOT_HDD=/var/0chain/blobber/hdd
 
 export BRANCH_NAME=main
@@ -457,8 +458,8 @@ cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
     volumes:
       - ${PROJECT_ROOT}/Caddyfile:/etc/caddy/Caddyfile
       - ${PROJECT_ROOT}/site:/srv
-      - ${PROJECT_ROOT}/caddy_data:/data
-      - ${PROJECT_ROOT}/caddy_config:/config
+      - ${PROJECT_ROOT_HDD}/caddy_data:/data
+      - ${PROJECT_ROOT_HDD}/caddy_config:/config
     restart: "always"
 
   promtail:
@@ -535,7 +536,7 @@ cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
     image: portainer/agent:2.18.2-alpine
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - ${PROJECT_ROOT_HDD}/docker/volumes:/var/lib/docker/volumes
 
   portainer:
     image: portainer/portainer-ce:2.18.2-alpine
@@ -583,7 +584,7 @@ ELAPSED=0
 
 echo "Waiting for SSL certificates to be provisioned by Caddy (max ${MAX_WAIT}s)..."
 
-while [ ! -d "${PROJECT_ROOT}/caddy_data/caddy/certificates" ]; do
+while [ ! -d "${PROJECT_ROOT_HDD}/caddy_data/caddy/certificates" ]; do
   if [ $ELAPSED -ge $MAX_WAIT ]; then
     echo "ERROR: Certificates were not provisioned within ${MAX_WAIT}s."
     echo "==== Showing last 50 lines of Caddy logs for debugging ===="
