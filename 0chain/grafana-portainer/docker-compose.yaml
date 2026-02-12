@@ -12,6 +12,11 @@ services:
       - ./caddy/caddy_data:/data
       - ./caddy/caddy_config:/config
     restart: "always"
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "3"
     networks:
       testnet0:
         ipv4_address: 198.18.15.1
@@ -31,6 +36,11 @@ services:
     # ports:
     #   - "9080:9080"
     restart: "always"
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "3"
     networks:
       testnet0:
         ipv4_address: 198.18.15.2
@@ -47,6 +57,11 @@ services:
     # ports:
     #   - "3100:3100"
     restart: "always"
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "3"
     networks:
       testnet0:
         ipv4_address: 198.18.15.3
@@ -64,6 +79,11 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
     restart: "always"
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "3"
     depends_on:
     - cadvisor
     networks:
@@ -78,6 +98,11 @@ services:
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     restart: "always"
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "3"
     networks:
       testnet0:
         ipv4_address: 198.18.15.5
@@ -97,6 +122,11 @@ services:
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     # ports:
     #   - 9100:9100
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "3"
     networks:
       testnet0:
         ipv4_address: 198.18.15.6
@@ -114,6 +144,11 @@ services:
     # ports:
     #   - "3040:3000"
     restart: "always"
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "3"
     networks:
       testnet0:
         ipv4_address: 198.18.15.7
@@ -124,6 +159,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "3"
     networks:
       testnet0:
         ipv4_address: 198.18.15.8
@@ -139,6 +179,11 @@ services:
     volumes:
       - portainer_data:/data
       - ./portainer/portainer_password:/tmp/portainer_password
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "3"
     networks:
       testnet0:
         ipv4_address: 198.18.15.9
