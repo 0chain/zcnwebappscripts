@@ -30,7 +30,8 @@ export IS_ENTERPRISE=isenterprise
 
 export DEBIAN_FRONTEND=noninteractive
 
-export PROJECT_ROOT_SSD=/var/0chain/blobber/ssd
+# Both SSD and HDD directories are now on the EBS volume to prevent root filesystem from filling up
+export PROJECT_ROOT_SSD=/var/0chain/blobber/hdd/ssd
 export PROJECT_ROOT_HDD=/var/0chain/blobber/hdd
 
 export BRANCH_NAME=main
@@ -75,6 +76,19 @@ install_tools_utilities unzip
 install_tools_utilities curl
 install_tools_utilities containerd
 install_tools_utilities docker.io
+
+# Ensure Docker uses the EBS volume data-root (configured in blobber-script.sh.tpl)
+# Stop and restart Docker to ensure it picks up the daemon.json configuration
+if [ -f /etc/docker/daemon.json ]; then
+  echo "[INFO] Found Docker daemon.json, restarting Docker to apply configuration..."
+  systemctl stop docker 2>/dev/null || true
+  systemctl stop containerd 2>/dev/null || true
+  sleep 2
+  systemctl start containerd 2>/dev/null || true
+  systemctl start docker 2>/dev/null || true
+  echo "[INFO] Docker restarted with daemon.json configuration"
+fi
+
 install_tools_utilities systemd
 install_tools_utilities "systemd-timesyncd"
 install_tools_utilities ufw
@@ -87,6 +101,9 @@ install_tools_utilities jq
 #Setting latest docker image wrt latest release
 export DOCKER_IMAGE=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/blobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | .name' | sort -V | tail -n 1)
 export DOCKER_IMAGE_EBLOBBER=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/eblobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | .name' | sort -V | tail -n 1)
+
+echo "[INFO] Blobber image: 0chaindev/blobber:${DOCKER_IMAGE}"
+echo "[INFO] Enterprise blobber image: 0chaindev/eblobber:${DOCKER_IMAGE_EBLOBBER}"
 
 sudo ufw allow 123/udp
 sudo ufw allow out to any port 123
@@ -151,20 +168,26 @@ pushd ${PROJECT_ROOT} > /dev/null;
           mkdir bin || true
           sudo cp -rf zwallet-binary/* ./bin/
           sudo rm -rf zwallet-binary
-          echo "block_worker: https://mainnet.zus.network/dns" > config.yaml
-          echo "signature_scheme: bls0chain" >> config.yaml
-          echo "min_submit: 50" >> config.yaml
-          echo "min_confirmation: 50" >> config.yaml
-          echo "confirmation_chain_length: 3" >> config.yaml
-          echo "max_txn_query: 5" >> config.yaml
-          echo "query_sleep_time: 5" >> config.yaml
       else
           echo "Didn't found any Ubuntu version with 20/22."
       fi
   fi
-  ./bin/zwallet create-wallet --wallet blob_op_wallet.json --configDir . --config config.yaml --silent
+
+  # FIX: Create wallet config using the TARGET network (BLOCK_WORKER_URL), not hardcoded mainnet.
+  # The wallet must be created on the same chain the blobber will register on.
+  echo "block_worker: ${BLOCK_WORKER_URL}" > config.yaml
+  echo "signature_scheme: bls0chain" >> config.yaml
+  echo "min_submit: 50" >> config.yaml
+  echo "min_confirmation: 50" >> config.yaml
+  echo "confirmation_chain_length: 3" >> config.yaml
+  echo "max_txn_query: 5" >> config.yaml
+  echo "query_sleep_time: 5" >> config.yaml
+
+  echo "[INFO] Creating blobber operational wallet against: ${BLOCK_WORKER_URL}"
+  sudo ./bin/zwallet create-wallet --wallet blob_op_wallet.json --configDir . --config config.yaml --silent
   if [ "$IS_ENTERPRISE" != true ]; then
-    ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
+    echo "[INFO] Creating validator operational wallet against: ${BLOCK_WORKER_URL}"
+    sudo ./bin/zwallet create-wallet --wallet vald_op_wallet.json --configDir . --config config.yaml --silent
   fi
 
 popd > /dev/null;
@@ -228,10 +251,8 @@ echo "updating 0box keys"
 if [ "$BLOCK_WORKER_URL" != "https://mainnet.zus.network/dns/" ]; then
   sed -i "s/c88b543dbad234b181f4d28c3a6962496970ed2794ebaa3c414f770b75153612c1ab6728be203b00157e6ba349b0273a1f3c2a2be274a2ba6baaccb9a8a81f16/381fb2e8298680fc9c71e664821394adaa5db4537456aaa257ef4388ba8c090e476c89fbcd2c8a1b0871ba36b7001f778d178c8dfff1504fbafb43f7ee3b3c92" ${PROJECT_ROOT}/config/0chain_blobber.yaml
   sed -i "s/a4e6999add55dd7ac050904d2af2d248dd3329cdde953021bfa9ed9ef677f942/65b32a635cffb6b6f3c73f09da617c29569a5f690662b5be57ed0d994f234335/g" ${PROJECT_ROOT}/config/0chain_blobber.yaml
-  export DOCKER_IMAGE=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/blobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+(-RC[0-9]+)?$")) | .name' | sort -V | tail -n 1)
-  export DOCKER_IMAGE_EBLOBBER=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/eblobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+(-RC[0-9]+)?$")) | .name' | sort -V | tail -n 1)
-else 
-  echo "Blobber is deployed on some internal networks."
+else
+  echo "Blobber is deployed on mainnet."
 fi
 
 echo "updating username"
@@ -363,6 +384,12 @@ services:
       - ${PROJECT_ROOT}/postgresql.conf:/var/lib/postgresql/postgresql.conf
       - ${PROJECT_ROOT}/sql_init:/docker-entrypoint-initdb.d
     command: postgres -c config_file=/var/lib/postgresql/postgresql.conf
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U blobber_user -d blobber_meta && psql -U blobber_user -d blobber_meta -tc \"SELECT 1 FROM pg_roles WHERE rolname='blobber_user'\" | grep -q 1"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
     networks:
       default:
     restart: "always"
@@ -389,10 +416,19 @@ EOF
 fi
 
 # Continue with blobber and rest of services
+# For enterprise: use eblobber image directly. For community: use blobber image.
+if [ "$IS_ENTERPRISE" = true ]; then
+  BLOBBER_IMAGE="0chaindev/eblobber:${DOCKER_IMAGE_EBLOBBER}"
+else
+  BLOBBER_IMAGE="0chaindev/blobber:${DOCKER_IMAGE}"
+fi
+
+echo "[INFO] Using blobber image: ${BLOBBER_IMAGE}"
+
 cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
 
   blobber:
-    image: 0chaindev/blobber:${DOCKER_IMAGE}
+    image: ${BLOBBER_IMAGE}
     environment:
       DOCKER: "true"
       DB_NAME: blobber_meta
@@ -402,13 +438,22 @@ cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
       DB_HOST: postgres
 EOF
 
-# Add `depends_on` and `links` only if not enterprise
+# Add depends_on: postgres always (with healthcheck), validator only if not enterprise
 if [ "$IS_ENTERPRISE" != true ]; then
 cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
     depends_on:
-      - validator
+      postgres:
+        condition: service_healthy
+      validator:
+        condition: service_started
     links:
       - validator:validator
+EOF
+else
+cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
+    depends_on:
+      postgres:
+        condition: service_healthy
 EOF
 fi
 
@@ -438,8 +483,8 @@ cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
     volumes:
       - ${PROJECT_ROOT}/Caddyfile:/etc/caddy/Caddyfile
       - ${PROJECT_ROOT}/site:/srv
-      - ${PROJECT_ROOT}/caddy_data:/data
-      - ${PROJECT_ROOT}/caddy_config:/config
+      - ${PROJECT_ROOT_HDD}/caddy_data:/data
+      - ${PROJECT_ROOT_HDD}/caddy_config:/config
     restart: "always"
 
   promtail:
@@ -516,7 +561,7 @@ cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
     image: portainer/agent:2.18.2-alpine
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /var/lib/docker/volumes:/var/lib/docker/volumes
+      - ${PROJECT_ROOT_HDD}/docker/volumes:/var/lib/docker/volumes
 
   portainer:
     image: portainer/portainer-ce:2.18.2-alpine
@@ -540,28 +585,42 @@ volumes:
   portainer_data:
 EOF
 
-
-if [ "$IS_ENTERPRISE" = true ]; then
-  sed -i "s/blobber:${DOCKER_IMAGE}/eblobber:${DOCKER_IMAGE_EBLOBBER}/g" ${PROJECT_ROOT}/docker-compose.yml
-fi
-
+# Extract blobber wallet keys
 pushd ${PROJECT_ROOT} > /dev/null;
   jq -r .client_key blob_op_wallet.json > keys_config/b0bnode01_keys.txt
   jq -r '.keys | .[] | .private_key' blob_op_wallet.json >> keys_config/b0bnode01_keys.txt
 popd > /dev/null;
 
-pushd ${PROJECT_ROOT} > /dev/null;
-  jq -r .client_key vald_op_wallet.json > keys_config/b0vnode01_keys.txt
-  jq -r '.keys | .[] | .private_key' vald_op_wallet.json >> keys_config/b0vnode01_keys.txt
-popd > /dev/null;
+# Extract validator wallet keys only if not enterprise
+if [ "$IS_ENTERPRISE" != true ]; then
+  pushd ${PROJECT_ROOT} > /dev/null;
+    jq -r .client_key vald_op_wallet.json > keys_config/b0vnode01_keys.txt
+    jq -r '.keys | .[] | .private_key' vald_op_wallet.json >> keys_config/b0vnode01_keys.txt
+  popd > /dev/null;
+fi
 
 /usr/local/bin/docker-compose -f ${PROJECT_ROOT}/docker-compose.yml pull
 /usr/local/bin/docker-compose -f ${PROJECT_ROOT}/docker-compose.yml up -d
 
-while [ ! -d ${PROJECT_ROOT}/caddy_data/caddy/certificates ]; do
-  echo "waiting for certificates to be provisioned"
-  sleep 2
+MAX_WAIT=600   # 10 minutes
+WAIT_INTERVAL=5
+ELAPSED=0
+
+echo "Waiting for SSL certificates to be provisioned by Caddy (max ${MAX_WAIT}s)..."
+
+while [ ! -d "${PROJECT_ROOT_HDD}/caddy_data/caddy/certificates" ]; do
+  if [ $ELAPSED -ge $MAX_WAIT ]; then
+    echo "ERROR: Certificates were not provisioned within ${MAX_WAIT}s."
+    echo "==== Showing last 50 lines of Caddy logs for debugging ===="
+    docker logs --tail 50 $(docker ps --filter "ancestor=caddy:2.6.4" --format "{{.ID}}") || true
+    exit 1
+  fi
+  echo "Still waiting... elapsed ${ELAPSED}s"
+  sleep $WAIT_INTERVAL
+  ELAPSED=$((ELAPSED + WAIT_INTERVAL))
 done
+
+echo "Certificates provisioned successfully."
 
 DASHBOARDS=${PROJECT_ROOT}/chimney-dashboard
 echo "sleeping for 10secs.."
