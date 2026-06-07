@@ -599,25 +599,20 @@ fi
 /usr/local/bin/docker-compose -f ${PROJECT_ROOT}/docker-compose.yml pull
 /usr/local/bin/docker-compose -f ${PROJECT_ROOT}/docker-compose.yml up -d
 
-MAX_WAIT=600   # 10 minutes
-WAIT_INTERVAL=5
-ELAPSED=0
-
-echo "Waiting for SSL certificates to be provisioned by Caddy (max ${MAX_WAIT}s)..."
-
-while [ ! -d "${PROJECT_ROOT_HDD}/caddy_data/caddy/certificates" ]; do
-  if [ $ELAPSED -ge $MAX_WAIT ]; then
-    echo "ERROR: Certificates were not provisioned within ${MAX_WAIT}s."
-    echo "==== Showing last 50 lines of Caddy logs for debugging ===="
-    docker logs --tail 50 $(docker ps --filter "ancestor=caddy:2.6.4" --format "{{.ID}}") || true
-    exit 1
+# TLS uses the pre-provisioned *.zus.network wildcard mounted into Caddy (written by
+# blobber-init from SSM) — there is NO ACME, so do NOT wait for caddy_data/caddy/
+# certificates (Caddy never creates it for a mounted cert; waiting here hangs 600s).
+# Just confirm Caddy came up serving TLS on :443, then proceed. Best-effort: this
+# never blocks provisioning.
+echo "Verifying Caddy is serving the mounted *.zus.network wildcard on :443..."
+for i in $(seq 1 24); do
+  if echo | timeout 5 openssl s_client -connect localhost:443 -servername "${BLOBBER_HOST}" 2>/dev/null | grep -q "BEGIN CERTIFICATE"; then
+    echo "Caddy is serving TLS on :443."
+    break
   fi
-  echo "Still waiting... elapsed ${ELAPSED}s"
-  sleep $WAIT_INTERVAL
-  ELAPSED=$((ELAPSED + WAIT_INTERVAL))
+  echo "waiting for Caddy :443... (${i})"
+  sleep 5
 done
-
-echo "Certificates provisioned successfully."
 
 DASHBOARDS=${PROJECT_ROOT}/chimney-dashboard
 echo "sleeping for 10secs.."
