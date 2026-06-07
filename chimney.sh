@@ -299,16 +299,11 @@ cat <<EOF >${PROJECT_ROOT}/Caddyfile
   }
 }
 
-{
-   acme_ca https://acme.ssl.com/sslcom-dv-ecc
-    acme_eab {
-        key_id 7262ffd58bd9
-        mac_key LTjZs0DOMkspvR7Tsp8ke5ns5yNo9fgiLNWKA65sHPQ
-    }
-   email   store@zus.network
-}
-
+# TLS: serve the pre-provisioned *.zus.network wildcard (written by blobber-init
+# from SSM /zus/wildcard/*). No per-host ACME — removes the SSL.com EAB dependency
+# and Let's Encrypt's per-host 50/week limit; one wildcard covers every cluster.
 ${BLOBBER_HOST} {
+  tls /etc/caddy/wildcard.crt /etc/caddy/wildcard.key
   import cors https://${BLOBBER_HOST}
   log {
     output file /var/log/access.log {
@@ -482,6 +477,8 @@ cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
       - "443:443/udp"
     volumes:
       - ${PROJECT_ROOT}/Caddyfile:/etc/caddy/Caddyfile
+      - ${PROJECT_ROOT}/wildcard.crt:/etc/caddy/wildcard.crt:ro
+      - ${PROJECT_ROOT}/wildcard.key:/etc/caddy/wildcard.key:ro
       - ${PROJECT_ROOT}/site:/srv
       - ${PROJECT_ROOT_HDD}/caddy_data:/data
       - ${PROJECT_ROOT_HDD}/caddy_config:/config
