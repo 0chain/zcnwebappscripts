@@ -100,7 +100,12 @@ install_tools_utilities jq
 
 #Setting latest docker image wrt latest release
 export DOCKER_IMAGE=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/blobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | .name' | sort -V | tail -n 1)
-export DOCKER_IMAGE_EBLOBBER=$(curl -s https://registry.hub.docker.com/v2/repositories/0chaindev/eblobber/tags?page_size=100 | jq -r '.results[] | select(.name | test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | .name' | sort -V | tail -n 1)
+# Enterprise eblobber image: default to :latest — the single prod tag CI pushes
+# from fix/configurable-health-check-transaction (semver tags never match
+# enterprise builds, so the old semver lookup silently picked nothing). Matches
+# what Blimp's provisioner pins at runtime. Override EBLOBBER_IMAGE_TAG to
+# deploy a different branch's image. (Community blobber above stays on semver.)
+export DOCKER_IMAGE_EBLOBBER="${EBLOBBER_IMAGE_TAG:-latest}"
 
 echo "[INFO] Blobber image: 0chaindev/blobber:${DOCKER_IMAGE}"
 echo "[INFO] Enterprise blobber image: 0chaindev/eblobber:${DOCKER_IMAGE_EBLOBBER}"
@@ -419,6 +424,10 @@ else
 fi
 
 echo "[INFO] Using blobber image: ${BLOBBER_IMAGE}"
+
+# Branch tags are mutable, so force a fresh pull — otherwise a cached image
+# from a previous deploy would be reused even after the branch was rebuilt.
+sudo docker pull "${BLOBBER_IMAGE}" || echo "[WARN] docker pull ${BLOBBER_IMAGE} failed; will rely on compose pull"
 
 cat <<EOF >>${PROJECT_ROOT}/docker-compose.yml
 
